@@ -12,8 +12,7 @@ namespace SmartSocietyAPI
         protected void Page_Load(object sender, EventArgs e)
         {
             SmartSocietyAPI.General ServiceObject = new SmartSocietyAPI.General();
-            Response.Write(ServiceObject.CheckLogin("admin", "12345"));
-            Response.Write(ServiceObject.ResetPassword("admin2", "rishabh"));
+            Response.Write(ServiceObject.GetData(1));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 
@@ -9,12 +10,12 @@ namespace SmartSocietyAPI
     public interface IGeneral
     {        
         [OperationContract]
-        [WebGet(UriTemplate = "CheckLogin/{value}", ResponseFormat = WebMessageFormat.Json)]
-        string GetData(int value);
+        [WebGet(UriTemplate = "GetData/{value}", ResponseFormat = WebMessageFormat.Json)]
+        object GetData(int value);
 
         [OperationContract]
         [WebGet(UriTemplate = "", ResponseFormat = WebMessageFormat.Json)]
-        string JSONData();
+        object JSONData();
 
         [OperationContract]
         [WebGet(UriTemplate = "CheckLogin/{Username,Password}", ResponseFormat = WebMessageFormat.Json)]

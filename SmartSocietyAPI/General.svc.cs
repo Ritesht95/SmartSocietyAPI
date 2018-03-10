@@ -10,12 +10,30 @@ namespace SmartSocietyAPI
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class General : IGeneral
     {
-        public string GetData(int value)
+        public object GetData(int value)
         {
-            return string.Format("You entered: {0}", value);
+            try
+            {
+                return "You entered: "+value;
+            }catch(Exception e)
+            {
+                var dc = new DataClassesDataContext();
+                tblNotice note = new tblNotice();
+                note.Description = e.StackTrace;
+                note.CreatedBy = DateTime.Now;
+                note.CreatedOn = DateTime.Now;
+                note.IsActive = true;
+                note.NoticeID = 1;
+                note.Priority = 1;
+                note.Title = "Error";
+                dc.tblNotices.InsertOnSubmit(note);
+                dc.SubmitChanges();
+                return "False";
+            }
+    
         }
 
-        public string JSONData()
+        public object JSONData()
         {
             CompositeType a = new CompositeType();
             return JsonConvert.SerializeObject(a);

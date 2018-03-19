@@ -90,9 +90,6 @@ namespace SmartSocietyAPI
     partial void InserttblIncome(tblIncome instance);
     partial void UpdatetblIncome(tblIncome instance);
     partial void DeletetblIncome(tblIncome instance);
-    partial void InserttblLogin(tblLogin instance);
-    partial void UpdatetblLogin(tblLogin instance);
-    partial void DeletetblLogin(tblLogin instance);
     partial void InserttblMaintenance(tblMaintenance instance);
     partial void UpdatetblMaintenance(tblMaintenance instance);
     partial void DeletetblMaintenance(tblMaintenance instance);
@@ -126,6 +123,9 @@ namespace SmartSocietyAPI
     partial void InserttblTransaction(tblTransaction instance);
     partial void UpdatetblTransaction(tblTransaction instance);
     partial void DeletetblTransaction(tblTransaction instance);
+    partial void InserttblLogin(tblLogin instance);
+    partial void UpdatetblLogin(tblLogin instance);
+    partial void DeletetblLogin(tblLogin instance);
     #endregion
 		
 		public DataClassesDataContext() : 
@@ -326,14 +326,6 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		public System.Data.Linq.Table<tblLogin> tblLogins
-		{
-			get
-			{
-				return this.GetTable<tblLogin>();
-			}
-		}
-		
 		public System.Data.Linq.Table<tblMaintenance> tblMaintenances
 		{
 			get
@@ -427,6 +419,14 @@ namespace SmartSocietyAPI
 			get
 			{
 				return this.GetTable<tblTransaction>();
+			}
+		}
+		
+		public System.Data.Linq.Table<tblLogin> tblLogins
+		{
+			get
+			{
+				return this.GetTable<tblLogin>();
 			}
 		}
 	}
@@ -4098,188 +4098,6 @@ namespace SmartSocietyAPI
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblLogin")]
-	public partial class tblLogin : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _LoginID;
-		
-		private string _LoginName;
-		
-		private string _Password;
-		
-		private int _FlatID;
-		
-		private string _MemberType;
-		
-		private bool _IsBlocked;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnLoginIDChanging(int value);
-    partial void OnLoginIDChanged();
-    partial void OnLoginNameChanging(string value);
-    partial void OnLoginNameChanged();
-    partial void OnPasswordChanging(string value);
-    partial void OnPasswordChanged();
-    partial void OnFlatIDChanging(int value);
-    partial void OnFlatIDChanged();
-    partial void OnMemberTypeChanging(string value);
-    partial void OnMemberTypeChanged();
-    partial void OnIsBlockedChanging(bool value);
-    partial void OnIsBlockedChanged();
-    #endregion
-		
-		public tblLogin()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LoginID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int LoginID
-		{
-			get
-			{
-				return this._LoginID;
-			}
-			set
-			{
-				if ((this._LoginID != value))
-				{
-					this.OnLoginIDChanging(value);
-					this.SendPropertyChanging();
-					this._LoginID = value;
-					this.SendPropertyChanged("LoginID");
-					this.OnLoginIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LoginName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string LoginName
-		{
-			get
-			{
-				return this._LoginName;
-			}
-			set
-			{
-				if ((this._LoginName != value))
-				{
-					this.OnLoginNameChanging(value);
-					this.SendPropertyChanging();
-					this._LoginName = value;
-					this.SendPropertyChanged("LoginName");
-					this.OnLoginNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string Password
-		{
-			get
-			{
-				return this._Password;
-			}
-			set
-			{
-				if ((this._Password != value))
-				{
-					this.OnPasswordChanging(value);
-					this.SendPropertyChanging();
-					this._Password = value;
-					this.SendPropertyChanged("Password");
-					this.OnPasswordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int NOT NULL")]
-		public int FlatID
-		{
-			get
-			{
-				return this._FlatID;
-			}
-			set
-			{
-				if ((this._FlatID != value))
-				{
-					this.OnFlatIDChanging(value);
-					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberType", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string MemberType
-		{
-			get
-			{
-				return this._MemberType;
-			}
-			set
-			{
-				if ((this._MemberType != value))
-				{
-					this.OnMemberTypeChanging(value);
-					this.SendPropertyChanging();
-					this._MemberType = value;
-					this.SendPropertyChanged("MemberType");
-					this.OnMemberTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsBlocked", DbType="Bit NOT NULL")]
-		public bool IsBlocked
-		{
-			get
-			{
-				return this._IsBlocked;
-			}
-			set
-			{
-				if ((this._IsBlocked != value))
-				{
-					this.OnIsBlockedChanging(value);
-					this.SendPropertyChanging();
-					this._IsBlocked = value;
-					this.SendPropertyChanged("IsBlocked");
-					this.OnIsBlockedChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblMaintenance")]
 	public partial class tblMaintenance : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -6764,6 +6582,260 @@ namespace SmartSocietyAPI
 					this._Status = value;
 					this.SendPropertyChanged("Status");
 					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblLogin")]
+	public partial class tblLogin : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _LoginID;
+		
+		private string _LoginName;
+		
+		private string _PhoneNo;
+		
+		private string _Email;
+		
+		private string _Password;
+		
+		private string _VerificationCode;
+		
+		private int _FlatID;
+		
+		private string _MemberType;
+		
+		private bool _IsBlocked;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnLoginIDChanging(int value);
+    partial void OnLoginIDChanged();
+    partial void OnLoginNameChanging(string value);
+    partial void OnLoginNameChanged();
+    partial void OnPhoneNoChanging(string value);
+    partial void OnPhoneNoChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnPasswordChanging(string value);
+    partial void OnPasswordChanged();
+    partial void OnVerificationCodeChanging(string value);
+    partial void OnVerificationCodeChanged();
+    partial void OnFlatIDChanging(int value);
+    partial void OnFlatIDChanged();
+    partial void OnMemberTypeChanging(string value);
+    partial void OnMemberTypeChanged();
+    partial void OnIsBlockedChanging(bool value);
+    partial void OnIsBlockedChanged();
+    #endregion
+		
+		public tblLogin()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LoginID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int LoginID
+		{
+			get
+			{
+				return this._LoginID;
+			}
+			set
+			{
+				if ((this._LoginID != value))
+				{
+					this.OnLoginIDChanging(value);
+					this.SendPropertyChanging();
+					this._LoginID = value;
+					this.SendPropertyChanged("LoginID");
+					this.OnLoginIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LoginName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string LoginName
+		{
+			get
+			{
+				return this._LoginName;
+			}
+			set
+			{
+				if ((this._LoginName != value))
+				{
+					this.OnLoginNameChanging(value);
+					this.SendPropertyChanging();
+					this._LoginName = value;
+					this.SendPropertyChanged("LoginName");
+					this.OnLoginNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhoneNo", DbType="VarChar(12) NOT NULL", CanBeNull=false)]
+		public string PhoneNo
+		{
+			get
+			{
+				return this._PhoneNo;
+			}
+			set
+			{
+				if ((this._PhoneNo != value))
+				{
+					this.OnPhoneNoChanging(value);
+					this.SendPropertyChanging();
+					this._PhoneNo = value;
+					this.SendPropertyChanged("PhoneNo");
+					this.OnPhoneNoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this.OnPasswordChanging(value);
+					this.SendPropertyChanging();
+					this._Password = value;
+					this.SendPropertyChanged("Password");
+					this.OnPasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VerificationCode", DbType="VarChar(10)")]
+		public string VerificationCode
+		{
+			get
+			{
+				return this._VerificationCode;
+			}
+			set
+			{
+				if ((this._VerificationCode != value))
+				{
+					this.OnVerificationCodeChanging(value);
+					this.SendPropertyChanging();
+					this._VerificationCode = value;
+					this.SendPropertyChanged("VerificationCode");
+					this.OnVerificationCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int NOT NULL")]
+		public int FlatID
+		{
+			get
+			{
+				return this._FlatID;
+			}
+			set
+			{
+				if ((this._FlatID != value))
+				{
+					this.OnFlatIDChanging(value);
+					this.SendPropertyChanging();
+					this._FlatID = value;
+					this.SendPropertyChanged("FlatID");
+					this.OnFlatIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberType", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string MemberType
+		{
+			get
+			{
+				return this._MemberType;
+			}
+			set
+			{
+				if ((this._MemberType != value))
+				{
+					this.OnMemberTypeChanging(value);
+					this.SendPropertyChanging();
+					this._MemberType = value;
+					this.SendPropertyChanged("MemberType");
+					this.OnMemberTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsBlocked", DbType="Bit NOT NULL")]
+		public bool IsBlocked
+		{
+			get
+			{
+				return this._IsBlocked;
+			}
+			set
+			{
+				if ((this._IsBlocked != value))
+				{
+					this.OnIsBlockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsBlocked = value;
+					this.SendPropertyChanged("IsBlocked");
+					this.OnIsBlockedChanged();
 				}
 			}
 		}

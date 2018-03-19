@@ -8,7 +8,7 @@ namespace SmartSocietyAPI
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-    public class General : IGeneral
+    public class Client : IClient
     {
         private Boolean Mail(string Email, string subject, string body)
         {
@@ -42,9 +42,10 @@ namespace SmartSocietyAPI
         public string CheckLogin(string Username, string Password)
         {
             var DC = new DataClassesDataContext();
-            var ObjLogin = (from ob in DC.tblAdminLogins
-                            where ob.AdminLoginName == Username && ob.Password == Password 
-                            && ob.IsBlocked==false
+            var ObjLogin = (from ob in DC.tblLogins
+                            where (ob.PhoneNo == Username || ob.Email == Username)
+                            && ob.Password == Password
+                            && ob.IsBlocked == false
                             select ob);
             if (ObjLogin.Count() == 1)
             {
@@ -59,14 +60,18 @@ namespace SmartSocietyAPI
         public string ForgotPassword(string Username)
         {
             var DC = new DataClassesDataContext();
-            var ObjForgotPass = (from ob in DC.tblAdminLogins
-                            where ob.AdminLoginName == Username && ob.IsBlocked == false
-                            select ob);
+            var ObjForgotPass = (from ob in DC.tblLogins
+                                 where (ob.PhoneNo == Username || ob.Email == Username)
+                                 && ob.IsBlocked == false
+                                 select ob);
             if (ObjForgotPass.Count() == 1)
             {
                 var ObjData = ObjForgotPass.Single();
-                if (Mail(ObjData.Email, "Smart Society: Reset Password", "Link to reset password: http://localhost/ForgetPassword.aspx?Username="+ObjData.AdminLoginName+"<br>Regards,<br>Smart Society(Society Management System)"))
+                Random Number = new Random();
+                string Code = Number.Next(100000, 999999).ToString();
+                if (Mail(ObjData.Email, "Smart Society: Reset Password", "Verification Code: " + Code + "<br>Regards,<br>Smart Society(Society Management System)"))
                 {
+                    ObjData.VerificationCode = Code;
                     return "True";
                 }
                 else
@@ -80,11 +85,13 @@ namespace SmartSocietyAPI
             }
         }
 
-        public string ResetPassword(string Username, string Password)
+        public string ResetPassword(string Username, string VerificationCode, string Password)
         {
             var DC = new DataClassesDataContext();
-            var ObjReset = (from ob in DC.tblAdminLogins
-                            where ob.AdminLoginName == Username && ob.IsBlocked == false
+            var ObjReset = (from ob in DC.tblLogins
+                            where (ob.PhoneNo == Username || ob.Email == Username)
+                            && ob.VerificationCode == VerificationCode
+                            && ob.IsBlocked == false
                             select ob);
             if (ObjReset.Count() == 1)
             {

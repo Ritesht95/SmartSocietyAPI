@@ -9,13 +9,7 @@ namespace SmartSocietyAPI
     [ServiceContract]
     public interface IGeneral
     {        
-        [OperationContract]
-        [WebGet(UriTemplate = "GetData/{value}", ResponseFormat = WebMessageFormat.Json)]
-        object GetData(int value);
-
-        [OperationContract]
-        [WebGet(UriTemplate = "", ResponseFormat = WebMessageFormat.Json)]
-        object JSONData();
+        /*Admin Side(WEBAPP)*/
 
         [OperationContract]
         [WebGet(UriTemplate = "CheckLogin/{Username,Password}", ResponseFormat = WebMessageFormat.Json)]
@@ -28,33 +22,14 @@ namespace SmartSocietyAPI
         [OperationContract]
         [WebGet(UriTemplate = "ResetPassword/{Username,Password}", ResponseFormat = WebMessageFormat.Json)]
         string ResetPassword(string Username, string Password);
-        //[OperationContract]
-        //CompositeType GetDataUsingDataContract(CompositeType composite);
-
-        // TODO: Add your service operations here
-    }
 
 
-    //Use a data contract as illustrated in the sample below to add composite types to service operations.
+        /*Admin Side(WEBAPP)*/
 
-   [DataContract]
-    public class CompositeType
-    {
-        bool boolValue = true;
-        string stringValue = "Hello ";
+        /*Client Side(Android App)*/
 
-        [DataMember]
-        public bool BoolValue
-        {
-            get { return boolValue; }
-            set { boolValue = value; }
-        }
+        
 
-        [DataMember]
-        public string StringValue
-        {
-            get { return stringValue; }
-            set { stringValue = value; }
-        }
+        /*Client Side(Android App)*/
     }
 }

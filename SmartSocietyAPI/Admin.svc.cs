@@ -8,7 +8,7 @@ namespace SmartSocietyAPI
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-    public class Client : IClient
+    public class Admin : IAdmin 
     {
         private Boolean Mail(string Email, string subject, string body)
         {
@@ -42,10 +42,9 @@ namespace SmartSocietyAPI
         public string CheckLogin(string Username, string Password)
         {
             var DC = new DataClassesDataContext();
-            var ObjLogin = (from ob in DC.tblLogins
-                            where (ob.PhoneNo == Username || ob.Email == Username)
-                            && ob.Password == Password
-                            && ob.IsBlocked == false
+            var ObjLogin = (from ob in DC.tblAdminLogins
+                            where ob.AdminLoginName == Username && ob.Password == Password 
+                            && ob.IsBlocked==false
                             select ob);
             if (ObjLogin.Count() == 1)
             {
@@ -60,18 +59,14 @@ namespace SmartSocietyAPI
         public string ForgotPassword(string Username)
         {
             var DC = new DataClassesDataContext();
-            var ObjForgotPass = (from ob in DC.tblLogins
-                                 where (ob.PhoneNo == Username || ob.Email == Username)
-                                 && ob.IsBlocked == false
-                                 select ob);
+            var ObjForgotPass = (from ob in DC.tblAdminLogins
+                            where ob.AdminLoginName == Username && ob.IsBlocked == false
+                            select ob);
             if (ObjForgotPass.Count() == 1)
             {
                 var ObjData = ObjForgotPass.Single();
-                Random Number = new Random();
-                string Code = Number.Next(100000, 999999).ToString();
-                if (Mail(ObjData.Email, "Smart Society: Reset Password", "Verification Code: " + Code + "<br>Regards,<br>Smart Society(Society Management System)"))
+                if (Mail(ObjData.Email, "Smart Society: Reset Password", "Link to reset password: http://localhost/ForgetPassword.aspx?Username="+ObjData.AdminLoginName+"<br>Regards,<br>Smart Society(Society Management System)"))
                 {
-                    ObjData.VerificationCode = Code;
                     return "True";
                 }
                 else
@@ -85,13 +80,11 @@ namespace SmartSocietyAPI
             }
         }
 
-        public string ResetPassword(string Username, string VerificationCode, string Password)
+        public string ResetPassword(string Username, string Password)
         {
             var DC = new DataClassesDataContext();
-            var ObjReset = (from ob in DC.tblLogins
-                            where (ob.PhoneNo == Username || ob.Email == Username)
-                            && ob.VerificationCode == VerificationCode
-                            && ob.IsBlocked == false
+            var ObjReset = (from ob in DC.tblAdminLogins
+                            where ob.AdminLoginName == Username && ob.IsBlocked == false
                             select ob);
             if (ObjReset.Count() == 1)
             {
@@ -105,10 +98,12 @@ namespace SmartSocietyAPI
                 return "False";
             }
         }
-        
-        public object SetResident(string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID)
+
+        public object SetFlatHolder(string StartDate, string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive)
         {
             var DC = new DataClassesDataContext();
+
+
             tblResident ResidentObj = new tblResident();
             ResidentObj.ResidentName = Name;
             ResidentObj.DOB = Convert.ToDateTime(DOB).Date;
@@ -119,33 +114,24 @@ namespace SmartSocietyAPI
             ResidentObj.Email = Email;
             ResidentObj.Image = Image;
             ResidentObj.PositionID = PositionID;
-            ResidentObj.FlatHolderID = FlatHolderID;
+            ResidentObj.FlatHolderID = null;
             ResidentObj.IsActive = true;
             ResidentObj.CreatedOn = DateTime.Now;
 
             DC.tblResidents.InsertOnSubmit(ResidentObj);
-            DC.SubmitChanges();
-            return true;
-        }
 
-        public object EditResident(int ResidentID, string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive)
-        {
-            var DC = new DataClassesDataContext();
-            var ResidentObj = (from ob in DC.tblResidents
-                               where ob.ResidentID == ResidentID
-                               select ob).Single();
-            ResidentObj.ResidentName = Name;
-            ResidentObj.DOB = Convert.ToDateTime(DOB).Date;
-            ResidentObj.FlatID = FlatID;
-            ResidentObj.Occupation = Occupation;
-            ResidentObj.ContactNo1 = Contact1;
-            ResidentObj.ContactNo2 = Contact2;
-            ResidentObj.Email = Email;
-            ResidentObj.Image = Image;
-            ResidentObj.PositionID = PositionID;
-            ResidentObj.FlatHolderID = FlatHolderID;
-            ResidentObj.IsActive = IsActive;
+            int ResidentID = (from ob in DC.tblResidents
+                              where ob.FlatID == FlatID && ob.FlatHolderID == null
+                              select ob.ResidentID).Single();
 
+            tblFlatHolder FlatHolderObj = new tblFlatHolder();
+            FlatHolderObj.FlatID = FlatID;
+            FlatHolderObj.ResidentID = ResidentID;
+            FlatHolderObj.StartDate = Convert.ToDateTime(StartDate);
+            FlatHolderObj.EndDate = null;
+            FlatHolderObj.IsActive = IsActive;
+
+            DC.tblFlatHolders.InsertOnSubmit(FlatHolderObj);
             DC.SubmitChanges();
             return true;
         }

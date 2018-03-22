@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
+﻿using System.ServiceModel;
 using System.ServiceModel.Web;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartSocietyAPI
 {
@@ -22,5 +17,13 @@ namespace SmartSocietyAPI
         [OperationContract]
         [WebGet(UriTemplate = "ResetPassword/{Username,VerificationCode,Password}", ResponseFormat = WebMessageFormat.Json)]
         string ResetPassword(string Username, string VerificationCode, string Password);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "SetResident/{Name,DOB,FlatID,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID}", ResponseFormat = WebMessageFormat.Json)]
+        object SetResident(string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "EditResident/{ResidentID,Name,DOB,FlatID,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID,IsActive}", ResponseFormat = WebMessageFormat.Json)]
+        object EditResident(int ResidentID, string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive);
     }
 }

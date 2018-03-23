@@ -105,5 +105,49 @@ namespace SmartSocietyAPI
                 return "False";
             }
         }
+        
+        public object SetResident(string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID)
+        {
+            var DC = new DataClassesDataContext();
+            tblResident ResidentObj = new tblResident();
+            ResidentObj.ResidentName = Name;
+            ResidentObj.DOB = Convert.ToDateTime(DOB).Date;
+            ResidentObj.FlatID = FlatID;
+            ResidentObj.Occupation = Occupation;
+            ResidentObj.ContactNo1 = Contact1;
+            ResidentObj.ContactNo2 = Contact2;
+            ResidentObj.Email = Email;
+            ResidentObj.Image = Image;
+            ResidentObj.PositionID = PositionID;
+            ResidentObj.FlatHolderID = FlatHolderID;
+            ResidentObj.IsActive = true;
+            ResidentObj.CreatedOn = DateTime.Now;
+
+            DC.tblResidents.InsertOnSubmit(ResidentObj);
+            DC.SubmitChanges();
+            return true;
+        }
+
+        public object EditResident(int ResidentID, string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive)
+        {
+            var DC = new DataClassesDataContext();
+            var ResidentObj = (from ob in DC.tblResidents
+                               where ob.ResidentID == ResidentID
+                               select ob).Single();
+            ResidentObj.ResidentName = Name;
+            ResidentObj.DOB = Convert.ToDateTime(DOB).Date;
+            ResidentObj.FlatID = FlatID;
+            ResidentObj.Occupation = Occupation;
+            ResidentObj.ContactNo1 = Contact1;
+            ResidentObj.ContactNo2 = Contact2;
+            ResidentObj.Email = Email;
+            ResidentObj.Image = Image;
+            ResidentObj.PositionID = PositionID;
+            ResidentObj.FlatHolderID = FlatHolderID;
+            ResidentObj.IsActive = IsActive;
+
+            DC.SubmitChanges();
+            return true;
+        }
     }
 }

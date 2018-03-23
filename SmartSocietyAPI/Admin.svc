@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="SmartSocietyAPI.General" CodeBehind="Admin.svc.cs" %>

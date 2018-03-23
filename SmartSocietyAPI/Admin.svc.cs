@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 namespace SmartSocietyAPI
 {
@@ -37,6 +38,61 @@ namespace SmartSocietyAPI
             {
                 return false;
             }
+        }
+
+        // Generate a random number between two numbers
+        public int RandomNumber(int min, int max)
+        {
+            Random random = new Random();
+            return random.Next(min, max);
+        }
+
+        // Generate a random string with a given size  
+        public string RandomString(int size, bool lowerCase)
+        {
+            StringBuilder builder = new StringBuilder();
+            Random random = new Random();
+            char ch;
+            for (int i = 0; i < size; i++)
+            {
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                builder.Append(ch);
+            }
+            if (lowerCase)
+                return builder.ToString().ToLower();
+            return builder.ToString();
+        }
+
+        // Generate a random password  
+        public string RandomPassword()
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(RandomString(4, true));
+            builder.Append(RandomNumber(1000, 9999));
+            builder.Append(RandomString(2, false));
+            return builder.ToString();
+        }
+
+        private string Encryptdata(string password)
+        {
+            string strmsg = string.Empty;
+            byte[] encode = new byte[password.Length];
+            encode = Encoding.UTF8.GetBytes(password);
+            strmsg = Convert.ToBase64String(encode);
+            return strmsg;
+        }
+
+        private string Decryptdata(string encryptpwd)
+        {
+            string decryptpwd = string.Empty;
+            UTF8Encoding encodepwd = new UTF8Encoding();
+            Decoder Decode = encodepwd.GetDecoder();
+            byte[] todecode_byte = Convert.FromBase64String(encryptpwd);
+            int charCount = Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
+            char[] decoded_char = new char[charCount];
+            Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
+            decryptpwd = new String(decoded_char);
+            return decryptpwd;
         }
 
         public string CheckLogin(string Username, string Password)
@@ -133,6 +189,161 @@ namespace SmartSocietyAPI
 
             DC.tblFlatHolders.InsertOnSubmit(FlatHolderObj);
             DC.SubmitChanges();
+            return true;
+        }
+
+        public object AddAssetType(string AssetTypeName)
+        {
+            var DC = new DataClassesDataContext();
+            tblAssetType AssetTypeObj = new tblAssetType();
+            AssetTypeObj.AssetTypeName = AssetTypeName;
+
+            DC.tblAssetTypes.InsertOnSubmit(AssetTypeObj);
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object EditAssetType(int AssetTypeID, string AssetTypeName)
+        {
+            var DC = new DataClassesDataContext();
+            var AssetTypeObj = (from ob in DC.tblAssetTypes
+                                where ob.AssetTypeID == AssetTypeID
+                                select ob).Single();
+            AssetTypeObj.AssetTypeName = AssetTypeName;
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object AddAsset(string AssetName, int AssetTypeID, string Image, string InvoiceDoc, int AssetValue, string PurchasedOn, string Status)
+        {
+            var DC = new DataClassesDataContext();
+            tblAsset AssetObj = new tblAsset();
+
+            AssetObj.AssetName = AssetName;
+            AssetObj.AssetTypeID = AssetTypeID;
+            AssetObj.Image = Image;
+            AssetObj.InvoiceDoc = InvoiceDoc;
+            AssetObj.AssetValue = AssetValue;
+            AssetObj.PurchasedOn = Convert.ToDateTime(PurchasedOn);
+            AssetObj.Status = Status;
+            AssetObj.IsActive = true;
+
+            DC.tblAssets.InsertOnSubmit(AssetObj);
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object EditAsset(int AssetID, string AssetName, int AssetTypeID, string Image, string InvoiceDoc, int AssetValue, string PurchasedOn, string Status, bool IsActive)
+        {
+            var DC = new DataClassesDataContext();
+            tblAsset AssetObj = (from ob in DC.tblAssets
+                                 where ob.AssetID==AssetID
+                                 select ob).Single();
+
+            AssetObj.AssetName = AssetName;
+            AssetObj.AssetTypeID = AssetTypeID;
+            AssetObj.Image = Image;
+            AssetObj.InvoiceDoc = InvoiceDoc;
+            AssetObj.AssetValue = AssetValue;
+            AssetObj.PurchasedOn = Convert.ToDateTime(PurchasedOn);
+            AssetObj.Status = Status;
+            AssetObj.IsActive = IsActive;
+            
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object AddStaffMember(string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, string CreatedBy)
+        {
+            var DC = new DataClassesDataContext();
+            tblStaffMember StaffObj = new tblStaffMember();
+            tblLogin returningObj = new tblLogin();
+            int SGFlag = 0;
+
+            StaffObj.MemberName = Name;
+            StaffObj.MemberType = MemberType;
+            StaffObj.DOB = Convert.ToDateTime(DOB);
+            StaffObj.ContactNo1 = Contact1;
+            StaffObj.ContactNo2 = Contact2;
+            StaffObj.Image = Image;
+            StaffObj.Address = Address;
+            StaffObj.DOJ = Convert.ToDateTime(DOJ);
+            StaffObj.DOL = Convert.ToDateTime(DOL);
+            StaffObj.CreatedBy = CreatedBy;
+
+            DC.tblStaffMembers.InsertOnSubmit(StaffObj);
+            
+            if(MemberType=="Security Guard")
+            {
+                int MemberID = (from ob in DC.tblStaffMembers
+                                select ob).OrderByDescending(ob => ob.MemberID).Single().MemberID;
+
+                tblLogin LoginObj = new tblLogin();
+                string loginName = (Name.Replace(' ', Convert.ToChar("")).Length >= 4) ? Name.Replace(' ', Convert.ToChar("")).Substring(0, 4) + MemberID : Name.Replace(' ', Convert.ToChar("")) + MemberID;
+                LoginObj.LoginName = loginName;
+                LoginObj.PhoneNo = Contact1;
+                LoginObj.Email = null;
+                LoginObj.Password = RandomPassword();
+                LoginObj.VerificationCode = null;
+                LoginObj.FlatID = -1;
+                LoginObj.MemberType = "Security Guard";
+                LoginObj.IsBlocked = false;
+
+                DC.tblLogins.InsertOnSubmit(LoginObj);
+
+                SGFlag = 1;
+                
+                returningObj.PhoneNo = Contact1;
+                returningObj.Password = LoginObj.Password;
+            }
+
+            DC.SubmitChanges();
+            if (SGFlag == 1)
+            {
+                return JsonConvert.SerializeObject(returningObj);
+            }
+            else
+            {
+                return true;
+            }            
+        }
+
+        public object EditStaffMember(int MemberID, string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, string CreatedBy, bool IsActive)
+        {
+            var DC = new DataClassesDataContext();
+            tblStaffMember StaffObj = (from ob in DC.tblStaffMembers
+                                       where ob.MemberID==MemberID
+                                       select ob).Single();
+
+            StaffObj.MemberName = Name;
+            StaffObj.MemberType = MemberType;
+            StaffObj.DOB = Convert.ToDateTime(DOB);
+            StaffObj.ContactNo1 = Contact1;
+            StaffObj.ContactNo2 = Contact2;
+            StaffObj.Image = Image;
+            StaffObj.Address = Address;
+            StaffObj.DOJ = Convert.ToDateTime(DOJ);
+            StaffObj.DOL = Convert.ToDateTime(DOL);
+            StaffObj.CreatedBy = CreatedBy;
+            StaffObj.IsActive = IsActive;
+            
+            if (MemberType == "Security Guard")
+            {
+                tblLogin LoginObj = (from ob in DC.tblLogins
+                                     where ob.MemberID==MemberID
+                                     select ob).Single();
+                LoginObj.PhoneNo = Contact1;
+                LoginObj.IsBlocked = !IsActive;
+
+                DC.tblLogins.InsertOnSubmit(LoginObj);
+            }
+
+            DC.SubmitChanges();
+
             return true;
         }
     }

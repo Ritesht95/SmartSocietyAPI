@@ -2,12 +2,6 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 21, 20.25" name="DataClasses">
   <DataContextMoniker Name="/DataClassesDataContext" />
   <nestedChildShapes>
-    <classShape Id="165a75e7-3c73-4635-869c-bbcd1e0a623c" absoluteBounds="0.75, 0.75, 2, 2.3478011067708335">
-      <DataClassMoniker Name="/DataClassesDataContext/tblVisitor" />
-      <nestedChildShapes>
-        <elementListCompartment Id="3b9aee7a-67ee-464a-8808-327fb44e2fc5" absoluteBounds="0.765, 1.21, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="643487d6-59cf-411d-8308-25bf922b1e72" absoluteBounds="3.75, 0.75, 2, 1.3862939453125">
       <DataClassMoniker Name="/DataClassesDataContext/tblAccount" />
       <nestedChildShapes>
@@ -204,6 +198,12 @@
       <DataClassMoniker Name="/DataClassesDataContext/tblTransaction" />
       <nestedChildShapes>
         <elementListCompartment Id="bfeb2589-4989-4101-b595-087f2db4e7fd" absoluteBounds="18.765, 1.21, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="18304216-1d6f-4ebf-a4f8-b5ff726b33f2" absoluteBounds="1.25, 1.625, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/DataClassesDataContext/tblVisitor" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7bdaa655-2232-43a1-b879-c4192ab6007a" absoluteBounds="1.2650000000000001, 2.085, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

@@ -39,6 +39,8 @@ namespace SmartSocietyAPI
             }
         }
 
+        /* Login & Registration */
+
         public string CheckLogin(string Username, string Password)
         {
             var DC = new DataClassesDataContext();
@@ -105,7 +107,11 @@ namespace SmartSocietyAPI
                 return "False";
             }
         }
-        
+
+        /* Login & Registration */
+
+        /* Society Setup */
+
         public object SetResident(string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID)
         {
             var DC = new DataClassesDataContext();
@@ -149,5 +155,60 @@ namespace SmartSocietyAPI
             DC.SubmitChanges();
             return true;
         }
+
+        /* Society Setup */
+
+        /* Gatekeeping */
+
+        object GateCheckIn(string VisitorName, string FlatID, string InTime, string OutTime, string Purpose, string VehicleNo, string MobileNo)
+        {
+            var DC = new DataClassesDataContext();
+            tblVisitor VisitorObj = new tblVisitor();
+            VisitorObj.VisitorName = VisitorName;
+            VisitorObj.FlatID = FlatID;
+            VisitorObj.InTime = DateTime.Now;
+            VisitorObj.OutTime = null;
+            VisitorObj.Purpose = Purpose;
+            VisitorObj.VehicleNumber = (VehicleNo!="0")?VehicleNo:null;
+            VisitorObj.MobileNo = MobileNo;
+
+            DC.tblVisitors.InsertOnSubmit(VisitorObj);
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        object GateCheckOut(int VisitorID)
+        {
+            var DC = new DataClassesDataContext();
+            var VisitorObj = (from ob in DC.tblVisitors
+                              where ob.VisitorID == VisitorID
+                              select ob).Single();
+            VisitorObj.OutTime = DateTime.Now;
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        object ViewGateKeeping(string FromDate = "0", string ToDate = "0")
+        {
+            var DC = new DataClassesDataContext();
+            IQueryable<tblVisitor> VisitorData;
+            if (FromDate =="0" && ToDate=="0")
+            {
+                VisitorData = (from ob in DC.tblVisitors
+                               select ob);
+            }
+            else
+            {
+                VisitorData = (from ob in DC.tblVisitors
+                               where ob.InTime>= Convert.ToDateTime(FromDate) && ob.InTime<=Convert.ToDateTime(ToDate)
+                               select ob);
+            }
+
+            return JsonConvert.SerializeObject(VisitorData);            
+        }
+
+        /* Gatekeeping */
     }
 }

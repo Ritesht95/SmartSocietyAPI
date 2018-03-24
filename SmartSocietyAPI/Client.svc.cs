@@ -160,7 +160,7 @@ namespace SmartSocietyAPI
 
         /* Gatekeeping */
 
-        object GateCheckIn(string VisitorName, string FlatID, string InTime, string OutTime, string Purpose, string VehicleNo, string MobileNo)
+        public object GateCheckIn(string VisitorName, string FlatID, string InTime, string OutTime, string Purpose, string VehicleNo, string MobileNo)
         {
             var DC = new DataClassesDataContext();
             tblVisitor VisitorObj = new tblVisitor();
@@ -178,7 +178,7 @@ namespace SmartSocietyAPI
             return true;
         }
 
-        object GateCheckOut(int VisitorID)
+        public object GateCheckOut(int VisitorID)
         {
             var DC = new DataClassesDataContext();
             var VisitorObj = (from ob in DC.tblVisitors
@@ -190,7 +190,7 @@ namespace SmartSocietyAPI
             return true;
         }
 
-        object ViewGateKeeping(string FromDate = "0", string ToDate = "0")
+        public object ViewGateKeeping(string FromDate = "0", string ToDate = "0")
         {
             var DC = new DataClassesDataContext();
             IQueryable<tblVisitor> VisitorData;

@@ -1,1 +1,1 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="SmartSocietyAPI.General" CodeBehind="Client.svc.cs" %>
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="SmartSocietyAPI.Client" CodeBehind="Client.svc.cs" %>

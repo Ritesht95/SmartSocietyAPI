@@ -11,7 +11,8 @@ namespace SmartSocietyAPI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            SmartSocietyAPI.General ServiceObject = new SmartSocietyAPI.General();            
+            SmartSocietyAPI.Admin ServiceObject = new SmartSocietyAPI.Admin();
+            Response.Write(ServiceObject.GetSocietyInformation());
         }
     }
 }

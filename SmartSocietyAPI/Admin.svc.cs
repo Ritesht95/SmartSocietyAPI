@@ -99,7 +99,7 @@ namespace SmartSocietyAPI
         {
             var DC = new DataClassesDataContext();
             var ObjLogin = (from ob in DC.tblAdminLogins
-                            where ob.AdminLoginName == Username && ob.Password == Password 
+                            where ob.AdminLoginName == Username && ob.Password == Encryptdata(Password)
                             && ob.IsBlocked==false
                             select ob);
             if (ObjLogin.Count() == 1)
@@ -145,7 +145,7 @@ namespace SmartSocietyAPI
             if (ObjReset.Count() == 1)
             {
                 var ObjUser = ObjReset.Single();
-                ObjUser.Password = Password;
+                ObjUser.Password = Encryptdata(Password);
                 DC.SubmitChanges();
                 return "True";
             }
@@ -153,6 +153,63 @@ namespace SmartSocietyAPI
             {
                 return "False";
             }
+        }
+
+        public object SetSocietyInformation(string Name, string Address, string PostalCode, string LogoImage, string ContactNo, string PresidentName, string Builder, string Email, string Fax, string RegistrationNo, string CampusArea, string SocietyType, string LatLong)
+        {
+            var DC = new DataClassesDataContext();
+            tblSociety SocietyInfoObj = new tblSociety();
+            SocietyInfoObj.Name = Name;
+            SocietyInfoObj.Address = Address;
+            SocietyInfoObj.PostalCode = PostalCode;
+            SocietyInfoObj.LogoImage = LogoImage;
+            SocietyInfoObj.ContactNo = ContactNo;
+            SocietyInfoObj.PresidentName = PresidentName;
+            SocietyInfoObj.Builder = Builder;
+            SocietyInfoObj.Email = Email;
+            SocietyInfoObj.Fax = Fax;
+            SocietyInfoObj.RegistrationNo = RegistrationNo;
+            SocietyInfoObj.CampusArea = CampusArea;
+            SocietyInfoObj.SocietyType = SocietyType;
+            SocietyInfoObj.LatLong = LatLong;
+
+            DC.tblSocieties.InsertOnSubmit(SocietyInfoObj);
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object EditSocietyInformation(string Name, string Address, string PostalCode, string LogoImage, string ContactNo, string PresidentName, string Builder, string Email, string Fax, string RegistrationNo, string CampusArea, string SocietyType, string LatLong)
+        {
+            var DC = new DataClassesDataContext();
+            tblSociety SocietyInfoObj = (from ob in DC.tblSocieties
+                                         select ob).Single();
+            SocietyInfoObj.Name = Name;
+            SocietyInfoObj.Address = Address;
+            SocietyInfoObj.PostalCode = PostalCode;
+            SocietyInfoObj.LogoImage = LogoImage;
+            SocietyInfoObj.ContactNo = ContactNo;
+            SocietyInfoObj.PresidentName = PresidentName;
+            SocietyInfoObj.Builder = Builder;
+            SocietyInfoObj.Email = Email;
+            SocietyInfoObj.Fax = Fax;
+            SocietyInfoObj.RegistrationNo = RegistrationNo;
+            SocietyInfoObj.CampusArea = CampusArea;
+            SocietyInfoObj.SocietyType = SocietyType;
+            SocietyInfoObj.LatLong = LatLong;
+
+            DC.tblSocieties.InsertOnSubmit(SocietyInfoObj);
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object GetSocietyInformation()
+        {
+            var DC = new DataClassesDataContext();
+            var SocietyInfoObj = (from ob in DC.tblSocieties
+                                  select ob).Single();
+            return JsonConvert.SerializeObject(SocietyInfoObj);
         }
 
         public object SetFlatHolder(string StartDate, string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive)

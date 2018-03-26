@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="dbSociety" Class="DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=RITESH-PC\SQLEXPRESS;Initial Catalog=dbSociety;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="dbSocietyConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.tblVisitors" Member="tblVisitors">
-    <Type Name="tblVisitor">
-      <Column Name="VisitorID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="VisitorName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="FlatID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="InTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="OutTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="Purpose" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="VehicleNumber" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
-      <Column Name="MobileNo" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.tblAccounts" Member="tblAccounts">
     <Type Name="tblAccount">
       <Column Name="AccountID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="FlatID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Balance" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tblVisitors" Member="tblVisitors">
+    <Type Name="tblVisitor">
+      <Column Name="VisitorID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="VisitorName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="FlatID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="InTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="OutTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Purpose" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="VehicleNumber" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="MobileNo" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.tblAdminLogin" Member="tblAdminLogins">
@@ -324,7 +324,7 @@
       <Column Name="Email" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Fax" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
       <Column Name="RegistrationNo" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="CampusArea" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CampusArea" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="SocietyType" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="LatLong" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </Type>

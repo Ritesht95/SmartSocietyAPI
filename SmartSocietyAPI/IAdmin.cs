@@ -20,6 +20,18 @@ namespace SmartSocietyAPI
         string ResetPassword(string Username, string Password);
 
         [OperationContract]
+        [WebGet(UriTemplate = "SetSocietyInformation/{Name, Address, PostalCode, LogoImage, ContactNo, PresidentName, Builder, Email, Fax, RegistrationNo, CampusArea, SocietyType, LatLong}", ResponseFormat = WebMessageFormat.Json)]
+        object SetSocietyInformation(string Name, string Address, string PostalCode, string LogoImage, string ContactNo, string PresidentName, string Builder, string Email, string Fax, string RegistrationNo, string CampusArea, string SocietyType, string LatLong);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "EditSocietyInformation/{Name, Address, PostalCode, LogoImage, ContactNo, PresidentName, Builder, Email, Fax, RegistrationNo, CampusArea, SocietyType, LatLong}", ResponseFormat = WebMessageFormat.Json)]
+        object EditSocietyInformation(string Name, string Address, string PostalCode, string LogoImage, string ContactNo, string PresidentName, string Builder, string Email, string Fax, string RegistrationNo, string CampusArea, string SocietyType, string LatLong);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GetSocietyInformation/", ResponseFormat = WebMessageFormat.Json)]
+        object GetSocietyInformation();
+
+        [OperationContract]
         [WebGet(UriTemplate = "SetFlatHolder/{StartDate,Name,DOB,FlatID,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID,IsActive}", ResponseFormat = WebMessageFormat.Json)]
         object SetFlatHolder(string StartDate, string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive);
 

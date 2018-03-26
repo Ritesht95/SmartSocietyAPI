@@ -30,12 +30,12 @@ namespace SmartSocietyAPI
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InserttblVisitor(tblVisitor instance);
-    partial void UpdatetblVisitor(tblVisitor instance);
-    partial void DeletetblVisitor(tblVisitor instance);
     partial void InserttblAccount(tblAccount instance);
     partial void UpdatetblAccount(tblAccount instance);
     partial void DeletetblAccount(tblAccount instance);
+    partial void InserttblVisitor(tblVisitor instance);
+    partial void UpdatetblVisitor(tblVisitor instance);
+    partial void DeletetblVisitor(tblVisitor instance);
     partial void InserttblAlbum(tblAlbum instance);
     partial void UpdatetblAlbum(tblAlbum instance);
     partial void DeletetblAlbum(tblAlbum instance);
@@ -158,19 +158,19 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<tblVisitor> tblVisitors
-		{
-			get
-			{
-				return this.GetTable<tblVisitor>();
-			}
-		}
-		
 		public System.Data.Linq.Table<tblAccount> tblAccounts
 		{
 			get
 			{
 				return this.GetTable<tblAccount>();
+			}
+		}
+		
+		public System.Data.Linq.Table<tblVisitor> tblVisitors
+		{
+			get
+			{
+				return this.GetTable<tblVisitor>();
 			}
 		}
 		
@@ -431,6 +431,116 @@ namespace SmartSocietyAPI
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblAccounts")]
+	public partial class tblAccount : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _AccountID;
+		
+		private int _FlatID;
+		
+		private decimal _Balance;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnAccountIDChanging(int value);
+    partial void OnAccountIDChanged();
+    partial void OnFlatIDChanging(int value);
+    partial void OnFlatIDChanged();
+    partial void OnBalanceChanging(decimal value);
+    partial void OnBalanceChanged();
+    #endregion
+		
+		public tblAccount()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int AccountID
+		{
+			get
+			{
+				return this._AccountID;
+			}
+			set
+			{
+				if ((this._AccountID != value))
+				{
+					this.OnAccountIDChanging(value);
+					this.SendPropertyChanging();
+					this._AccountID = value;
+					this.SendPropertyChanged("AccountID");
+					this.OnAccountIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int NOT NULL")]
+		public int FlatID
+		{
+			get
+			{
+				return this._FlatID;
+			}
+			set
+			{
+				if ((this._FlatID != value))
+				{
+					this.OnFlatIDChanging(value);
+					this.SendPropertyChanging();
+					this._FlatID = value;
+					this.SendPropertyChanged("FlatID");
+					this.OnFlatIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Balance", DbType="Decimal(18,0) NOT NULL")]
+		public decimal Balance
+		{
+			get
+			{
+				return this._Balance;
+			}
+			set
+			{
+				if ((this._Balance != value))
+				{
+					this.OnBalanceChanging(value);
+					this.SendPropertyChanging();
+					this._Balance = value;
+					this.SendPropertyChanged("Balance");
+					this.OnBalanceChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblVisitors")]
 	public partial class tblVisitor : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -441,7 +551,7 @@ namespace SmartSocietyAPI
 		
 		private string _VisitorName;
 		
-		private int _FlatID;
+		private string _FlatID;
 		
 		private System.DateTime _InTime;
 		
@@ -461,7 +571,7 @@ namespace SmartSocietyAPI
     partial void OnVisitorIDChanged();
     partial void OnVisitorNameChanging(string value);
     partial void OnVisitorNameChanged();
-    partial void OnFlatIDChanging(int value);
+    partial void OnFlatIDChanging(string value);
     partial void OnFlatIDChanged();
     partial void OnInTimeChanging(System.DateTime value);
     partial void OnInTimeChanged();
@@ -520,8 +630,8 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int NOT NULL")]
-		public int FlatID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatID
 		{
 			get
 			{
@@ -636,116 +746,6 @@ namespace SmartSocietyAPI
 					this._MobileNo = value;
 					this.SendPropertyChanged("MobileNo");
 					this.OnMobileNoChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblAccounts")]
-	public partial class tblAccount : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _AccountID;
-		
-		private int _FlatID;
-		
-		private decimal _Balance;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnAccountIDChanging(int value);
-    partial void OnAccountIDChanged();
-    partial void OnFlatIDChanging(int value);
-    partial void OnFlatIDChanged();
-    partial void OnBalanceChanging(decimal value);
-    partial void OnBalanceChanged();
-    #endregion
-		
-		public tblAccount()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int AccountID
-		{
-			get
-			{
-				return this._AccountID;
-			}
-			set
-			{
-				if ((this._AccountID != value))
-				{
-					this.OnAccountIDChanging(value);
-					this.SendPropertyChanging();
-					this._AccountID = value;
-					this.SendPropertyChanged("AccountID");
-					this.OnAccountIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int NOT NULL")]
-		public int FlatID
-		{
-			get
-			{
-				return this._FlatID;
-			}
-			set
-			{
-				if ((this._FlatID != value))
-				{
-					this.OnFlatIDChanging(value);
-					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Balance", DbType="Decimal(18,0) NOT NULL")]
-		public decimal Balance
-		{
-			get
-			{
-				return this._Balance;
-			}
-			set
-			{
-				if ((this._Balance != value))
-				{
-					this.OnBalanceChanging(value);
-					this.SendPropertyChanging();
-					this._Balance = value;
-					this.SendPropertyChanged("Balance");
-					this.OnBalanceChanged();
 				}
 			}
 		}
@@ -6086,7 +6086,7 @@ namespace SmartSocietyAPI
 		
 		private string _RegistrationNo;
 		
-		private int _CampusArea;
+		private string _CampusArea;
 		
 		private string _SocietyType;
 		
@@ -6256,8 +6256,8 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CampusArea", DbType="Int NOT NULL")]
-		public int CampusArea
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CampusArea", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string CampusArea
 		{
 			get
 			{

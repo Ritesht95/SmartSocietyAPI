@@ -6,17 +6,23 @@ namespace SmartSocietyAPI
     [ServiceContract]
     public interface IClient
     {
+        /* Login & Registration */
+
         [OperationContract]
         [WebGet(UriTemplate = "CheckLogin/{Username,Password}", ResponseFormat = WebMessageFormat.Json)]
-        string CheckLogin(string Username, string Password);
+        object CheckLogin(string Username, string Password);
 
         [OperationContract]
         [WebGet(UriTemplate = "ForgotPassword/{Username}", ResponseFormat = WebMessageFormat.Json)]
-        string ForgotPassword(string Username);
+        object ForgotPassword(string Username);
 
         [OperationContract]
         [WebGet(UriTemplate = "ResetPassword/{Username,VerificationCode,Password}", ResponseFormat = WebMessageFormat.Json)]
-        string ResetPassword(string Username, string VerificationCode, string Password);
+        object ResetPassword(string Username, string VerificationCode, string Password);
+
+        /* Login & Registration */
+
+        /* Society Setup */
 
         [OperationContract]
         [WebGet(UriTemplate = "SetResident/{Name,DOB,FlatID,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID}", ResponseFormat = WebMessageFormat.Json)]
@@ -25,5 +31,22 @@ namespace SmartSocietyAPI
         [OperationContract]
         [WebGet(UriTemplate = "EditResident/{ResidentID,Name,DOB,FlatID,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID,IsActive}", ResponseFormat = WebMessageFormat.Json)]
         object EditResident(int ResidentID, string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive);
+
+        /* Society Setup */
+
+        /* Gatekeeping */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GateCheckIn/{VisitorName,FlatID,Purpose,VehicleNo,MobileNo}", ResponseFormat = WebMessageFormat.Json)]
+        object GateCheckIn(string VisitorName, string FlatID, string Purpose, string VehicleNo, string MobileNo);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GateCheckOut/{VisitorID}", ResponseFormat = WebMessageFormat.Json)]
+        object GateCheckOut(int VisitorID);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "ViewGateKeeping/", ResponseFormat = WebMessageFormat.Json)]
+        object ViewGateKeeping(string FromDate="0", string ToDate="0");
+        /* Gatekeeping */
     }
 }

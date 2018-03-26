@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 namespace SmartSocietyAPI
 {
@@ -39,12 +40,37 @@ namespace SmartSocietyAPI
             }
         }
 
-        public string CheckLogin(string Username, string Password)
+        private string Encryptdata(string password)
+        {
+            string strmsg = string.Empty;
+            byte[] encode = new byte[password.Length];
+            encode = Encoding.UTF8.GetBytes(password);
+            strmsg = Convert.ToBase64String(encode);
+            return strmsg;
+        }
+
+        private string Decryptdata(string encryptpwd)
+        {
+            string decryptpwd = string.Empty;
+            UTF8Encoding encodepwd = new UTF8Encoding();
+            Decoder Decode = encodepwd.GetDecoder();
+            byte[] todecode_byte = Convert.FromBase64String(encryptpwd);
+            int charCount = Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
+            char[] decoded_char = new char[charCount];
+            Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
+            decryptpwd = new String(decoded_char);
+            return decryptpwd;
+        }
+
+        /* Login & Registration */
+
+        public object CheckLogin(string Username, string Password)
         {
             var DC = new DataClassesDataContext();
-            var ObjLogin = (from ob in DC.tblLogins
-                            where (ob.PhoneNo == Username || ob.Email == Username)
-                            && ob.Password == Password
+            var enpass = Encryptdata(Password);
+            IQueryable<tblLogin> ObjLogin = (from ob in DC.tblLogins
+                            where (ob.Email == Username)
+                            && ob.Password== enpass
                             && ob.IsBlocked == false
                             select ob);
             if (ObjLogin.Count() == 1)
@@ -53,11 +79,11 @@ namespace SmartSocietyAPI
             }
             else
             {
-                return "False";
+                return false;
             }
         }
 
-        public string ForgotPassword(string Username)
+        public object ForgotPassword(string Username)
         {
             var DC = new DataClassesDataContext();
             var ObjForgotPass = (from ob in DC.tblLogins
@@ -72,7 +98,8 @@ namespace SmartSocietyAPI
                 if (Mail(ObjData.Email, "Smart Society: Reset Password", "Verification Code: " + Code + "<br>Regards,<br>Smart Society(Society Management System)"))
                 {
                     ObjData.VerificationCode = Code;
-                    return "True";
+                    DC.SubmitChanges();
+                    return true;
                 }
                 else
                 {
@@ -81,11 +108,11 @@ namespace SmartSocietyAPI
             }
             else
             {
-                return "False";
+                return false;
             }
         }
 
-        public string ResetPassword(string Username, string VerificationCode, string Password)
+        public object ResetPassword(string Username, string VerificationCode, string Password)
         {
             var DC = new DataClassesDataContext();
             var ObjReset = (from ob in DC.tblLogins
@@ -96,16 +123,20 @@ namespace SmartSocietyAPI
             if (ObjReset.Count() == 1)
             {
                 var ObjUser = ObjReset.Single();
-                ObjUser.Password = Password;
+                ObjUser.Password = Encryptdata(Password);
                 DC.SubmitChanges();
-                return "True";
+                return true;
             }
             else
             {
-                return "False";
+                return false;
             }
         }
-        
+
+        /* Login & Registration */
+
+        /* Society Setup */
+
         public object SetResident(string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID)
         {
             var DC = new DataClassesDataContext();
@@ -149,5 +180,60 @@ namespace SmartSocietyAPI
             DC.SubmitChanges();
             return true;
         }
+
+        /* Society Setup */
+
+        /* Gatekeeping */
+
+        public object GateCheckIn(string VisitorName, string FlatID, string Purpose, string VehicleNo, string MobileNo)
+        {
+            var DC = new DataClassesDataContext();
+            tblVisitor VisitorObj = new tblVisitor();
+            VisitorObj.VisitorName = VisitorName;
+            VisitorObj.FlatID = FlatID;
+            VisitorObj.InTime = DateTime.Now;
+            VisitorObj.OutTime = null;
+            VisitorObj.Purpose = Purpose;
+            VisitorObj.VehicleNumber = (VehicleNo!="0")?VehicleNo:null;
+            VisitorObj.MobileNo = MobileNo;
+
+            DC.tblVisitors.InsertOnSubmit(VisitorObj);
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object GateCheckOut(int VisitorID)
+        {
+            var DC = new DataClassesDataContext();
+            var VisitorObj = (from ob in DC.tblVisitors
+                              where ob.VisitorID == VisitorID
+                              select ob).Single();
+            VisitorObj.OutTime = DateTime.Now;
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object ViewGateKeeping(string FromDate = "0", string ToDate = "0")
+        {
+            var DC = new DataClassesDataContext();
+            IQueryable<tblVisitor> VisitorData;
+            if (FromDate =="0" && ToDate=="0")
+            {
+                VisitorData = (from ob in DC.tblVisitors
+                               select ob);
+            }
+            else
+            {
+                VisitorData = (from ob in DC.tblVisitors
+                               where ob.InTime>= Convert.ToDateTime(FromDate) && ob.InTime<=Convert.ToDateTime(ToDate)
+                               select ob);
+            }
+
+            return JsonConvert.SerializeObject(VisitorData);            
+        }
+
+        /* Gatekeeping */
     }
 }

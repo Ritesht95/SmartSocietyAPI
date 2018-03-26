@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 namespace SmartSocietyAPI
 {
@@ -39,14 +40,37 @@ namespace SmartSocietyAPI
             }
         }
 
+        private string Encryptdata(string password)
+        {
+            string strmsg = string.Empty;
+            byte[] encode = new byte[password.Length];
+            encode = Encoding.UTF8.GetBytes(password);
+            strmsg = Convert.ToBase64String(encode);
+            return strmsg;
+        }
+
+        private string Decryptdata(string encryptpwd)
+        {
+            string decryptpwd = string.Empty;
+            UTF8Encoding encodepwd = new UTF8Encoding();
+            Decoder Decode = encodepwd.GetDecoder();
+            byte[] todecode_byte = Convert.FromBase64String(encryptpwd);
+            int charCount = Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
+            char[] decoded_char = new char[charCount];
+            Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
+            decryptpwd = new String(decoded_char);
+            return decryptpwd;
+        }
+
         /* Login & Registration */
 
-        public string CheckLogin(string Username, string Password)
+        public object CheckLogin(string Username, string Password)
         {
             var DC = new DataClassesDataContext();
-            var ObjLogin = (from ob in DC.tblLogins
-                            where (ob.PhoneNo == Username || ob.Email == Username)
-                            && ob.Password == Password
+            var enpass = Encryptdata(Password);
+            IQueryable<tblLogin> ObjLogin = (from ob in DC.tblLogins
+                            where (ob.Email == Username)
+                            && ob.Password== enpass
                             && ob.IsBlocked == false
                             select ob);
             if (ObjLogin.Count() == 1)
@@ -55,11 +79,11 @@ namespace SmartSocietyAPI
             }
             else
             {
-                return "False";
+                return false;
             }
         }
 
-        public string ForgotPassword(string Username)
+        public object ForgotPassword(string Username)
         {
             var DC = new DataClassesDataContext();
             var ObjForgotPass = (from ob in DC.tblLogins
@@ -74,7 +98,8 @@ namespace SmartSocietyAPI
                 if (Mail(ObjData.Email, "Smart Society: Reset Password", "Verification Code: " + Code + "<br>Regards,<br>Smart Society(Society Management System)"))
                 {
                     ObjData.VerificationCode = Code;
-                    return "True";
+                    DC.SubmitChanges();
+                    return true;
                 }
                 else
                 {
@@ -83,11 +108,11 @@ namespace SmartSocietyAPI
             }
             else
             {
-                return "False";
+                return false;
             }
         }
 
-        public string ResetPassword(string Username, string VerificationCode, string Password)
+        public object ResetPassword(string Username, string VerificationCode, string Password)
         {
             var DC = new DataClassesDataContext();
             var ObjReset = (from ob in DC.tblLogins
@@ -98,13 +123,13 @@ namespace SmartSocietyAPI
             if (ObjReset.Count() == 1)
             {
                 var ObjUser = ObjReset.Single();
-                ObjUser.Password = Password;
+                ObjUser.Password = Encryptdata(Password);
                 DC.SubmitChanges();
-                return "True";
+                return true;
             }
             else
             {
-                return "False";
+                return false;
             }
         }
 
@@ -160,7 +185,7 @@ namespace SmartSocietyAPI
 
         /* Gatekeeping */
 
-        public object GateCheckIn(string VisitorName, string FlatID, string InTime, string OutTime, string Purpose, string VehicleNo, string MobileNo)
+        public object GateCheckIn(string VisitorName, string FlatID, string Purpose, string VehicleNo, string MobileNo)
         {
             var DC = new DataClassesDataContext();
             tblVisitor VisitorObj = new tblVisitor();

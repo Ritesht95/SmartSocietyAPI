@@ -10,15 +10,15 @@ namespace SmartSocietyAPI
 
         [OperationContract]
         [WebGet(UriTemplate = "CheckLogin/{Username,Password}", ResponseFormat = WebMessageFormat.Json)]
-        string CheckLogin(string Username, string Password);
+        object CheckLogin(string Username, string Password);
 
         [OperationContract]
         [WebGet(UriTemplate = "ForgotPassword/{Username}", ResponseFormat = WebMessageFormat.Json)]
-        string ForgotPassword(string Username);
+        object ForgotPassword(string Username);
 
         [OperationContract]
         [WebGet(UriTemplate = "ResetPassword/{Username,VerificationCode,Password}", ResponseFormat = WebMessageFormat.Json)]
-        string ResetPassword(string Username, string VerificationCode, string Password);
+        object ResetPassword(string Username, string VerificationCode, string Password);
 
         /* Login & Registration */
 
@@ -37,8 +37,8 @@ namespace SmartSocietyAPI
         /* Gatekeeping */
 
         [OperationContract]
-        [WebGet(UriTemplate = "GateCheckIn/{VisitorName,FlatID,InTime,OutTime,Purpose,VehicleNo,MobileNo}", ResponseFormat = WebMessageFormat.Json)]
-        object GateCheckIn(string VisitorName, string FlatID, string InTime, string OutTime, string Purpose, string VehicleNo, string MobileNo);
+        [WebGet(UriTemplate = "GateCheckIn/{VisitorName,FlatID,Purpose,VehicleNo,MobileNo}", ResponseFormat = WebMessageFormat.Json)]
+        object GateCheckIn(string VisitorName, string FlatID, string Purpose, string VehicleNo, string MobileNo);
 
         [OperationContract]
         [WebGet(UriTemplate = "GateCheckOut/{VisitorID}", ResponseFormat = WebMessageFormat.Json)]

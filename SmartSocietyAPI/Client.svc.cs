@@ -137,13 +137,13 @@ namespace SmartSocietyAPI
 
         /* Society Setup */
 
-        public object SetResident(string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID)
+        public object SetResident(string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID)
         {
             var DC = new DataClassesDataContext();
             tblResident ResidentObj = new tblResident();
             ResidentObj.ResidentName = Name;
             ResidentObj.DOB = Convert.ToDateTime(DOB).Date;
-            ResidentObj.FlatID = FlatID;
+            ResidentObj.FlatNo = FlatNo;
             ResidentObj.Occupation = Occupation;
             ResidentObj.ContactNo1 = Contact1;
             ResidentObj.ContactNo2 = Contact2;
@@ -159,7 +159,7 @@ namespace SmartSocietyAPI
             return true;
         }
 
-        public object EditResident(int ResidentID, string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive)
+        public object EditResident(int ResidentID, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive)
         {
             var DC = new DataClassesDataContext();
             var ResidentObj = (from ob in DC.tblResidents
@@ -167,7 +167,7 @@ namespace SmartSocietyAPI
                                select ob).Single();
             ResidentObj.ResidentName = Name;
             ResidentObj.DOB = Convert.ToDateTime(DOB).Date;
-            ResidentObj.FlatID = FlatID;
+            ResidentObj.FlatNo = FlatNo;
             ResidentObj.Occupation = Occupation;
             ResidentObj.ContactNo1 = Contact1;
             ResidentObj.ContactNo2 = Contact2;
@@ -185,12 +185,12 @@ namespace SmartSocietyAPI
 
         /* Gatekeeping */
 
-        public object GateCheckIn(string VisitorName, string FlatID, string Purpose, string VehicleNo, string MobileNo)
+        public object GateCheckIn(string VisitorName, string FlatNo, string Purpose, string VehicleNo, string MobileNo)
         {
             var DC = new DataClassesDataContext();
             tblVisitor VisitorObj = new tblVisitor();
             VisitorObj.VisitorName = VisitorName;
-            VisitorObj.FlatID = FlatID;
+            VisitorObj.FlatNo = FlatNo;
             VisitorObj.InTime = DateTime.Now;
             VisitorObj.OutTime = null;
             VisitorObj.Purpose = Purpose;

@@ -54,9 +54,6 @@ namespace SmartSocietyAPI
     partial void InserttblBooking(tblBooking instance);
     partial void UpdatetblBooking(tblBooking instance);
     partial void DeletetblBooking(tblBooking instance);
-    partial void InserttblBuilding(tblBuilding instance);
-    partial void UpdatetblBuilding(tblBuilding instance);
-    partial void DeletetblBuilding(tblBuilding instance);
     partial void InserttblComplaint(tblComplaint instance);
     partial void UpdatetblComplaint(tblComplaint instance);
     partial void DeletetblComplaint(tblComplaint instance);
@@ -81,9 +78,6 @@ namespace SmartSocietyAPI
     partial void InserttblFlatHolder(tblFlatHolder instance);
     partial void UpdatetblFlatHolder(tblFlatHolder instance);
     partial void DeletetblFlatHolder(tblFlatHolder instance);
-    partial void InserttblFlatType(tblFlatType instance);
-    partial void UpdatetblFlatType(tblFlatType instance);
-    partial void DeletetblFlatType(tblFlatType instance);
     partial void InserttblImage(tblImage instance);
     partial void UpdatetblImage(tblImage instance);
     partial void DeletetblImage(tblImage instance);
@@ -230,14 +224,6 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		public System.Data.Linq.Table<tblBuilding> tblBuildings
-		{
-			get
-			{
-				return this.GetTable<tblBuilding>();
-			}
-		}
-		
 		public System.Data.Linq.Table<tblComplaint> tblComplaints
 		{
 			get
@@ -299,14 +285,6 @@ namespace SmartSocietyAPI
 			get
 			{
 				return this.GetTable<tblFlatHolder>();
-			}
-		}
-		
-		public System.Data.Linq.Table<tblFlatType> tblFlatTypes
-		{
-			get
-			{
-				return this.GetTable<tblFlatType>();
 			}
 		}
 		
@@ -439,7 +417,7 @@ namespace SmartSocietyAPI
 		
 		private int _AccountID;
 		
-		private int _FlatID;
+		private string _FlatNo;
 		
 		private decimal _Balance;
 		
@@ -449,8 +427,8 @@ namespace SmartSocietyAPI
     partial void OnCreated();
     partial void OnAccountIDChanging(int value);
     partial void OnAccountIDChanged();
-    partial void OnFlatIDChanging(int value);
-    partial void OnFlatIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
     partial void OnBalanceChanging(decimal value);
     partial void OnBalanceChanged();
     #endregion
@@ -480,22 +458,22 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int NOT NULL")]
-		public int FlatID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
 		{
 			get
 			{
-				return this._FlatID;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._FlatID != value))
+				if ((this._FlatNo != value))
 				{
-					this.OnFlatIDChanging(value);
+					this.OnFlatNoChanging(value);
 					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}
@@ -551,7 +529,7 @@ namespace SmartSocietyAPI
 		
 		private string _VisitorName;
 		
-		private string _FlatID;
+		private string _FlatNo;
 		
 		private System.DateTime _InTime;
 		
@@ -571,8 +549,8 @@ namespace SmartSocietyAPI
     partial void OnVisitorIDChanged();
     partial void OnVisitorNameChanging(string value);
     partial void OnVisitorNameChanged();
-    partial void OnFlatIDChanging(string value);
-    partial void OnFlatIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
     partial void OnInTimeChanging(System.DateTime value);
     partial void OnInTimeChanged();
     partial void OnOutTimeChanging(System.Nullable<System.DateTime> value);
@@ -630,22 +608,22 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string FlatID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
 		{
 			get
 			{
-				return this._FlatID;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._FlatID != value))
+				if ((this._FlatNo != value))
 				{
-					this.OnFlatIDChanging(value);
+					this.OnFlatNoChanging(value);
 					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}
@@ -1838,7 +1816,7 @@ namespace SmartSocietyAPI
 		
 		private int _FacilityID;
 		
-		private int _FlatID;
+		private string _FlatNo;
 		
 		private System.DateTime _StartTime;
 		
@@ -1864,8 +1842,8 @@ namespace SmartSocietyAPI
     partial void OnBookingIDChanged();
     partial void OnFacilityIDChanging(int value);
     partial void OnFacilityIDChanged();
-    partial void OnFlatIDChanging(int value);
-    partial void OnFlatIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
     partial void OnStartTimeChanging(System.DateTime value);
     partial void OnStartTimeChanged();
     partial void OnEndTimeChanging(System.DateTime value);
@@ -1929,22 +1907,22 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int NOT NULL")]
-		public int FlatID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
 		{
 			get
 			{
-				return this._FlatID;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._FlatID != value))
+				if ((this._FlatNo != value))
 				{
-					this.OnFlatIDChanging(value);
+					this.OnFlatNoChanging(value);
 					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}
@@ -2130,92 +2108,6 @@ namespace SmartSocietyAPI
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblBuilding")]
-	public partial class tblBuilding : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _BuildingID;
-		
-		private string _BuildingName;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnBuildingIDChanging(int value);
-    partial void OnBuildingIDChanged();
-    partial void OnBuildingNameChanging(string value);
-    partial void OnBuildingNameChanged();
-    #endregion
-		
-		public tblBuilding()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int BuildingID
-		{
-			get
-			{
-				return this._BuildingID;
-			}
-			set
-			{
-				if ((this._BuildingID != value))
-				{
-					this.OnBuildingIDChanging(value);
-					this.SendPropertyChanging();
-					this._BuildingID = value;
-					this.SendPropertyChanged("BuildingID");
-					this.OnBuildingIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string BuildingName
-		{
-			get
-			{
-				return this._BuildingName;
-			}
-			set
-			{
-				if ((this._BuildingName != value))
-				{
-					this.OnBuildingNameChanging(value);
-					this.SendPropertyChanging();
-					this._BuildingName = value;
-					this.SendPropertyChanged("BuildingName");
-					this.OnBuildingNameChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblComplaints")]
 	public partial class tblComplaint : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2224,7 +2116,7 @@ namespace SmartSocietyAPI
 		
 		private int _ComplaintID;
 		
-		private System.Nullable<int> _FlatID;
+		private string _FlatNo;
 		
 		private string _ComplaintType;
 		
@@ -2232,9 +2124,9 @@ namespace SmartSocietyAPI
 		
 		private string _Description;
 		
-		private System.Nullable<byte> _Priority;
+		private byte _Priority;
 		
-		private System.Nullable<System.DateTime> _CreatedOn;
+		private System.DateTime _CreatedOn;
 		
 		private System.Nullable<int> _HandledBy;
 		
@@ -2242,7 +2134,7 @@ namespace SmartSocietyAPI
 		
 		private System.Nullable<System.DateTime> _RespondedOn;
 		
-		private System.Nullable<bool> _IsActive;
+		private bool _IsActive;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2250,17 +2142,17 @@ namespace SmartSocietyAPI
     partial void OnCreated();
     partial void OnComplaintIDChanging(int value);
     partial void OnComplaintIDChanged();
-    partial void OnFlatIDChanging(System.Nullable<int> value);
-    partial void OnFlatIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
     partial void OnComplaintTypeChanging(string value);
     partial void OnComplaintTypeChanged();
     partial void OnSubjectChanging(string value);
     partial void OnSubjectChanged();
     partial void OnDescriptionChanging(string value);
     partial void OnDescriptionChanged();
-    partial void OnPriorityChanging(System.Nullable<byte> value);
+    partial void OnPriorityChanging(byte value);
     partial void OnPriorityChanged();
-    partial void OnCreatedOnChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreatedOnChanging(System.DateTime value);
     partial void OnCreatedOnChanged();
     partial void OnHandledByChanging(System.Nullable<int> value);
     partial void OnHandledByChanged();
@@ -2268,7 +2160,7 @@ namespace SmartSocietyAPI
     partial void OnResponseChanged();
     partial void OnRespondedOnChanging(System.Nullable<System.DateTime> value);
     partial void OnRespondedOnChanged();
-    partial void OnIsActiveChanging(System.Nullable<bool> value);
+    partial void OnIsActiveChanging(bool value);
     partial void OnIsActiveChanged();
     #endregion
 		
@@ -2297,27 +2189,27 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int")]
-		public System.Nullable<int> FlatID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
 		{
 			get
 			{
-				return this._FlatID;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._FlatID != value))
+				if ((this._FlatNo != value))
 				{
-					this.OnFlatIDChanging(value);
+					this.OnFlatNoChanging(value);
 					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ComplaintType", DbType="VarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ComplaintType", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
 		public string ComplaintType
 		{
 			get
@@ -2337,7 +2229,7 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Subject", DbType="VarChar(100)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Subject", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
 		public string Subject
 		{
 			get
@@ -2357,7 +2249,7 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
 		public string Description
 		{
 			get
@@ -2377,8 +2269,8 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="TinyInt")]
-		public System.Nullable<byte> Priority
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="TinyInt NOT NULL")]
+		public byte Priority
 		{
 			get
 			{
@@ -2397,8 +2289,8 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime")]
-		public System.Nullable<System.DateTime> CreatedOn
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedOn
 		{
 			get
 			{
@@ -2477,8 +2369,8 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit")]
-		public System.Nullable<bool> IsActive
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
+		public bool IsActive
 		{
 			get
 			{
@@ -3266,13 +3158,7 @@ namespace SmartSocietyAPI
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private string _FlatID;
-		
-		private int _FlatTypeID;
-		
-		private int _FlatNo;
-		
-		private int _BuildingID;
+		private string _FlatNo;
 		
 		private bool _OnRent;
 		
@@ -3282,14 +3168,8 @@ namespace SmartSocietyAPI
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnFlatIDChanging(string value);
-    partial void OnFlatIDChanged();
-    partial void OnFlatTypeIDChanging(int value);
-    partial void OnFlatTypeIDChanged();
-    partial void OnFlatNoChanging(int value);
+    partial void OnFlatNoChanging(string value);
     partial void OnFlatNoChanged();
-    partial void OnBuildingIDChanging(int value);
-    partial void OnBuildingIDChanged();
     partial void OnOnRentChanging(bool value);
     partial void OnOnRentChanged();
     partial void OnTenamentNoChanging(string value);
@@ -3301,48 +3181,8 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string FlatID
-		{
-			get
-			{
-				return this._FlatID;
-			}
-			set
-			{
-				if ((this._FlatID != value))
-				{
-					this.OnFlatIDChanging(value);
-					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatTypeID", DbType="Int NOT NULL")]
-		public int FlatTypeID
-		{
-			get
-			{
-				return this._FlatTypeID;
-			}
-			set
-			{
-				if ((this._FlatTypeID != value))
-				{
-					this.OnFlatTypeIDChanging(value);
-					this.SendPropertyChanging();
-					this._FlatTypeID = value;
-					this.SendPropertyChanged("FlatTypeID");
-					this.OnFlatTypeIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="Int NOT NULL")]
-		public int FlatNo
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string FlatNo
 		{
 			get
 			{
@@ -3357,26 +3197,6 @@ namespace SmartSocietyAPI
 					this._FlatNo = value;
 					this.SendPropertyChanged("FlatNo");
 					this.OnFlatNoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingID", DbType="Int NOT NULL")]
-		public int BuildingID
-		{
-			get
-			{
-				return this._BuildingID;
-			}
-			set
-			{
-				if ((this._BuildingID != value))
-				{
-					this.OnBuildingIDChanging(value);
-					this.SendPropertyChanging();
-					this._BuildingID = value;
-					this.SendPropertyChanged("BuildingID");
-					this.OnBuildingIDChanged();
 				}
 			}
 		}
@@ -3450,7 +3270,7 @@ namespace SmartSocietyAPI
 		
 		private int _FlatHolderID;
 		
-		private string _FlatID;
+		private string _FlatNo;
 		
 		private int _ResidentID;
 		
@@ -3466,8 +3286,8 @@ namespace SmartSocietyAPI
     partial void OnCreated();
     partial void OnFlatHolderIDChanging(int value);
     partial void OnFlatHolderIDChanged();
-    partial void OnFlatIDChanging(string value);
-    partial void OnFlatIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
     partial void OnResidentIDChanging(int value);
     partial void OnResidentIDChanged();
     partial void OnStartDateChanging(System.DateTime value);
@@ -3503,22 +3323,22 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string FlatID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
 		{
 			get
 			{
-				return this._FlatID;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._FlatID != value))
+				if ((this._FlatNo != value))
 				{
-					this.OnFlatIDChanging(value);
+					this.OnFlatNoChanging(value);
 					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}
@@ -3599,116 +3419,6 @@ namespace SmartSocietyAPI
 					this._IsActive = value;
 					this.SendPropertyChanged("IsActive");
 					this.OnIsActiveChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblFlatType")]
-	public partial class tblFlatType : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _FlatTypeID;
-		
-		private string _FlatTypeName;
-		
-		private int _Maintenance;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnFlatTypeIDChanging(int value);
-    partial void OnFlatTypeIDChanged();
-    partial void OnFlatTypeNameChanging(string value);
-    partial void OnFlatTypeNameChanged();
-    partial void OnMaintenanceChanging(int value);
-    partial void OnMaintenanceChanged();
-    #endregion
-		
-		public tblFlatType()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatTypeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int FlatTypeID
-		{
-			get
-			{
-				return this._FlatTypeID;
-			}
-			set
-			{
-				if ((this._FlatTypeID != value))
-				{
-					this.OnFlatTypeIDChanging(value);
-					this.SendPropertyChanging();
-					this._FlatTypeID = value;
-					this.SendPropertyChanged("FlatTypeID");
-					this.OnFlatTypeIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatTypeName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string FlatTypeName
-		{
-			get
-			{
-				return this._FlatTypeName;
-			}
-			set
-			{
-				if ((this._FlatTypeName != value))
-				{
-					this.OnFlatTypeNameChanging(value);
-					this.SendPropertyChanging();
-					this._FlatTypeName = value;
-					this.SendPropertyChanged("FlatTypeName");
-					this.OnFlatTypeNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Maintenance", DbType="Int NOT NULL")]
-		public int Maintenance
-		{
-			get
-			{
-				return this._Maintenance;
-			}
-			set
-			{
-				if ((this._Maintenance != value))
-				{
-					this.OnMaintenanceChanging(value);
-					this.SendPropertyChanging();
-					this._Maintenance = value;
-					this.SendPropertyChanged("Maintenance");
-					this.OnMaintenanceChanged();
 				}
 			}
 		}
@@ -4116,7 +3826,7 @@ namespace SmartSocietyAPI
 		
 		private string _VerificationCode;
 		
-		private System.Nullable<int> _FlatID;
+		private string _FlatNo;
 		
 		private System.Nullable<int> _MemberID;
 		
@@ -4140,8 +3850,8 @@ namespace SmartSocietyAPI
     partial void OnPasswordChanged();
     partial void OnVerificationCodeChanging(string value);
     partial void OnVerificationCodeChanged();
-    partial void OnFlatIDChanging(System.Nullable<int> value);
-    partial void OnFlatIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
     partial void OnMemberIDChanging(System.Nullable<int> value);
     partial void OnMemberIDChanged();
     partial void OnMemberTypeChanging(string value);
@@ -4275,22 +3985,22 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int")]
-		public System.Nullable<int> FlatID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50)")]
+		public string FlatNo
 		{
 			get
 			{
-				return this._FlatID;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._FlatID != value))
+				if ((this._FlatNo != value))
 				{
-					this.OnFlatIDChanging(value);
+					this.OnFlatNoChanging(value);
 					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}
@@ -4384,7 +4094,7 @@ namespace SmartSocietyAPI
 		
 		private int _MaintenanceID;
 		
-		private int _FlatID;
+		private string _FlatNo;
 		
 		private string _PaymentMode;
 		
@@ -4402,8 +4112,8 @@ namespace SmartSocietyAPI
     partial void OnCreated();
     partial void OnMaintenanceIDChanging(int value);
     partial void OnMaintenanceIDChanged();
-    partial void OnFlatIDChanging(int value);
-    partial void OnFlatIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
     partial void OnPaymentModeChanging(string value);
     partial void OnPaymentModeChanged();
     partial void OnChequeNoChanging(string value);
@@ -4441,22 +4151,22 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int NOT NULL")]
-		public int FlatID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
 		{
 			get
 			{
-				return this._FlatID;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._FlatID != value))
+				if ((this._FlatNo != value))
 				{
-					this.OnFlatIDChanging(value);
+					this.OnFlatNoChanging(value);
 					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}
@@ -4796,7 +4506,7 @@ namespace SmartSocietyAPI
 		
 		private int _DocumentID;
 		
-		private int _FlatID;
+		private string _FlatNo;
 		
 		private int _DocumentTypeID;
 		
@@ -4812,8 +4522,8 @@ namespace SmartSocietyAPI
     partial void OnCreated();
     partial void OnDocumentIDChanging(int value);
     partial void OnDocumentIDChanged();
-    partial void OnFlatIDChanging(int value);
-    partial void OnFlatIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
     partial void OnDocumentTypeIDChanging(int value);
     partial void OnDocumentTypeIDChanged();
     partial void OnFileTypeChanging(string value);
@@ -4849,22 +4559,22 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int NOT NULL")]
-		public int FlatID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
 		{
 			get
 			{
-				return this._FlatID;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._FlatID != value))
+				if ((this._FlatNo != value))
 				{
-					this.OnFlatIDChanging(value);
+					this.OnFlatNoChanging(value);
 					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}
@@ -5294,7 +5004,7 @@ namespace SmartSocietyAPI
 		
 		private int _PollVotingID;
 		
-		private int _FlatID;
+		private int _FlatNo;
 		
 		private int _PollOptionID;
 		
@@ -5306,8 +5016,8 @@ namespace SmartSocietyAPI
     partial void OnCreated();
     partial void OnPollVotingIDChanging(int value);
     partial void OnPollVotingIDChanged();
-    partial void OnFlatIDChanging(int value);
-    partial void OnFlatIDChanged();
+    partial void OnFlatNoChanging(int value);
+    partial void OnFlatNoChanged();
     partial void OnPollOptionIDChanging(int value);
     partial void OnPollOptionIDChanged();
     partial void OnPollIDChanging(int value);
@@ -5339,22 +5049,22 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int NOT NULL")]
-		public int FlatID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="Int NOT NULL")]
+		public int FlatNo
 		{
 			get
 			{
-				return this._FlatID;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._FlatID != value))
+				if ((this._FlatNo != value))
 				{
-					this.OnFlatIDChanging(value);
+					this.OnFlatNoChanging(value);
 					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}
@@ -5514,7 +5224,7 @@ namespace SmartSocietyAPI
 		
 		private int _RentID;
 		
-		private int _FlatID;
+		private string _FlatNo;
 		
 		private int _ResidentID;
 		
@@ -5532,8 +5242,8 @@ namespace SmartSocietyAPI
     partial void OnCreated();
     partial void OnRentIDChanging(int value);
     partial void OnRentIDChanged();
-    partial void OnFlatIDChanging(int value);
-    partial void OnFlatIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
     partial void OnResidentIDChanging(int value);
     partial void OnResidentIDChanged();
     partial void OnRentAmountChanging(int value);
@@ -5571,22 +5281,22 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="Int NOT NULL")]
-		public int FlatID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
 		{
 			get
 			{
-				return this._FlatID;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._FlatID != value))
+				if ((this._FlatNo != value))
 				{
-					this.OnFlatIDChanging(value);
+					this.OnFlatNoChanging(value);
 					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}
@@ -5724,7 +5434,7 @@ namespace SmartSocietyAPI
 		
 		private System.DateTime _DOB;
 		
-		private string _FlatID;
+		private string _FlatNo;
 		
 		private string _Occupation;
 		
@@ -5754,8 +5464,8 @@ namespace SmartSocietyAPI
     partial void OnResidentNameChanged();
     partial void OnDOBChanging(System.DateTime value);
     partial void OnDOBChanged();
-    partial void OnFlatIDChanging(string value);
-    partial void OnFlatIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
     partial void OnOccupationChanging(string value);
     partial void OnOccupationChanged();
     partial void OnContactNo1Changing(string value);
@@ -5841,22 +5551,22 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatID", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string FlatID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
 		{
 			get
 			{
-				return this._FlatID;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._FlatID != value))
+				if ((this._FlatNo != value))
 				{
-					this.OnFlatIDChanging(value);
+					this.OnFlatNoChanging(value);
 					this.SendPropertyChanging();
-					this._FlatID = value;
-					this.SendPropertyChanged("FlatID");
-					this.OnFlatIDChanged();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}

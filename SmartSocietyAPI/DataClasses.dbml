@@ -3,7 +3,7 @@
   <Table Name="dbo.tblAccounts" Member="tblAccounts">
     <Type Name="tblAccount">
       <Column Name="AccountID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FlatID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlatNo" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Balance" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
@@ -11,7 +11,7 @@
     <Type Name="tblVisitor">
       <Column Name="VisitorID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="VisitorName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="FlatID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlatNo" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="InTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="OutTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Purpose" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
@@ -84,7 +84,7 @@
     <Type Name="tblBooking">
       <Column Name="BookingID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="FacilityID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlatID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlatNo" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="StartTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="EndTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Status" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
@@ -95,25 +95,19 @@
       <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
-  <Table Name="dbo.tblBuilding" Member="tblBuildings">
-    <Type Name="tblBuilding">
-      <Column Name="BuildingID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="BuildingName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.tblComplaints" Member="tblComplaints">
     <Type Name="tblComplaint">
       <Column Name="ComplaintID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FlatID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ComplaintType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Subject" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
-      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="Priority" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
-      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FlatNo" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ComplaintType" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Subject" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Priority" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="HandledBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Response" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="RespondedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="IsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.tblDocumentType" Member="tblDocumentTypes">
@@ -161,10 +155,7 @@
   </Table>
   <Table Name="dbo.tblFlat" Member="tblFlats">
     <Type Name="tblFlat">
-      <Column Name="FlatID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FlatTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlatNo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="BuildingID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlatNo" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="OnRent" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="TenamentNo" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
     </Type>
@@ -172,18 +163,11 @@
   <Table Name="dbo.tblFlatHolder" Member="tblFlatHolders">
     <Type Name="tblFlatHolder">
       <Column Name="FlatHolderID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FlatID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlatNo" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="ResidentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="StartDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="EndDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.tblFlatType" Member="tblFlatTypes">
-    <Type Name="tblFlatType">
-      <Column Name="FlatTypeID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FlatTypeName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Maintenance" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.tblImages" Member="tblImages">
@@ -214,7 +198,7 @@
       <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Column Name="Password" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="VerificationCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
-      <Column Name="FlatID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FlatNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="MemberID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="MemberType" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="IsBlocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
@@ -223,7 +207,7 @@
   <Table Name="dbo.tblMaintenance" Member="tblMaintenances">
     <Type Name="tblMaintenance">
       <Column Name="MaintenanceID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FlatID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlatNo" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="PaymentMode" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="ChequeNo" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
       <Column Name="PaymentOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -245,7 +229,7 @@
   <Table Name="dbo.tblOwnerDocuments" Member="tblOwnerDocuments">
     <Type Name="tblOwnerDocument">
       <Column Name="DocumentID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FlatID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlatNo" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="DocumentTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="FileType" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="ApprovedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -273,7 +257,7 @@
   <Table Name="dbo.tblPollVoting" Member="tblPollVotings">
     <Type Name="tblPollVoting">
       <Column Name="PollVotingID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FlatID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlatNo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PollOptionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PollID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
@@ -287,7 +271,7 @@
   <Table Name="dbo.tblRent" Member="tblRents">
     <Type Name="tblRent">
       <Column Name="RentID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FlatID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlatNo" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="ResidentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="RentAmount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="StartDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
@@ -300,7 +284,7 @@
       <Column Name="ResidentID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ResidentName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="DOB" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
-      <Column Name="FlatID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlatNo" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Occupation" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="ContactNo1" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
       <Column Name="ContactNo2" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />

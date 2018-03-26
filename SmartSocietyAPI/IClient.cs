@@ -26,11 +26,11 @@ namespace SmartSocietyAPI
 
         [OperationContract]
         [WebGet(UriTemplate = "SetResident/{Name,DOB,FlatID,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID}", ResponseFormat = WebMessageFormat.Json)]
-        object SetResident(string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID);
+        object SetResident(string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID);
 
         [OperationContract]
         [WebGet(UriTemplate = "EditResident/{ResidentID,Name,DOB,FlatID,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID,IsActive}", ResponseFormat = WebMessageFormat.Json)]
-        object EditResident(int ResidentID, string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive);
+        object EditResident(int ResidentID, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive);
 
         /* Society Setup */
 
@@ -38,7 +38,7 @@ namespace SmartSocietyAPI
 
         [OperationContract]
         [WebGet(UriTemplate = "GateCheckIn/{VisitorName,FlatID,Purpose,VehicleNo,MobileNo}", ResponseFormat = WebMessageFormat.Json)]
-        object GateCheckIn(string VisitorName, string FlatID, string Purpose, string VehicleNo, string MobileNo);
+        object GateCheckIn(string VisitorName, string FlatNo, string Purpose, string VehicleNo, string MobileNo);
 
         [OperationContract]
         [WebGet(UriTemplate = "GateCheckOut/{VisitorID}", ResponseFormat = WebMessageFormat.Json)]

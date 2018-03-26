@@ -95,6 +95,8 @@ namespace SmartSocietyAPI
             return decryptpwd;
         }
 
+        /*Login And Forgot Password*/
+
         public string CheckLogin(string Username, string Password)
         {
             var DC = new DataClassesDataContext();
@@ -155,6 +157,10 @@ namespace SmartSocietyAPI
             }
         }
 
+        /*Login And Forgot Password*/
+
+        /*Society Setup*/
+
         public object SetSocietyInformation(string Name, string Address, string PostalCode, string LogoImage, string ContactNo, string PresidentName, string Builder, string Email, string Fax, string RegistrationNo, string CampusArea, string SocietyType, string LatLong)
         {
             var DC = new DataClassesDataContext();
@@ -212,7 +218,7 @@ namespace SmartSocietyAPI
             return JsonConvert.SerializeObject(SocietyInfoObj);
         }
 
-        public object SetFlatHolder(string StartDate, string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive)
+        public object SetFlatHolder(string StartDate, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive)
         {
             var DC = new DataClassesDataContext();
 
@@ -220,7 +226,7 @@ namespace SmartSocietyAPI
             tblResident ResidentObj = new tblResident();
             ResidentObj.ResidentName = Name;
             ResidentObj.DOB = Convert.ToDateTime(DOB).Date;
-            ResidentObj.FlatID = FlatID;
+            ResidentObj.FlatNo = FlatNo;
             ResidentObj.Occupation = Occupation;
             ResidentObj.ContactNo1 = Contact1;
             ResidentObj.ContactNo2 = Contact2;
@@ -234,17 +240,40 @@ namespace SmartSocietyAPI
             DC.tblResidents.InsertOnSubmit(ResidentObj);
 
             int ResidentID = (from ob in DC.tblResidents
-                              where ob.FlatID == FlatID && ob.FlatHolderID == null
+                              where ob.FlatNo == FlatNo && ob.FlatHolderID == null
                               select ob.ResidentID).Single();
 
             tblFlatHolder FlatHolderObj = new tblFlatHolder();
-            FlatHolderObj.FlatID = FlatID;
+            FlatHolderObj.FlatNo = FlatNo;
             FlatHolderObj.ResidentID = ResidentID;
             FlatHolderObj.StartDate = Convert.ToDateTime(StartDate);
             FlatHolderObj.EndDate = null;
             FlatHolderObj.IsActive = IsActive;
 
             DC.tblFlatHolders.InsertOnSubmit(FlatHolderObj);
+
+            var FlatData = (from ob in DC.tblFlats
+                            where ob.FlatNo == FlatNo
+                            select ob).Single();
+
+            tblLogin LoginObj = new tblLogin();           
+
+            LoginObj.LoginName = FlatData.FlatNo + ((FlatData.OnRent) ? "R" : "");
+            LoginObj.PhoneNo = Contact1;
+            LoginObj.Email = Email;
+            LoginObj.Password = Encryptdata(RandomPassword());
+            LoginObj.VerificationCode = null;
+            LoginObj.FlatNo = FlatNo;
+            LoginObj.MemberID = null;
+            LoginObj.MemberType = ((FlatData.OnRent) ? "Rent Flat Holder" : "Flat Holder");
+            LoginObj.IsBlocked = false;
+
+            DC.tblLogins.InsertOnSubmit(LoginObj);
+
+            string Message = "<!DOCTYPE html><html><head><title>Flat Holder Registration Email</title></head><body><p>Hello,<br>&nbsp;&nbsp;&nbsp;You are registered as Flat Holder in Smart Society app.<br>&nbsp;&nbsp;&nbsp;Your login credentials are as given below.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Username: <strong>" + LoginObj.Email + " or "+LoginObj.PhoneNo+"</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password: <strong>" + Decryptdata(LoginObj.Password) + "</strong><br><br>Thank you</p></body></html>";
+
+            Mail(Email, "Flat Holder Registration: Login Credentials", Message);
+
             DC.SubmitChanges();
             return true;
         }
@@ -346,7 +375,7 @@ namespace SmartSocietyAPI
                 LoginObj.Email = null;
                 LoginObj.Password = RandomPassword();
                 LoginObj.VerificationCode = null;
-                LoginObj.FlatID = -1;
+                LoginObj.FlatNo = "-1";
                 LoginObj.MemberType = "Security Guard";
                 LoginObj.IsBlocked = false;
 
@@ -403,5 +432,7 @@ namespace SmartSocietyAPI
 
             return true;
         }
+
+        /*Society Setup*/
     }
 }

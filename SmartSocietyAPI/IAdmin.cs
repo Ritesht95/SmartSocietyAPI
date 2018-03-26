@@ -6,7 +6,9 @@ namespace SmartSocietyAPI
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
     [ServiceContract]
     public interface IAdmin
-    {        
+    {
+        /*Login And Forgot Password*/
+
         [OperationContract]
         [WebGet(UriTemplate = "CheckLogin/{Username,Password}", ResponseFormat = WebMessageFormat.Json)]
         string CheckLogin(string Username,string Password);
@@ -18,6 +20,10 @@ namespace SmartSocietyAPI
         [OperationContract]
         [WebGet(UriTemplate = "ResetPassword/{Username,Password}", ResponseFormat = WebMessageFormat.Json)]
         string ResetPassword(string Username, string Password);
+
+        /*Login And Forgot Password*/
+
+        /*Society Setup*/
 
         [OperationContract]
         [WebGet(UriTemplate = "SetSocietyInformation/{Name, Address, PostalCode, LogoImage, ContactNo, PresidentName, Builder, Email, Fax, RegistrationNo, CampusArea, SocietyType, LatLong}", ResponseFormat = WebMessageFormat.Json)]
@@ -32,8 +38,8 @@ namespace SmartSocietyAPI
         object GetSocietyInformation();
 
         [OperationContract]
-        [WebGet(UriTemplate = "SetFlatHolder/{StartDate,Name,DOB,FlatID,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID,IsActive}", ResponseFormat = WebMessageFormat.Json)]
-        object SetFlatHolder(string StartDate, string Name, string DOB, string FlatID, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive);
+        [WebGet(UriTemplate = "SetFlatHolder/{StartDate,Name,DOB,FlatNo,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID,IsActive}", ResponseFormat = WebMessageFormat.Json)]
+        object SetFlatHolder(string StartDate, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive);
 
         [OperationContract]
         [WebGet(UriTemplate = "AddAssetType/{AssetTypeName}", ResponseFormat = WebMessageFormat.Json)]
@@ -58,5 +64,7 @@ namespace SmartSocietyAPI
         [OperationContract]
         [WebGet(UriTemplate = "EditStaffMember/{MemberID, Name, MemberType, DOB, Contact1, Contact2, Image, Address, DOJ, DOL, CreatedBy, IsActive}", ResponseFormat = WebMessageFormat.Json)]
         object EditStaffMember(int MemberID, string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, string CreatedBy, bool IsActive);
+
+        /*Society Setup*/
     }
 }

@@ -45,8 +45,8 @@ namespace SmartSocietyAPI
         object GateCheckOut(int VisitorID);
 
         [OperationContract]
-        [WebGet(UriTemplate = "ViewGateKeeping/", ResponseFormat = WebMessageFormat.Json)]
-        object ViewGateKeeping(string FromDate="0", string ToDate="0");
+        [WebGet(UriTemplate = "ViewGateKeeping/{CheckedInOnly,FromDate,ToDate}", ResponseFormat = WebMessageFormat.Json)]
+        object ViewGateKeeping(bool CheckedInOnly = false, string FromDate="0", string ToDate="0");
         /* Gatekeeping */
     }
 }

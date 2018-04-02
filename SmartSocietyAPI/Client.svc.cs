@@ -215,22 +215,40 @@ namespace SmartSocietyAPI
             return true;
         }
 
-        public object ViewGateKeeping(string FromDate = "0", string ToDate = "0")
+        public object ViewGateKeeping(bool CheckedInOnly=false, string FromDate = "0", string ToDate = "0")
         {
             var DC = new DataClassesDataContext();
             IQueryable<tblVisitor> VisitorData;
-            if (FromDate =="0" && ToDate=="0")
+            if (CheckedInOnly)
             {
-                VisitorData = (from ob in DC.tblVisitors
-                               select ob);
+                if (FromDate == "0" && ToDate == "0")
+                {
+                    VisitorData = (from ob in DC.tblVisitors
+                                   where ob.OutTime == null
+                                   select ob);
+                }
+                else
+                {
+                    VisitorData = (from ob in DC.tblVisitors
+                                   where ob.InTime >= Convert.ToDateTime(FromDate) && ob.InTime <= Convert.ToDateTime(ToDate) 
+                                   && ob.OutTime == null
+                                   select ob);
+                }
             }
             else
             {
-                VisitorData = (from ob in DC.tblVisitors
-                               where ob.InTime>= Convert.ToDateTime(FromDate) && ob.InTime<=Convert.ToDateTime(ToDate)
-                               select ob);
+                if (FromDate == "0" && ToDate == "0")
+                {
+                    VisitorData = (from ob in DC.tblVisitors
+                                   select ob);
+                }
+                else
+                {
+                    VisitorData = (from ob in DC.tblVisitors
+                                   where ob.InTime >= Convert.ToDateTime(FromDate) && ob.InTime <= Convert.ToDateTime(ToDate)
+                                   select ob);
+                }
             }
-
             return JsonConvert.SerializeObject(VisitorData);            
         }
 

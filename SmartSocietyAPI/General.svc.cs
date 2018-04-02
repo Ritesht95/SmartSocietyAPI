@@ -37,6 +37,59 @@ namespace SmartSocietyAPI
             {
                 return false;
             }
-        }        
+        }
+
+        /* Society Setup */
+
+        // 0 for All, 1 for Current, -1 for Past Members
+        public object GetAllResidentsDetails(int FlagMemType=0) 
+        {
+            var DC = new DataClassesDataContext();
+            IQueryable<tblResident> ObjAllResidents;
+            if (FlagMemType == 0)
+            {
+                ObjAllResidents = (from ob in DC.tblResidents
+                                   select ob);
+            }
+            else if (FlagMemType == 1)
+            {
+                ObjAllResidents = (from ob in DC.tblResidents
+                                   where ob.IsActive==true
+                                   select ob);
+            }
+            else
+            {
+                ObjAllResidents = (from ob in DC.tblResidents
+                                   where ob.IsActive == false
+                                   select ob);
+            }
+            return JsonConvert.SerializeObject(ObjAllResidents);
+        }
+        // 0 for All, 1 for Owners, -1 for On Rent Flats
+        public object GetAllFlatDetails(int FlagFlatType = 0) 
+        {
+            var DC = new DataClassesDataContext();
+            IQueryable<tblFlat> ObjAllFlats;
+            if (FlagFlatType == 0)
+            {
+                ObjAllFlats = (from ob in DC.tblFlats
+                                   select ob);
+            }
+            else if (FlagFlatType == 1)
+            {
+                ObjAllFlats = (from ob in DC.tblFlats
+                                   where ob.OnRent == true
+                                   select ob);
+            }
+            else
+            {
+                ObjAllFlats = (from ob in DC.tblFlats
+                                   where ob.OnRent == false
+                                   select ob);
+            }
+            return JsonConvert.SerializeObject(ObjAllFlats);
+        }
+
+        /* Society Setup */
     }
 }

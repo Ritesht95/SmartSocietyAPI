@@ -7,12 +7,26 @@ namespace SmartSocietyAPI
     [ServiceContract]
     public interface IGeneral
     {
+        /* Society Setup */
+
+        // 0 for All, 1 for Current, -1 for Past Members
         [OperationContract]
         [WebGet(UriTemplate = "GetAllResidentsDetails/{FlagMemType}", ResponseFormat = WebMessageFormat.Json)]
         object GetAllResidentsDetails(int FlagMemType = 0);
 
+        // 0 for All, 1 for Owners, -1 for On Rent Flats
         [OperationContract]
         [WebGet(UriTemplate = "GetAllFlatDetails/{FlagFlatType}", ResponseFormat = WebMessageFormat.Json)]
         object GetAllFlatDetails(int FlagFlatType = 0);
+
+        /* Society Setup */
+
+        /* Gatekeeping */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "ViewGateKeeping/{CheckedInOnly,FromDate,ToDate}", ResponseFormat = WebMessageFormat.Json)]
+        object ViewGateKeeping(bool CheckedInOnly = false, string FromDate = "0", string ToDate = "0", string FlatNo="-1");
+
+        /* Gatekeeping */
     }
 }

@@ -69,7 +69,7 @@ namespace SmartSocietyAPI
             var DC = new DataClassesDataContext();
             var enpass = Encryptdata(Password);
             IQueryable<tblLogin> ObjLogin = (from ob in DC.tblLogins
-                            where (ob.Email == Username)
+                            where (ob.Email == Username || ob.PhoneNo==Username)
                             && ob.Password== enpass
                             && ob.IsBlocked == false
                             select ob);
@@ -214,44 +214,7 @@ namespace SmartSocietyAPI
 
             return true;
         }
-
-        public object ViewGateKeeping(bool CheckedInOnly=false, string FromDate = "0", string ToDate = "0")
-        {
-            var DC = new DataClassesDataContext();
-            IQueryable<tblVisitor> VisitorData;
-            if (CheckedInOnly)
-            {
-                if (FromDate == "0" && ToDate == "0")
-                {
-                    VisitorData = (from ob in DC.tblVisitors
-                                   where ob.OutTime == null
-                                   select ob);
-                }
-                else
-                {
-                    VisitorData = (from ob in DC.tblVisitors
-                                   where ob.InTime >= Convert.ToDateTime(FromDate) && ob.InTime <= Convert.ToDateTime(ToDate) 
-                                   && ob.OutTime == null
-                                   select ob);
-                }
-            }
-            else
-            {
-                if (FromDate == "0" && ToDate == "0")
-                {
-                    VisitorData = (from ob in DC.tblVisitors
-                                   select ob);
-                }
-                else
-                {
-                    VisitorData = (from ob in DC.tblVisitors
-                                   where ob.InTime >= Convert.ToDateTime(FromDate) && ob.InTime <= Convert.ToDateTime(ToDate)
-                                   select ob);
-                }
-            }
-            return JsonConvert.SerializeObject(VisitorData);            
-        }
-
+        
         /* Gatekeeping */
     }
 }

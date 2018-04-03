@@ -65,6 +65,7 @@ namespace SmartSocietyAPI
             }
             return JsonConvert.SerializeObject(ObjAllResidents);
         }
+
         // 0 for All, 1 for Owners, -1 for On Rent Flats
         public object GetAllFlatDetails(int FlagFlatType = 0) 
         {
@@ -91,5 +92,60 @@ namespace SmartSocietyAPI
         }
 
         /* Society Setup */
+
+        /* Gatekeeping */
+
+        public object ViewGateKeeping(bool CheckedInOnly = false, string FromDate = "0", string ToDate = "0", string FlatNo = "-1")
+        {
+            var DC = new DataClassesDataContext();
+            IQueryable<tblVisitor> VisitorData;
+            if (CheckedInOnly)
+            {
+                if (FromDate == "0" && ToDate == "0")
+                {
+                    VisitorData = (from ob in DC.tblVisitors
+                                   where ob.OutTime == null
+                                   select ob);
+                }
+                else
+                {
+                    VisitorData = (from ob in DC.tblVisitors
+                                   where ob.InTime >= Convert.ToDateTime(FromDate) && ob.InTime <= Convert.ToDateTime(ToDate)
+                                   && ob.OutTime == null
+                                   select ob);
+                }
+
+                if (FlatNo != "-1")
+                {
+                    VisitorData = (from ob in VisitorData
+                                   where ob.FlatNo == FlatNo
+                                   select ob);
+                }
+            }
+            else
+            {
+                if (FromDate == "0" && ToDate == "0")
+                {
+                    VisitorData = (from ob in DC.tblVisitors
+                                   select ob);
+                }
+                else
+                {
+                    VisitorData = (from ob in DC.tblVisitors
+                                   where ob.InTime >= Convert.ToDateTime(FromDate) && ob.InTime <= Convert.ToDateTime(ToDate)
+                                   select ob);
+                }
+
+                if (FlatNo != "-1")
+                {
+                    VisitorData = (from ob in VisitorData
+                                   where ob.FlatNo == FlatNo
+                                   select ob);
+                }
+            }
+            return JsonConvert.SerializeObject(VisitorData);
+        }
+
+        /* Gatekeeping */
     }
 }

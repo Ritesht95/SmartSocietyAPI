@@ -30,9 +30,6 @@ namespace SmartSocietyAPI
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InserttblAccount(tblAccount instance);
-    partial void UpdatetblAccount(tblAccount instance);
-    partial void DeletetblAccount(tblAccount instance);
     partial void InserttblVisitor(tblVisitor instance);
     partial void UpdatetblVisitor(tblVisitor instance);
     partial void DeletetblVisitor(tblVisitor instance);
@@ -152,11 +149,11 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<tblAccount> tblAccounts
+		public System.Data.Linq.Table<tblAdminLogin> tblAdminLogins
 		{
 			get
 			{
-				return this.GetTable<tblAccount>();
+				return this.GetTable<tblAdminLogin>();
 			}
 		}
 		
@@ -165,14 +162,6 @@ namespace SmartSocietyAPI
 			get
 			{
 				return this.GetTable<tblVisitor>();
-			}
-		}
-		
-		public System.Data.Linq.Table<tblAdminLogin> tblAdminLogins
-		{
-			get
-			{
-				return this.GetTable<tblAdminLogin>();
 			}
 		}
 		
@@ -409,112 +398,101 @@ namespace SmartSocietyAPI
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblAccounts")]
-	public partial class tblAccount : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblAdminLogin")]
+	public partial class tblAdminLogin
 	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		private string _AdminLoginName;
 		
-		private int _AccountID;
+		private int _ResidentID;
 		
-		private string _FlatNo;
+		private string _Email;
 		
-		private decimal _Balance;
+		private string _Password;
 		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnAccountIDChanging(int value);
-    partial void OnAccountIDChanged();
-    partial void OnFlatNoChanging(string value);
-    partial void OnFlatNoChanged();
-    partial void OnBalanceChanging(decimal value);
-    partial void OnBalanceChanged();
-    #endregion
+		private bool _IsBlocked;
 		
-		public tblAccount()
+		public tblAdminLogin()
 		{
-			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int AccountID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdminLoginName", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string AdminLoginName
 		{
 			get
 			{
-				return this._AccountID;
+				return this._AdminLoginName;
 			}
 			set
 			{
-				if ((this._AccountID != value))
+				if ((this._AdminLoginName != value))
 				{
-					this.OnAccountIDChanging(value);
-					this.SendPropertyChanging();
-					this._AccountID = value;
-					this.SendPropertyChanged("AccountID");
-					this.OnAccountIDChanged();
+					this._AdminLoginName = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string FlatNo
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidentID", DbType="Int NOT NULL")]
+		public int ResidentID
 		{
 			get
 			{
-				return this._FlatNo;
+				return this._ResidentID;
 			}
 			set
 			{
-				if ((this._FlatNo != value))
+				if ((this._ResidentID != value))
 				{
-					this.OnFlatNoChanging(value);
-					this.SendPropertyChanging();
-					this._FlatNo = value;
-					this.SendPropertyChanged("FlatNo");
-					this.OnFlatNoChanged();
+					this._ResidentID = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Balance", DbType="Decimal(18,0) NOT NULL")]
-		public decimal Balance
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string Email
 		{
 			get
 			{
-				return this._Balance;
+				return this._Email;
 			}
 			set
 			{
-				if ((this._Balance != value))
+				if ((this._Email != value))
 				{
-					this.OnBalanceChanging(value);
-					this.SendPropertyChanging();
-					this._Balance = value;
-					this.SendPropertyChanged("Balance");
-					this.OnBalanceChanged();
+					this._Email = value;
 				}
 			}
 		}
 		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
+		public string Password
 		{
-			if ((this.PropertyChanging != null))
+			get
 			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this._Password = value;
+				}
 			}
 		}
 		
-		protected virtual void SendPropertyChanged(String propertyName)
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsBlocked", DbType="Bit NOT NULL")]
+		public bool IsBlocked
 		{
-			if ((this.PropertyChanged != null))
+			get
 			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+				return this._IsBlocked;
+			}
+			set
+			{
+				if ((this._IsBlocked != value))
+				{
+					this._IsBlocked = value;
+				}
 			}
 		}
 	}
@@ -745,105 +723,6 @@ namespace SmartSocietyAPI
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblAdminLogin")]
-	public partial class tblAdminLogin
-	{
-		
-		private string _AdminLoginName;
-		
-		private int _ResidentID;
-		
-		private string _Email;
-		
-		private string _Password;
-		
-		private bool _IsBlocked;
-		
-		public tblAdminLogin()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdminLoginName", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string AdminLoginName
-		{
-			get
-			{
-				return this._AdminLoginName;
-			}
-			set
-			{
-				if ((this._AdminLoginName != value))
-				{
-					this._AdminLoginName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidentID", DbType="Int NOT NULL")]
-		public int ResidentID
-		{
-			get
-			{
-				return this._ResidentID;
-			}
-			set
-			{
-				if ((this._ResidentID != value))
-				{
-					this._ResidentID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
-		public string Email
-		{
-			get
-			{
-				return this._Email;
-			}
-			set
-			{
-				if ((this._Email != value))
-				{
-					this._Email = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
-		public string Password
-		{
-			get
-			{
-				return this._Password;
-			}
-			set
-			{
-				if ((this._Password != value))
-				{
-					this._Password = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsBlocked", DbType="Bit NOT NULL")]
-		public bool IsBlocked
-		{
-			get
-			{
-				return this._IsBlocked;
-			}
-			set
-			{
-				if ((this._IsBlocked != value))
-				{
-					this._IsBlocked = value;
-				}
 			}
 		}
 	}

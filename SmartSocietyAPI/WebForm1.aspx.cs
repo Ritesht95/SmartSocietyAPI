@@ -19,7 +19,7 @@ namespace SmartSocietyAPI
         {
             SmartSocietyAPI.Client ServiceObject = new SmartSocietyAPI.Client();
             Response.Write(Encryptdata("12345"));
-            Response.Write(ServiceObject.CheckLogin("rdtailor@gmail.com", "12345"));
+            Response.Write(ServiceObject.CheckLogin("8866699878", "12345"));
         }
     }
 }

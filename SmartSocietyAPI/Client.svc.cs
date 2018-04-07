@@ -79,7 +79,7 @@ namespace SmartSocietyAPI
             }
             else
             {
-                return false;
+                return "False";
             }
         }
 
@@ -99,7 +99,7 @@ namespace SmartSocietyAPI
                 {
                     ObjData.VerificationCode = Code;
                     DC.SubmitChanges();
-                    return true;
+                    return "True";
                 }
                 else
                 {
@@ -108,7 +108,7 @@ namespace SmartSocietyAPI
             }
             else
             {
-                return false;
+                return "False";
             }
         }
 
@@ -125,11 +125,11 @@ namespace SmartSocietyAPI
                 var ObjUser = ObjReset.Single();
                 ObjUser.Password = Encryptdata(Password);
                 DC.SubmitChanges();
-                return true;
+                return "True";
             }
             else
             {
-                return false;
+                return "False";
             }
         }
 
@@ -156,7 +156,7 @@ namespace SmartSocietyAPI
 
             DC.tblResidents.InsertOnSubmit(ResidentObj);
             DC.SubmitChanges();
-            return true;
+            return "True";
         }
 
         public object EditResident(int ResidentID, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive)
@@ -178,7 +178,7 @@ namespace SmartSocietyAPI
             ResidentObj.IsActive = IsActive;
 
             DC.SubmitChanges();
-            return true;
+            return "True";
         }
 
         /* Society Setup */
@@ -200,7 +200,7 @@ namespace SmartSocietyAPI
             DC.tblVisitors.InsertOnSubmit(VisitorObj);
             DC.SubmitChanges();
 
-            return true;
+            return "True";
         }
 
         public object GateCheckOut(int VisitorID)
@@ -212,7 +212,7 @@ namespace SmartSocietyAPI
             VisitorObj.OutTime = DateTime.Now;
             DC.SubmitChanges();
 
-            return true;
+            return "True";
         }
         
         /* Gatekeeping */

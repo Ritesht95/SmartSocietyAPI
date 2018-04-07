@@ -434,5 +434,42 @@ namespace SmartSocietyAPI
         }
 
         /*Society Setup*/
+
+        /* Notices */
+        
+        public object AddNotice(string Title, string Description, int Priority, int CreatedBy)
+        {
+            var DC = new DataClassesDataContext();
+            tblNotice NoticeObj = new tblNotice();
+            NoticeObj.Title = Title;
+            NoticeObj.Description = Description;
+            NoticeObj.Priority = Priority;
+            NoticeObj.CreatedBy = CreatedBy;
+            NoticeObj.CreatedOn = DateTime.Now;
+            NoticeObj.IsActive = true;
+
+            DC.tblNotices.InsertOnSubmit(NoticeObj);
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object EditNotice(int NoticeID,string Title, string Description, int Priority, int CreatedBy, bool IsActive)
+        {
+            var DC = new DataClassesDataContext();
+            tblNotice NoticeObj = (from ob in DC.tblNotices
+                                   where ob.NoticeID == NoticeID
+                                   select ob).Single();
+            NoticeObj.Title = Title;
+            NoticeObj.Description = Description;
+            NoticeObj.Priority = Priority;
+            NoticeObj.CreatedBy = CreatedBy;
+            NoticeObj.IsActive = IsActive;
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        /* Notices */
     }
 }

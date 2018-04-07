@@ -30,6 +30,9 @@ namespace SmartSocietyAPI
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
+    partial void InserttblAccount(tblAccount instance);
+    partial void UpdatetblAccount(tblAccount instance);
+    partial void DeletetblAccount(tblAccount instance);
     partial void InserttblVisitor(tblVisitor instance);
     partial void UpdatetblVisitor(tblVisitor instance);
     partial void DeletetblVisitor(tblVisitor instance);
@@ -120,7 +123,7 @@ namespace SmartSocietyAPI
     #endregion
 		
 		public DataClassesDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["dbSocietyConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["dbSocietyConnectionString1"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -149,11 +152,11 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<tblAdminLogin> tblAdminLogins
+		public System.Data.Linq.Table<tblAccount> tblAccounts
 		{
 			get
 			{
-				return this.GetTable<tblAdminLogin>();
+				return this.GetTable<tblAccount>();
 			}
 		}
 		
@@ -162,6 +165,14 @@ namespace SmartSocietyAPI
 			get
 			{
 				return this.GetTable<tblVisitor>();
+			}
+		}
+		
+		public System.Data.Linq.Table<tblAdminLogin> tblAdminLogins
+		{
+			get
+			{
+				return this.GetTable<tblAdminLogin>();
 			}
 		}
 		
@@ -398,101 +409,112 @@ namespace SmartSocietyAPI
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblAdminLogin")]
-	public partial class tblAdminLogin
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblAccounts")]
+	public partial class tblAccount : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
-		private string _AdminLoginName;
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _ResidentID;
+		private int _AccountID;
 		
-		private string _Email;
+		private string _FlatNo;
 		
-		private string _Password;
+		private decimal _Balance;
 		
-		private bool _IsBlocked;
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnAccountIDChanging(int value);
+    partial void OnAccountIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
+    partial void OnBalanceChanging(decimal value);
+    partial void OnBalanceChanged();
+    #endregion
 		
-		public tblAdminLogin()
+		public tblAccount()
 		{
+			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdminLoginName", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string AdminLoginName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int AccountID
 		{
 			get
 			{
-				return this._AdminLoginName;
+				return this._AccountID;
 			}
 			set
 			{
-				if ((this._AdminLoginName != value))
+				if ((this._AccountID != value))
 				{
-					this._AdminLoginName = value;
+					this.OnAccountIDChanging(value);
+					this.SendPropertyChanging();
+					this._AccountID = value;
+					this.SendPropertyChanged("AccountID");
+					this.OnAccountIDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidentID", DbType="Int NOT NULL")]
-		public int ResidentID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
 		{
 			get
 			{
-				return this._ResidentID;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._ResidentID != value))
+				if ((this._FlatNo != value))
 				{
-					this._ResidentID = value;
+					this.OnFlatNoChanging(value);
+					this.SendPropertyChanging();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
-		public string Email
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Balance", DbType="Decimal(18,0) NOT NULL")]
+		public decimal Balance
 		{
 			get
 			{
-				return this._Email;
+				return this._Balance;
 			}
 			set
 			{
-				if ((this._Email != value))
+				if ((this._Balance != value))
 				{
-					this._Email = value;
+					this.OnBalanceChanging(value);
+					this.SendPropertyChanging();
+					this._Balance = value;
+					this.SendPropertyChanged("Balance");
+					this.OnBalanceChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
-		public string Password
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
 		{
-			get
+			if ((this.PropertyChanging != null))
 			{
-				return this._Password;
-			}
-			set
-			{
-				if ((this._Password != value))
-				{
-					this._Password = value;
-				}
+				this.PropertyChanging(this, emptyChangingEventArgs);
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsBlocked", DbType="Bit NOT NULL")]
-		public bool IsBlocked
+		protected virtual void SendPropertyChanged(String propertyName)
 		{
-			get
+			if ((this.PropertyChanged != null))
 			{
-				return this._IsBlocked;
-			}
-			set
-			{
-				if ((this._IsBlocked != value))
-				{
-					this._IsBlocked = value;
-				}
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
@@ -723,6 +745,105 @@ namespace SmartSocietyAPI
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblAdminLogin")]
+	public partial class tblAdminLogin
+	{
+		
+		private string _AdminLoginName;
+		
+		private int _ResidentID;
+		
+		private string _Email;
+		
+		private string _Password;
+		
+		private bool _IsBlocked;
+		
+		public tblAdminLogin()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdminLoginName", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string AdminLoginName
+		{
+			get
+			{
+				return this._AdminLoginName;
+			}
+			set
+			{
+				if ((this._AdminLoginName != value))
+				{
+					this._AdminLoginName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidentID", DbType="Int NOT NULL")]
+		public int ResidentID
+		{
+			get
+			{
+				return this._ResidentID;
+			}
+			set
+			{
+				if ((this._ResidentID != value))
+				{
+					this._ResidentID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this._Email = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this._Password = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsBlocked", DbType="Bit NOT NULL")]
+		public bool IsBlocked
+		{
+			get
+			{
+				return this._IsBlocked;
+			}
+			set
+			{
+				if ((this._IsBlocked != value))
+				{
+					this._IsBlocked = value;
+				}
 			}
 		}
 	}
@@ -1181,6 +1302,8 @@ namespace SmartSocietyAPI
 		
 		private string _ServicemanContactNo;
 		
+		private int _CreatedBy;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1197,6 +1320,8 @@ namespace SmartSocietyAPI
     partial void OnServicemanNameChanged();
     partial void OnServicemanContactNoChanging(string value);
     partial void OnServicemanContactNoChanged();
+    partial void OnCreatedByChanging(int value);
+    partial void OnCreatedByChanged();
     #endregion
 		
 		public tblAMCService()
@@ -1320,6 +1445,26 @@ namespace SmartSocietyAPI
 					this._ServicemanContactNo = value;
 					this.SendPropertyChanged("ServicemanContactNo");
 					this.OnServicemanContactNoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int NOT NULL")]
+		public int CreatedBy
+		{
+			get
+			{
+				return this._CreatedBy;
+			}
+			set
+			{
+				if ((this._CreatedBy != value))
+				{
+					this.OnCreatedByChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedBy = value;
+					this.SendPropertyChanged("CreatedBy");
+					this.OnCreatedByChanged();
 				}
 			}
 		}
@@ -4183,11 +4328,11 @@ namespace SmartSocietyAPI
 		
 		private string _Description;
 		
-		private byte _Priority;
+		private System.Nullable<int> _Priority;
 		
 		private System.DateTime _CreatedOn;
 		
-		private System.DateTime _CreatedBy;
+		private int _CreatedBy;
 		
 		private bool _IsActive;
 		
@@ -4201,11 +4346,11 @@ namespace SmartSocietyAPI
     partial void OnTitleChanged();
     partial void OnDescriptionChanging(string value);
     partial void OnDescriptionChanged();
-    partial void OnPriorityChanging(byte value);
+    partial void OnPriorityChanging(System.Nullable<int> value);
     partial void OnPriorityChanged();
     partial void OnCreatedOnChanging(System.DateTime value);
     partial void OnCreatedOnChanged();
-    partial void OnCreatedByChanging(System.DateTime value);
+    partial void OnCreatedByChanging(int value);
     partial void OnCreatedByChanged();
     partial void OnIsActiveChanging(bool value);
     partial void OnIsActiveChanged();
@@ -4276,8 +4421,8 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="TinyInt NOT NULL")]
-		public byte Priority
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int")]
+		public System.Nullable<int> Priority
 		{
 			get
 			{
@@ -4316,8 +4461,8 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedBy
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int NOT NULL")]
+		public int CreatedBy
 		{
 			get
 			{

@@ -30,12 +30,12 @@ namespace SmartSocietyAPI
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InserttblAccount(tblAccount instance);
-    partial void UpdatetblAccount(tblAccount instance);
-    partial void DeletetblAccount(tblAccount instance);
     partial void InserttblVendor(tblVendor instance);
     partial void UpdatetblVendor(tblVendor instance);
     partial void DeletetblVendor(tblVendor instance);
+    partial void InserttblAccount(tblAccount instance);
+    partial void UpdatetblAccount(tblAccount instance);
+    partial void DeletetblAccount(tblAccount instance);
     partial void InserttblAlbum(tblAlbum instance);
     partial void UpdatetblAlbum(tblAlbum instance);
     partial void DeletetblAlbum(tblAlbum instance);
@@ -114,6 +114,9 @@ namespace SmartSocietyAPI
     partial void InserttblResident(tblResident instance);
     partial void UpdatetblResident(tblResident instance);
     partial void DeletetblResident(tblResident instance);
+    partial void InserttblSociety(tblSociety instance);
+    partial void UpdatetblSociety(tblSociety instance);
+    partial void DeletetblSociety(tblSociety instance);
     partial void InserttblStaffMember(tblStaffMember instance);
     partial void UpdatetblStaffMember(tblStaffMember instance);
     partial void DeletetblStaffMember(tblStaffMember instance);
@@ -155,19 +158,19 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<tblAccount> tblAccounts
-		{
-			get
-			{
-				return this.GetTable<tblAccount>();
-			}
-		}
-		
 		public System.Data.Linq.Table<tblVendor> tblVendors
 		{
 			get
 			{
 				return this.GetTable<tblVendor>();
+			}
+		}
+		
+		public System.Data.Linq.Table<tblAccount> tblAccounts
+		{
+			get
+			{
+				return this.GetTable<tblAccount>();
 			}
 		}
 		
@@ -420,116 +423,6 @@ namespace SmartSocietyAPI
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblAccounts")]
-	public partial class tblAccount : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _AccountID;
-		
-		private string _FlatNo;
-		
-		private decimal _Balance;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnAccountIDChanging(int value);
-    partial void OnAccountIDChanged();
-    partial void OnFlatNoChanging(string value);
-    partial void OnFlatNoChanged();
-    partial void OnBalanceChanging(decimal value);
-    partial void OnBalanceChanged();
-    #endregion
-		
-		public tblAccount()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int AccountID
-		{
-			get
-			{
-				return this._AccountID;
-			}
-			set
-			{
-				if ((this._AccountID != value))
-				{
-					this.OnAccountIDChanging(value);
-					this.SendPropertyChanging();
-					this._AccountID = value;
-					this.SendPropertyChanged("AccountID");
-					this.OnAccountIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string FlatNo
-		{
-			get
-			{
-				return this._FlatNo;
-			}
-			set
-			{
-				if ((this._FlatNo != value))
-				{
-					this.OnFlatNoChanging(value);
-					this.SendPropertyChanging();
-					this._FlatNo = value;
-					this.SendPropertyChanged("FlatNo");
-					this.OnFlatNoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Balance", DbType="Decimal(18,0) NOT NULL")]
-		public decimal Balance
-		{
-			get
-			{
-				return this._Balance;
-			}
-			set
-			{
-				if ((this._Balance != value))
-				{
-					this.OnBalanceChanging(value);
-					this.SendPropertyChanging();
-					this._Balance = value;
-					this.SendPropertyChanged("Balance");
-					this.OnBalanceChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="ritesroq.tblVendors")]
 	public partial class tblVendor : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -711,6 +604,116 @@ namespace SmartSocietyAPI
 					this._IsActive = value;
 					this.SendPropertyChanged("IsActive");
 					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblAccounts")]
+	public partial class tblAccount : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _AccountID;
+		
+		private string _FlatNo;
+		
+		private decimal _Balance;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnAccountIDChanging(int value);
+    partial void OnAccountIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
+    partial void OnBalanceChanging(decimal value);
+    partial void OnBalanceChanged();
+    #endregion
+		
+		public tblAccount()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int AccountID
+		{
+			get
+			{
+				return this._AccountID;
+			}
+			set
+			{
+				if ((this._AccountID != value))
+				{
+					this.OnAccountIDChanging(value);
+					this.SendPropertyChanging();
+					this._AccountID = value;
+					this.SendPropertyChanged("AccountID");
+					this.OnAccountIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
+		{
+			get
+			{
+				return this._FlatNo;
+			}
+			set
+			{
+				if ((this._FlatNo != value))
+				{
+					this.OnFlatNoChanging(value);
+					this.SendPropertyChanging();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Balance", DbType="Decimal(18,0) NOT NULL")]
+		public decimal Balance
+		{
+			get
+			{
+				return this._Balance;
+			}
+			set
+			{
+				if ((this._Balance != value))
+				{
+					this.OnBalanceChanging(value);
+					this.SendPropertyChanging();
+					this._Balance = value;
+					this.SendPropertyChanged("Balance");
+					this.OnBalanceChanged();
 				}
 			}
 		}
@@ -5784,8 +5787,10 @@ namespace SmartSocietyAPI
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblSociety")]
-	public partial class tblSociety
+	public partial class tblSociety : INotifyPropertyChanging, INotifyPropertyChanged
 	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private string _Name;
 		
@@ -5813,8 +5818,45 @@ namespace SmartSocietyAPI
 		
 		private string _LatLong;
 		
+		private int _ID;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnAddressChanging(string value);
+    partial void OnAddressChanged();
+    partial void OnPostalCodeChanging(string value);
+    partial void OnPostalCodeChanged();
+    partial void OnLogoImageChanging(string value);
+    partial void OnLogoImageChanged();
+    partial void OnContactNoChanging(string value);
+    partial void OnContactNoChanged();
+    partial void OnPresidentNameChanging(string value);
+    partial void OnPresidentNameChanged();
+    partial void OnBuilderChanging(string value);
+    partial void OnBuilderChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnFaxChanging(string value);
+    partial void OnFaxChanged();
+    partial void OnRegistrationNoChanging(string value);
+    partial void OnRegistrationNoChanged();
+    partial void OnCampusAreaChanging(string value);
+    partial void OnCampusAreaChanged();
+    partial void OnSocietyTypeChanging(string value);
+    partial void OnSocietyTypeChanged();
+    partial void OnLatLongChanging(string value);
+    partial void OnLatLongChanged();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    #endregion
+		
 		public tblSociety()
 		{
+			OnCreated();
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
@@ -5828,7 +5870,11 @@ namespace SmartSocietyAPI
 			{
 				if ((this._Name != value))
 				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
 					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
 				}
 			}
 		}
@@ -5844,7 +5890,11 @@ namespace SmartSocietyAPI
 			{
 				if ((this._Address != value))
 				{
+					this.OnAddressChanging(value);
+					this.SendPropertyChanging();
 					this._Address = value;
+					this.SendPropertyChanged("Address");
+					this.OnAddressChanged();
 				}
 			}
 		}
@@ -5860,7 +5910,11 @@ namespace SmartSocietyAPI
 			{
 				if ((this._PostalCode != value))
 				{
+					this.OnPostalCodeChanging(value);
+					this.SendPropertyChanging();
 					this._PostalCode = value;
+					this.SendPropertyChanged("PostalCode");
+					this.OnPostalCodeChanged();
 				}
 			}
 		}
@@ -5876,7 +5930,11 @@ namespace SmartSocietyAPI
 			{
 				if ((this._LogoImage != value))
 				{
+					this.OnLogoImageChanging(value);
+					this.SendPropertyChanging();
 					this._LogoImage = value;
+					this.SendPropertyChanged("LogoImage");
+					this.OnLogoImageChanged();
 				}
 			}
 		}
@@ -5892,7 +5950,11 @@ namespace SmartSocietyAPI
 			{
 				if ((this._ContactNo != value))
 				{
+					this.OnContactNoChanging(value);
+					this.SendPropertyChanging();
 					this._ContactNo = value;
+					this.SendPropertyChanged("ContactNo");
+					this.OnContactNoChanged();
 				}
 			}
 		}
@@ -5908,7 +5970,11 @@ namespace SmartSocietyAPI
 			{
 				if ((this._PresidentName != value))
 				{
+					this.OnPresidentNameChanging(value);
+					this.SendPropertyChanging();
 					this._PresidentName = value;
+					this.SendPropertyChanged("PresidentName");
+					this.OnPresidentNameChanged();
 				}
 			}
 		}
@@ -5924,7 +5990,11 @@ namespace SmartSocietyAPI
 			{
 				if ((this._Builder != value))
 				{
+					this.OnBuilderChanging(value);
+					this.SendPropertyChanging();
 					this._Builder = value;
+					this.SendPropertyChanged("Builder");
+					this.OnBuilderChanged();
 				}
 			}
 		}
@@ -5940,7 +6010,11 @@ namespace SmartSocietyAPI
 			{
 				if ((this._Email != value))
 				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
 					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
 				}
 			}
 		}
@@ -5956,7 +6030,11 @@ namespace SmartSocietyAPI
 			{
 				if ((this._Fax != value))
 				{
+					this.OnFaxChanging(value);
+					this.SendPropertyChanging();
 					this._Fax = value;
+					this.SendPropertyChanged("Fax");
+					this.OnFaxChanged();
 				}
 			}
 		}
@@ -5972,7 +6050,11 @@ namespace SmartSocietyAPI
 			{
 				if ((this._RegistrationNo != value))
 				{
+					this.OnRegistrationNoChanging(value);
+					this.SendPropertyChanging();
 					this._RegistrationNo = value;
+					this.SendPropertyChanged("RegistrationNo");
+					this.OnRegistrationNoChanged();
 				}
 			}
 		}
@@ -5988,7 +6070,11 @@ namespace SmartSocietyAPI
 			{
 				if ((this._CampusArea != value))
 				{
+					this.OnCampusAreaChanging(value);
+					this.SendPropertyChanging();
 					this._CampusArea = value;
+					this.SendPropertyChanged("CampusArea");
+					this.OnCampusAreaChanged();
 				}
 			}
 		}
@@ -6004,7 +6090,11 @@ namespace SmartSocietyAPI
 			{
 				if ((this._SocietyType != value))
 				{
+					this.OnSocietyTypeChanging(value);
+					this.SendPropertyChanging();
 					this._SocietyType = value;
+					this.SendPropertyChanged("SocietyType");
+					this.OnSocietyTypeChanged();
 				}
 			}
 		}
@@ -6020,8 +6110,52 @@ namespace SmartSocietyAPI
 			{
 				if ((this._LatLong != value))
 				{
+					this.OnLatLongChanging(value);
+					this.SendPropertyChanging();
 					this._LatLong = value;
+					this.SendPropertyChanged("LatLong");
+					this.OnLatLongChanged();
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}

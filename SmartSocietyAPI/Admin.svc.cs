@@ -189,6 +189,7 @@ namespace SmartSocietyAPI
         {
             var DC = new DataClassesDataContext();
             tblSociety SocietyInfoObj = (from ob in DC.tblSocieties
+                                         where ob.ID==1
                                          select ob).Single();
             SocietyInfoObj.Name = Name;
             SocietyInfoObj.Address = Address;
@@ -203,8 +204,7 @@ namespace SmartSocietyAPI
             SocietyInfoObj.CampusArea = CampusArea;
             SocietyInfoObj.SocietyType = SocietyType;
             SocietyInfoObj.LatLong = LatLong;
-
-            DC.tblSocieties.InsertOnSubmit(SocietyInfoObj);
+            
             DC.SubmitChanges();
 
             return true;

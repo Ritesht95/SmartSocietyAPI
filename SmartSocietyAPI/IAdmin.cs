@@ -78,5 +78,17 @@ namespace SmartSocietyAPI
         object EditNotice(int NoticeID, string Title, string Description, int Priority, int CreatedBy, bool IsActive);
 
         /* Notices */
+
+        /* Vendors */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AddNewVendor/{VendorName,Address,Location}", ResponseFormat = WebMessageFormat.Json)]
+        object AddNewVendor(string VendorName, string Address, string Location);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "EditVendor/{VendorID,VendorName,Address,Location,IsActive}", ResponseFormat = WebMessageFormat.Json)]
+        object EditVendor(int VendorID, string VendorName, string Address, string Location, bool IsActive);
+
+        /* Vendors */
     }
 }

@@ -36,5 +36,13 @@ namespace SmartSocietyAPI
         object ViewAllNotices(string FromDate = "0", string ToDate = "0", int Priority = 0);
 
         /* Notices */
+
+        /* Vendors */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "ViewAllVendors/", ResponseFormat = WebMessageFormat.Json)]
+        object ViewAllVendors();
+
+        /* Vendors */
     }
 }

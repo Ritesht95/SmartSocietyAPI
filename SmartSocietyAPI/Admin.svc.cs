@@ -471,5 +471,41 @@ namespace SmartSocietyAPI
         }
 
         /* Notices */
+
+        /* Vendors */
+        
+        public object AddNewVendor(string VendorName, string Address, string Location)
+        {
+            var DC = new DataClassesDataContext();
+            tblVendor VendorObj = new tblVendor();
+            VendorObj.VendorName = VendorName;
+            VendorObj.Address = Address;
+            VendorObj.Location = Location;
+            VendorObj.IsActive = true;
+            VendorObj.Ratings = 0;
+            VendorObj.RatingsNum = 0;
+
+            DC.tblVendors.InsertOnSubmit(VendorObj);
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object EditVendor(int VendorID, string VendorName, string Address, string Location, bool IsActive)
+        {
+            var DC = new DataClassesDataContext();
+            tblVendor VendorObj = (from ob in DC.tblVendors
+                                   where ob.VendorID == VendorID
+                                   select ob).Single();
+            VendorObj.VendorName = VendorName;
+            VendorObj.Address = Address;
+            VendorObj.Location = Location;
+            VendorObj.IsActive = IsActive;
+
+            DC.SubmitChanges();
+            return true;
+        }
+
+        /* Vendors */
     }
 }

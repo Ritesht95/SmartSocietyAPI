@@ -45,5 +45,13 @@ namespace SmartSocietyAPI
         object GateCheckOut(int VisitorID);
 
         /* Gatekeeping */
+
+        /* Vendors */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AddVendorRating/{VendorID,Rating}", ResponseFormat = WebMessageFormat.Json)]
+        object AddVendorRating(int VendorID, double Rating);
+
+        /* Vendors */
     }
 }

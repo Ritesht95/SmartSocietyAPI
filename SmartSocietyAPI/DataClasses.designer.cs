@@ -33,9 +33,9 @@ namespace SmartSocietyAPI
     partial void InserttblAccount(tblAccount instance);
     partial void UpdatetblAccount(tblAccount instance);
     partial void DeletetblAccount(tblAccount instance);
-    partial void InserttblVisitor(tblVisitor instance);
-    partial void UpdatetblVisitor(tblVisitor instance);
-    partial void DeletetblVisitor(tblVisitor instance);
+    partial void InserttblVendor(tblVendor instance);
+    partial void UpdatetblVendor(tblVendor instance);
+    partial void DeletetblVendor(tblVendor instance);
     partial void InserttblAlbum(tblAlbum instance);
     partial void UpdatetblAlbum(tblAlbum instance);
     partial void DeletetblAlbum(tblAlbum instance);
@@ -120,6 +120,9 @@ namespace SmartSocietyAPI
     partial void InserttblTransaction(tblTransaction instance);
     partial void UpdatetblTransaction(tblTransaction instance);
     partial void DeletetblTransaction(tblTransaction instance);
+    partial void InserttblVisitor(tblVisitor instance);
+    partial void UpdatetblVisitor(tblVisitor instance);
+    partial void DeletetblVisitor(tblVisitor instance);
     #endregion
 		
 		public DataClassesDataContext() : 
@@ -160,11 +163,11 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		public System.Data.Linq.Table<tblVisitor> tblVisitors
+		public System.Data.Linq.Table<tblVendor> tblVendors
 		{
 			get
 			{
-				return this.GetTable<tblVisitor>();
+				return this.GetTable<tblVendor>();
 			}
 		}
 		
@@ -407,6 +410,14 @@ namespace SmartSocietyAPI
 				return this.GetTable<tblTransaction>();
 			}
 		}
+		
+		public System.Data.Linq.Table<tblVisitor> tblVisitors
+		{
+			get
+			{
+				return this.GetTable<tblVisitor>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblAccounts")]
@@ -519,211 +530,187 @@ namespace SmartSocietyAPI
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblVisitors")]
-	public partial class tblVisitor : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="ritesroq.tblVendors")]
+	public partial class tblVendor : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _VisitorID;
+		private int _VendorID;
 		
-		private string _VisitorName;
+		private string _VendorName;
 		
-		private string _FlatNo;
+		private string _Address;
 		
-		private System.DateTime _InTime;
+		private string _Location;
 		
-		private System.Nullable<System.DateTime> _OutTime;
+		private System.Nullable<decimal> _Ratings;
 		
-		private string _Purpose;
+		private System.Nullable<int> _RatingsNum;
 		
-		private string _VehicleNumber;
-		
-		private string _MobileNo;
+		private bool _IsActive;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnVisitorIDChanging(int value);
-    partial void OnVisitorIDChanged();
-    partial void OnVisitorNameChanging(string value);
-    partial void OnVisitorNameChanged();
-    partial void OnFlatNoChanging(string value);
-    partial void OnFlatNoChanged();
-    partial void OnInTimeChanging(System.DateTime value);
-    partial void OnInTimeChanged();
-    partial void OnOutTimeChanging(System.Nullable<System.DateTime> value);
-    partial void OnOutTimeChanged();
-    partial void OnPurposeChanging(string value);
-    partial void OnPurposeChanged();
-    partial void OnVehicleNumberChanging(string value);
-    partial void OnVehicleNumberChanged();
-    partial void OnMobileNoChanging(string value);
-    partial void OnMobileNoChanged();
+    partial void OnVendorIDChanging(int value);
+    partial void OnVendorIDChanged();
+    partial void OnVendorNameChanging(string value);
+    partial void OnVendorNameChanged();
+    partial void OnAddressChanging(string value);
+    partial void OnAddressChanged();
+    partial void OnLocationChanging(string value);
+    partial void OnLocationChanged();
+    partial void OnRatingsChanging(System.Nullable<decimal> value);
+    partial void OnRatingsChanged();
+    partial void OnRatingsNumChanging(System.Nullable<int> value);
+    partial void OnRatingsNumChanged();
+    partial void OnIsActiveChanging(bool value);
+    partial void OnIsActiveChanged();
     #endregion
 		
-		public tblVisitor()
+		public tblVendor()
 		{
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VisitorID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int VisitorID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VendorID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int VendorID
 		{
 			get
 			{
-				return this._VisitorID;
+				return this._VendorID;
 			}
 			set
 			{
-				if ((this._VisitorID != value))
+				if ((this._VendorID != value))
 				{
-					this.OnVisitorIDChanging(value);
+					this.OnVendorIDChanging(value);
 					this.SendPropertyChanging();
-					this._VisitorID = value;
-					this.SendPropertyChanged("VisitorID");
-					this.OnVisitorIDChanged();
+					this._VendorID = value;
+					this.SendPropertyChanged("VendorID");
+					this.OnVendorIDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VisitorName", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string VisitorName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VendorName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string VendorName
 		{
 			get
 			{
-				return this._VisitorName;
+				return this._VendorName;
 			}
 			set
 			{
-				if ((this._VisitorName != value))
+				if ((this._VendorName != value))
 				{
-					this.OnVisitorNameChanging(value);
+					this.OnVendorNameChanging(value);
 					this.SendPropertyChanging();
-					this._VisitorName = value;
-					this.SendPropertyChanged("VisitorName");
-					this.OnVisitorNameChanged();
+					this._VendorName = value;
+					this.SendPropertyChanged("VendorName");
+					this.OnVendorNameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string FlatNo
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string Address
 		{
 			get
 			{
-				return this._FlatNo;
+				return this._Address;
 			}
 			set
 			{
-				if ((this._FlatNo != value))
+				if ((this._Address != value))
 				{
-					this.OnFlatNoChanging(value);
+					this.OnAddressChanging(value);
 					this.SendPropertyChanging();
-					this._FlatNo = value;
-					this.SendPropertyChanged("FlatNo");
-					this.OnFlatNoChanged();
+					this._Address = value;
+					this.SendPropertyChanged("Address");
+					this.OnAddressChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InTime", DbType="DateTime NOT NULL")]
-		public System.DateTime InTime
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Location", DbType="VarChar(25)")]
+		public string Location
 		{
 			get
 			{
-				return this._InTime;
+				return this._Location;
 			}
 			set
 			{
-				if ((this._InTime != value))
+				if ((this._Location != value))
 				{
-					this.OnInTimeChanging(value);
+					this.OnLocationChanging(value);
 					this.SendPropertyChanging();
-					this._InTime = value;
-					this.SendPropertyChanged("InTime");
-					this.OnInTimeChanged();
+					this._Location = value;
+					this.SendPropertyChanged("Location");
+					this.OnLocationChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OutTime", DbType="DateTime")]
-		public System.Nullable<System.DateTime> OutTime
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ratings", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> Ratings
 		{
 			get
 			{
-				return this._OutTime;
+				return this._Ratings;
 			}
 			set
 			{
-				if ((this._OutTime != value))
+				if ((this._Ratings != value))
 				{
-					this.OnOutTimeChanging(value);
+					this.OnRatingsChanging(value);
 					this.SendPropertyChanging();
-					this._OutTime = value;
-					this.SendPropertyChanged("OutTime");
-					this.OnOutTimeChanged();
+					this._Ratings = value;
+					this.SendPropertyChanged("Ratings");
+					this.OnRatingsChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Purpose", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
-		public string Purpose
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingsNum", DbType="Int")]
+		public System.Nullable<int> RatingsNum
 		{
 			get
 			{
-				return this._Purpose;
+				return this._RatingsNum;
 			}
 			set
 			{
-				if ((this._Purpose != value))
+				if ((this._RatingsNum != value))
 				{
-					this.OnPurposeChanging(value);
+					this.OnRatingsNumChanging(value);
 					this.SendPropertyChanging();
-					this._Purpose = value;
-					this.SendPropertyChanged("Purpose");
-					this.OnPurposeChanged();
+					this._RatingsNum = value;
+					this.SendPropertyChanged("RatingsNum");
+					this.OnRatingsNumChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VehicleNumber", DbType="VarChar(20)")]
-		public string VehicleNumber
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
+		public bool IsActive
 		{
 			get
 			{
-				return this._VehicleNumber;
+				return this._IsActive;
 			}
 			set
 			{
-				if ((this._VehicleNumber != value))
+				if ((this._IsActive != value))
 				{
-					this.OnVehicleNumberChanging(value);
+					this.OnIsActiveChanging(value);
 					this.SendPropertyChanging();
-					this._VehicleNumber = value;
-					this.SendPropertyChanged("VehicleNumber");
-					this.OnVehicleNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MobileNo", DbType="VarChar(15) NOT NULL", CanBeNull=false)]
-		public string MobileNo
-		{
-			get
-			{
-				return this._MobileNo;
-			}
-			set
-			{
-				if ((this._MobileNo != value))
-				{
-					this.OnMobileNoChanging(value);
-					this.SendPropertyChanging();
-					this._MobileNo = value;
-					this.SendPropertyChanged("MobileNo");
-					this.OnMobileNoChanged();
+					this._IsActive = value;
+					this.SendPropertyChanged("IsActive");
+					this.OnIsActiveChanged();
 				}
 			}
 		}
@@ -6594,6 +6581,236 @@ namespace SmartSocietyAPI
 					this._Status = value;
 					this.SendPropertyChanged("Status");
 					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblVisitors")]
+	public partial class tblVisitor : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _VisitorID;
+		
+		private string _VisitorName;
+		
+		private string _FlatNo;
+		
+		private System.DateTime _InTime;
+		
+		private System.Nullable<System.DateTime> _OutTime;
+		
+		private string _Purpose;
+		
+		private string _VehicleNumber;
+		
+		private string _MobileNo;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnVisitorIDChanging(int value);
+    partial void OnVisitorIDChanged();
+    partial void OnVisitorNameChanging(string value);
+    partial void OnVisitorNameChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
+    partial void OnInTimeChanging(System.DateTime value);
+    partial void OnInTimeChanged();
+    partial void OnOutTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnOutTimeChanged();
+    partial void OnPurposeChanging(string value);
+    partial void OnPurposeChanged();
+    partial void OnVehicleNumberChanging(string value);
+    partial void OnVehicleNumberChanged();
+    partial void OnMobileNoChanging(string value);
+    partial void OnMobileNoChanged();
+    #endregion
+		
+		public tblVisitor()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VisitorID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int VisitorID
+		{
+			get
+			{
+				return this._VisitorID;
+			}
+			set
+			{
+				if ((this._VisitorID != value))
+				{
+					this.OnVisitorIDChanging(value);
+					this.SendPropertyChanging();
+					this._VisitorID = value;
+					this.SendPropertyChanged("VisitorID");
+					this.OnVisitorIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VisitorName", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string VisitorName
+		{
+			get
+			{
+				return this._VisitorName;
+			}
+			set
+			{
+				if ((this._VisitorName != value))
+				{
+					this.OnVisitorNameChanging(value);
+					this.SendPropertyChanging();
+					this._VisitorName = value;
+					this.SendPropertyChanged("VisitorName");
+					this.OnVisitorNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
+		{
+			get
+			{
+				return this._FlatNo;
+			}
+			set
+			{
+				if ((this._FlatNo != value))
+				{
+					this.OnFlatNoChanging(value);
+					this.SendPropertyChanging();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InTime", DbType="DateTime NOT NULL")]
+		public System.DateTime InTime
+		{
+			get
+			{
+				return this._InTime;
+			}
+			set
+			{
+				if ((this._InTime != value))
+				{
+					this.OnInTimeChanging(value);
+					this.SendPropertyChanging();
+					this._InTime = value;
+					this.SendPropertyChanged("InTime");
+					this.OnInTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OutTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> OutTime
+		{
+			get
+			{
+				return this._OutTime;
+			}
+			set
+			{
+				if ((this._OutTime != value))
+				{
+					this.OnOutTimeChanging(value);
+					this.SendPropertyChanging();
+					this._OutTime = value;
+					this.SendPropertyChanged("OutTime");
+					this.OnOutTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Purpose", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string Purpose
+		{
+			get
+			{
+				return this._Purpose;
+			}
+			set
+			{
+				if ((this._Purpose != value))
+				{
+					this.OnPurposeChanging(value);
+					this.SendPropertyChanging();
+					this._Purpose = value;
+					this.SendPropertyChanged("Purpose");
+					this.OnPurposeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VehicleNumber", DbType="VarChar(20)")]
+		public string VehicleNumber
+		{
+			get
+			{
+				return this._VehicleNumber;
+			}
+			set
+			{
+				if ((this._VehicleNumber != value))
+				{
+					this.OnVehicleNumberChanging(value);
+					this.SendPropertyChanging();
+					this._VehicleNumber = value;
+					this.SendPropertyChanged("VehicleNumber");
+					this.OnVehicleNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MobileNo", DbType="VarChar(15) NOT NULL", CanBeNull=false)]
+		public string MobileNo
+		{
+			get
+			{
+				return this._MobileNo;
+			}
+			set
+			{
+				if ((this._MobileNo != value))
+				{
+					this.OnMobileNoChanging(value);
+					this.SendPropertyChanging();
+					this._MobileNo = value;
+					this.SendPropertyChanged("MobileNo");
+					this.OnMobileNoChanged();
 				}
 			}
 		}

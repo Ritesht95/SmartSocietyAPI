@@ -22,8 +22,8 @@ namespace SmartSocietyAPI
                 SmtpClient smtp = new SmtpClient();
                 smtp.Host = "smtp.gmail.com";
                 //smtp.Host = "relay-hosting.secureserver.net";
-                smtp.Port = 587;
-                //smtp.Port = 25;
+                //smtp.Port = 587;
+                smtp.Port = 25;
                 smtp.UseDefaultCredentials = false;
                 //smtp.EnableSsl = false;
                 smtp.EnableSsl = true;
@@ -214,7 +214,25 @@ namespace SmartSocietyAPI
 
             return "True";
         }
-        
+
         /* Gatekeeping */
+
+        /* Vendors */
+
+        public object AddVendorRating(int VendorID, double Rating)
+        {
+            var DC = new DataClassesDataContext();
+            var VendorObj = (from ob in DC.tblVendors
+                             where ob.VendorID == VendorID
+                             select ob).Single();
+            double ratings = (double)(VendorObj.RatingsNum * VendorObj.Ratings);
+            VendorObj.Ratings = (decimal)((ratings + Rating)/(++VendorObj.RatingsNum));
+
+            DC.SubmitChanges();
+
+            return "True";
+        }
+
+        /* Vendors */
     }
 }

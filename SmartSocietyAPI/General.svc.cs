@@ -178,5 +178,18 @@ namespace SmartSocietyAPI
         }
 
         /* Notices */
+
+        /* Vendors */
+        
+        public object ViewAllVendors()
+        {
+            var DC = new DataClassesDataContext();
+            var VendorsData = (from ob in DC.tblVendors
+                               where ob.IsActive == true
+                               select ob);
+            return JsonConvert.SerializeObject(VendorsData);
+        }
+
+        /* Vendors */
     }
 }

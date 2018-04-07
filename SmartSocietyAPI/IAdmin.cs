@@ -66,5 +66,17 @@ namespace SmartSocietyAPI
         object EditStaffMember(int MemberID, string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, string CreatedBy, bool IsActive);
 
         /*Society Setup*/
+
+        /* Notices */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AddNotice/{Title,Description,Priority,CreatedBy}", ResponseFormat = WebMessageFormat.Json)]
+        object AddNotice(string Title, string Description, int Priority, int CreatedBy);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "EditNotice/{NoticeID,Title,Description,Priority,CreatedBy,IsActive}", ResponseFormat = WebMessageFormat.Json)]
+        object EditNotice(int NoticeID, string Title, string Description, int Priority, int CreatedBy, bool IsActive);
+
+        /* Notices */
     }
 }

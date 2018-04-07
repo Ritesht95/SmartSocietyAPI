@@ -28,5 +28,13 @@ namespace SmartSocietyAPI
         object ViewGateKeeping(bool CheckedInOnly = false, string FromDate = "0", string ToDate = "0", string FlatNo="-1");
 
         /* Gatekeeping */
+
+        /* Notices */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "ViewAllNotices/{FromDate,ToDate,Priority}", ResponseFormat = WebMessageFormat.Json)]
+        object ViewAllNotices(string FromDate = "0", string ToDate = "0", int Priority = 0);
+
+        /* Notices */
     }
 }

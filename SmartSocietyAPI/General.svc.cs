@@ -147,5 +147,36 @@ namespace SmartSocietyAPI
         }
 
         /* Gatekeeping */
+
+        /* Notices */
+
+        public object ViewAllNotices(string FromDate = "0", string ToDate = "0", int Priority = 0)
+        {
+            var DC = new DataClassesDataContext();
+            IQueryable<tblNotice> NoticesData;
+            if (Priority == 0)
+            {
+                NoticesData = (from ob in DC.tblNotices
+                               where ob.IsActive == true
+                               select ob);
+            }
+            else
+            {
+                NoticesData= (from ob in DC.tblNotices
+                              where ob.IsActive == true && ob.Priority==Priority
+                              select ob);
+            }
+
+            if(FromDate!="0" && ToDate != "0")
+            {
+                NoticesData = (from ob in NoticesData
+                               where ob.CreatedOn >= Convert.ToDateTime(FromDate) && ob.CreatedOn <= Convert.ToDateTime(ToDate)
+                               select ob);
+            }
+
+            return JsonConvert.SerializeObject(NoticesData);
+        }
+
+        /* Notices */
     }
 }

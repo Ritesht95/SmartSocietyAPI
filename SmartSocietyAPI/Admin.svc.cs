@@ -562,7 +562,7 @@ namespace SmartSocietyAPI
 
         /* FacilityBookings */
 
-        public object AddFacilities(string FacilityName, int RatePerHour)
+        public object AddFacility(string FacilityName, int RatePerHour)
         {
             var DC = new DataClassesDataContext();
             tblFacility FacilityObj = new tblFacility();
@@ -617,71 +617,6 @@ namespace SmartSocietyAPI
 
         /* FacilityBookings */
 
-        /* Staff Members */
-
-        public object AddStaffMember(string MemberName, string MemberType, string DOB, string Contact1, string Contact2, string Image, string IDProofDoc, string Address, string DOJ, string DOL, int CreatedBy)
-        {
-            var DC = new DataClassesDataContext();
-            tblStaffMember StaffMemberObj = new tblStaffMember();
-            StaffMemberObj.MemberName = MemberName;
-            StaffMemberObj.MemberType = MemberType;
-            StaffMemberObj.DOB = Convert.ToDateTime(DOB).Date;
-            StaffMemberObj.DOJ = Convert.ToDateTime(DOJ).Date;
-            var date = Convert.ToDateTime(DOL).Date;
-            if (DOL != "0")
-            {
-                StaffMemberObj.DOL = date;
-            }
-            else
-            {
-                StaffMemberObj.DOL = null;
-            }
-            StaffMemberObj.ContactNo1 = Contact1;
-            StaffMemberObj.ContactNo2 = Contact2;
-            StaffMemberObj.Image = Image;
-            StaffMemberObj.IDProofDoc = IDProofDoc;
-            StaffMemberObj.Address = Address;
-            StaffMemberObj.CreatedBy = CreatedBy;
-            StaffMemberObj.IsActive = true;
-
-            DC.tblStaffMembers.InsertOnSubmit(StaffMemberObj);
-            DC.SubmitChanges();
-
-            return true;
-        }
-
-        public object EditStaffMember(int MemberID, string MemberName, string MemberType, string DOB, string Contact1, string Contact2, string Image, string IDProofDoc, string Address, string DOJ, string DOL, string CreatedBy, bool IsActive)
-        {
-            var DC = new DataClassesDataContext();
-            tblStaffMember StaffMemberObj = (from ob in DC.tblStaffMembers
-                                             where ob.MemberID == MemberID
-                                             select ob).Single();
-            StaffMemberObj.MemberName = MemberName;
-            StaffMemberObj.MemberType = MemberType;
-            StaffMemberObj.DOB = Convert.ToDateTime(DOB).Date;
-            StaffMemberObj.DOJ = Convert.ToDateTime(DOJ).Date;
-            var date = Convert.ToDateTime(DOL).Date;
-            if (DOL != "0")
-            {
-                StaffMemberObj.DOL = date;
-            }
-            else
-            {
-                StaffMemberObj.DOL = null;
-            }
-            StaffMemberObj.ContactNo1 = Contact1;
-            StaffMemberObj.ContactNo2 = Contact2;
-            StaffMemberObj.Image = Image;
-            StaffMemberObj.IDProofDoc = IDProofDoc;
-            StaffMemberObj.Address = Address;
-            StaffMemberObj.IsActive = IsActive;
-
-            DC.tblStaffMembers.InsertOnSubmit(StaffMemberObj);
-            DC.SubmitChanges();
-
-            return true;
-        }
-
-        /* Staff Members */
+       
     }
 }

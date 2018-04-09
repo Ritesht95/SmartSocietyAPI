@@ -59,11 +59,11 @@ namespace SmartSocietyAPI
 
         [OperationContract]
         [WebGet(UriTemplate = "AddStaffMember/{Name, MemberType, DOB, Contact1, Contact2, Image, Address, DOJ, DOL, CreatedBy}", ResponseFormat = WebMessageFormat.Json)]
-        object AddStaffMember(string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, string CreatedBy);
+        object AddStaffMember(string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, int CreatedBy);
 
         [OperationContract]
         [WebGet(UriTemplate = "EditStaffMember/{MemberID, Name, MemberType, DOB, Contact1, Contact2, Image, Address, DOJ, DOL, CreatedBy, IsActive}", ResponseFormat = WebMessageFormat.Json)]
-        object EditStaffMember(int MemberID, string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, string CreatedBy, bool IsActive);
+        object EditStaffMember(int MemberID, string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, int CreatedBy, bool IsActive);
 
         /*Society Setup*/
 
@@ -126,17 +126,5 @@ namespace SmartSocietyAPI
         object ApprovalOfBooking(int BookingID, bool Approval, int ApprovedBy);
 
         /* FacilityBookings */
-
-        /* Staff Members */
-
-        [OperationContract]
-        [WebGet(UriTemplate = "AddStaffMember/{MemberName,MemberType,DOB,Contact1,Contact2,Image,IDProofDoc,Address,DOJ,DOL,CreatedBy}", ResponseFormat = WebMessageFormat.Json)]
-        object AddStaffMember(string MemberName, string MemberType, string DOB, string Contact1, string Contact2, string Image, string IDProofDoc, string Address, string DOJ, string DOL, string CreatedBy);
-
-        [OperationContract]
-        [WebGet(UriTemplate = "EditStaffMember/{MemberID,MemberName,MemberType,DOB,Contact1,Contact2,Image,IDProofDoc,Address,DOJ,DOL,CreatedBy,IsActive}", ResponseFormat = WebMessageFormat.Json)]
-        object EditStaffMember(int MemberID, string MemberName, string MemberType, string DOB, string Contact1, string Contact2, string Image, string IDProofDoc, string Address, string DOJ, string DOL, string CreatedBy, bool IsActive);
-
-        /* Staff Members */
     }
 }

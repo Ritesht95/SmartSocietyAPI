@@ -234,5 +234,39 @@ namespace SmartSocietyAPI
         }
 
         /* Vendors */
+
+        /* Events */
+
+        /* Events */
+
+        /* FacilityBookings */        
+            
+        public object ProposeFacilityBooking(int FacilityID, string FlatNo, string StartTime, string EndTime, string Purpose, string Description)
+        {
+            var DC = new DataClassesDataContext();
+            tblBooking BookingObj = new tblBooking();
+            BookingObj.FacilityID = FacilityID;
+            BookingObj.FlatNo = FlatNo;
+            BookingObj.StartTime = Convert.ToDateTime(StartTime);
+            BookingObj.EndTime = Convert.ToDateTime(EndTime);
+            BookingObj.Status = "Panel Review Pending";
+            BookingObj.Purpose = Purpose;
+            BookingObj.Description = Description;
+            BookingObj.IsApproved = false;
+            BookingObj.IsActive = true;
+
+            DC.tblBookings.InsertOnSubmit(BookingObj);
+            DC.SubmitChanges();
+
+            return "True";
+        }
+
+        /* FacilityBookings */
+
+        /* Staff Members */
+
+
+
+        /* Staff Members */
     }
 }

@@ -17,9 +17,10 @@ namespace SmartSocietyAPI
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            SmartSocietyAPI.Client ServiceObject = new SmartSocietyAPI.Client();
+            SmartSocietyAPI.Admin ServiceObject = new SmartSocietyAPI.Admin();
+            SmartSocietyAPI.General ServiceObject1 = new SmartSocietyAPI.General();
             Response.Write(Encryptdata("12345"));
-            Response.Write(ServiceObject.CheckLogin("8866699878", "12345"));
+            Response.Write(ServiceObject1.ViewGateKeeping(false,"0","0","-1"));
         }
     }
 }

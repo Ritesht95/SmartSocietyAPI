@@ -83,12 +83,60 @@ namespace SmartSocietyAPI
 
         [OperationContract]
         [WebGet(UriTemplate = "AddNewVendor/{VendorName,Address,Location}", ResponseFormat = WebMessageFormat.Json)]
-        object AddNewVendor(string VendorName, string Address, string Location);
+        object AddNewVendor(string VendorName, string Address, string Location, string VendorType, string Description);
 
         [OperationContract]
         [WebGet(UriTemplate = "EditVendor/{VendorID,VendorName,Address,Location,IsActive}", ResponseFormat = WebMessageFormat.Json)]
-        object EditVendor(int VendorID, string VendorName, string Address, string Location, bool IsActive);
+        object EditVendor(int VendorID, string VendorName, string Address, string Location, string VendorType, string Description, bool IsActive);
 
         /* Vendors */
+
+        /* Events */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GetAllEventTypes/", ResponseFormat = WebMessageFormat.Json)]
+        object GetAllEventTypes();
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AddEvent/{EventName,EventTypeID,Venue,StartTime,EndTime,Subject,Description,Priority,CreatedBy}", ResponseFormat = WebMessageFormat.Json)]
+        object AddEvent(string EventName, int EventTypeID, string Venue, string StartTime, string EndTime, string Subject, string Description, int Priority, int CreatedBy);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "EditEvent/{EventID,EventName,EventTypeID,Venue,StartTime,EndTime,Subject,Description,Priority,CreatedBy,IsActive}", ResponseFormat = WebMessageFormat.Json)]
+        object EditEvent(int EventID, string EventName, int EventTypeID, string Venue, string StartTime, string EndTime, string Subject, string Description, int Priority, int CreatedBy, bool IsActive);
+
+        /* Events */
+
+        /* FacilityBookings */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AddFacility/{FacilityName,RatePerHour}", ResponseFormat = WebMessageFormat.Json)]
+        object AddFacility(string FacilityName, int RatePerHour);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "EditFacility/{FacilityID,FacilityName,RatePerHour,IsActive}", ResponseFormat = WebMessageFormat.Json)]
+        object EditFacility(int FacilityID, string FacilityName, int RatePerHour, bool IsActive);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "ViewAllBookingProposals/", ResponseFormat = WebMessageFormat.Json)]
+        object ViewAllBookingProposals();
+
+        [OperationContract]
+        [WebGet(UriTemplate = "ApprovalOfBooking/{BookingID,Approval,ApprovedBy}", ResponseFormat = WebMessageFormat.Json)]
+        object ApprovalOfBooking(int BookingID, bool Approval, int ApprovedBy);
+
+        /* FacilityBookings */
+
+        /* Staff Members */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AddStaffMember/{MemberName,MemberType,DOB,Contact1,Contact2,Image,IDProofDoc,Address,DOJ,DOL,CreatedBy}", ResponseFormat = WebMessageFormat.Json)]
+        object AddStaffMember(string MemberName, string MemberType, string DOB, string Contact1, string Contact2, string Image, string IDProofDoc, string Address, string DOJ, string DOL, string CreatedBy);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "EditStaffMember/{MemberID,MemberName,MemberType,DOB,Contact1,Contact2,Image,IDProofDoc,Address,DOJ,DOL,CreatedBy,IsActive}", ResponseFormat = WebMessageFormat.Json)]
+        object EditStaffMember(int MemberID, string MemberName, string MemberType, string DOB, string Contact1, string Contact2, string Image, string IDProofDoc, string Address, string DOJ, string DOL, string CreatedBy, bool IsActive);
+
+        /* Staff Members */
     }
 }

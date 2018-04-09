@@ -6,4 +6,3 @@ F:\MyProjects\SmartSociety\SmartSocietyAPI\SmartSocietyAPI\bin\Newtonsoft.Json.x
 F:\MyProjects\SmartSociety\SmartSocietyAPI\SmartSocietyAPI\obj\Debug\SmartSocietyAPI.csproj.CoreCompileInputs.cache
 F:\MyProjects\SmartSociety\SmartSocietyAPI\SmartSocietyAPI\obj\Debug\SmartSocietyAPI.dll
 F:\MyProjects\SmartSociety\SmartSocietyAPI\SmartSocietyAPI\obj\Debug\SmartSocietyAPI.pdb
-F:\MyProjects\SmartSociety\SmartSocietyAPI\SmartSocietyAPI\obj\Debug\SmartSocietyAPI.csprojResolveAssemblyReference.cache

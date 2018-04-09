@@ -42,7 +42,7 @@ namespace SmartSocietyAPI
         /* Society Setup */
 
         // 0 for All, 1 for Current, -1 for Past Members
-        public object GetAllResidentsDetails(int FlagMemType=0) 
+        public object GetAllResidentsDetails(int FlagMemType = 0)
         {
             var DC = new DataClassesDataContext();
             IQueryable<tblResident> ObjAllResidents;
@@ -54,7 +54,7 @@ namespace SmartSocietyAPI
             else if (FlagMemType == 1)
             {
                 ObjAllResidents = (from ob in DC.tblResidents
-                                   where ob.IsActive==true
+                                   where ob.IsActive == true
                                    select ob);
             }
             else
@@ -67,26 +67,58 @@ namespace SmartSocietyAPI
         }
 
         // 0 for All, 1 for Owners, -1 for On Rent Flats
-        public object GetAllFlatDetails(int FlagFlatType = 0) 
+        public object GetAllFlatDetails(int FlagFlatType = 0)
         {
             var DC = new DataClassesDataContext();
-            IQueryable<tblFlat> ObjAllFlats;
+            IQueryable<object> ObjAllFlats;
             if (FlagFlatType == 0)
             {
                 ObjAllFlats = (from ob in DC.tblFlats
-                                   select ob);
+                               join obfh in DC.tblFlatHolders on ob.FlatNo equals obfh.FlatNo
+                               join obr in DC.tblResidents on obfh.ResidentID equals obr.ResidentID
+                               select new
+                               {
+                                   ob.FlatNo,
+                                   ob.OnRent,
+                                   ob.TenamentNo,
+                                   obr.ResidentName,
+                                   RenteeName = (from obre in DC.tblRents
+                                                 join obr1 in DC.tblResidents on obre.ResidentID equals obr1.ResidentID
+                                                 where obfh.IsActive == true
+                                                 select obr1.ResidentName).Single().ToString()
+                               });
             }
             else if (FlagFlatType == 1)
             {
                 ObjAllFlats = (from ob in DC.tblFlats
-                                   where ob.OnRent == true
-                                   select ob);
+                               join obfh in DC.tblFlatHolders on ob.FlatNo equals obfh.FlatNo
+                               join obr in DC.tblResidents on obfh.ResidentID equals obr.ResidentID
+                               where obfh.IsActive == true && ob.OnRent == false
+                               select new
+                               {
+                                   ob.FlatNo,
+                                   ob.OnRent,
+                                   ob.TenamentNo,
+                                   obr.ResidentName
+                               });
             }
             else
             {
                 ObjAllFlats = (from ob in DC.tblFlats
-                                   where ob.OnRent == false
-                                   select ob);
+                               join obfh in DC.tblFlatHolders on ob.FlatNo equals obfh.FlatNo
+                               join obr in DC.tblResidents on obfh.ResidentID equals obr.ResidentID
+                               where obfh.IsActive == true && ob.OnRent == true
+                               select new
+                               {
+                                   ob.FlatNo,
+                                   ob.OnRent,
+                                   ob.TenamentNo,
+                                   obr.ResidentName,
+                                   RenteeName = (from obre in DC.tblRents
+                                                 join obr1 in DC.tblResidents on obre.ResidentID equals obr1.ResidentID
+                                                 where obfh.IsActive == true
+                                                 select obr1.ResidentName).Single().ToString()
+                               });
             }
             return JsonConvert.SerializeObject(ObjAllFlats);
         }
@@ -162,12 +194,12 @@ namespace SmartSocietyAPI
             }
             else
             {
-                NoticesData= (from ob in DC.tblNotices
-                              where ob.IsActive == true && ob.Priority==Priority
-                              select ob);
+                NoticesData = (from ob in DC.tblNotices
+                               where ob.IsActive == true && ob.Priority == Priority
+                               select ob);
             }
 
-            if(FromDate!="0" && ToDate != "0")
+            if (FromDate != "0" && ToDate != "0")
             {
                 NoticesData = (from ob in NoticesData
                                where ob.CreatedOn >= Convert.ToDateTime(FromDate) && ob.CreatedOn <= Convert.ToDateTime(ToDate)
@@ -180,7 +212,7 @@ namespace SmartSocietyAPI
         /* Notices */
 
         /* Vendors */
-        
+
         public object ViewAllVendors()
         {
             var DC = new DataClassesDataContext();
@@ -191,5 +223,79 @@ namespace SmartSocietyAPI
         }
 
         /* Vendors */
+
+        /* Events */
+
+        public object ViewAllEvents(string FromDate = "0", string ToDate = "0", int Priority = 0)
+        {
+            var DC = new DataClassesDataContext();
+            IQueryable<tblEvent> EventsData;
+            if (Priority == 0)
+            {
+                EventsData = (from ob in DC.tblEvents
+                              join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
+                              join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                              select ob);
+            }
+            else
+            {
+                EventsData = (from ob in DC.tblEvents
+                              join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
+                              join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                              where ob.Priority == Priority
+                              select ob);
+            }
+
+            if (FromDate != "0" && ToDate != "0")
+            {
+                EventsData = (from ob in EventsData
+                              where ob.StartTime >= Convert.ToDateTime(FromDate) && ob.StartTime <= Convert.ToDateTime(ToDate)
+                              select ob);
+            }
+
+            return JsonConvert.SerializeObject(EventsData);
+        }
+
+        /* Events */
+
+
+        /* FacilityBookings */
+
+        public object GetAllFacilities()
+        {
+            var DC = new DataClassesDataContext();
+            IQueryable<tblFacility> FacilitiesData = (from ob in DC.tblFacilities
+                                                      select ob);
+            return JsonConvert.SerializeObject(FacilitiesData);
+        }
+
+        /* FacilityBookings */
+
+        /* Staff Members */
+
+        public object GetAllStaffMembers()
+        {
+            var DC = new DataClassesDataContext();
+            IQueryable<object> StaffMembersData = (from ob in DC.tblStaffMembers
+                                                   join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                                                   select new
+                                                   {
+                                                       ob.MemberName,
+                                                       ob.MemberType,
+                                                       ob.DOB,
+                                                       ob.ContactNo1,
+                                                       ob.ContactNo2,
+                                                       ob.Image,
+                                                       ob.IDProofDoc,
+                                                       ob.Address,
+                                                       ob.DOJ,
+                                                       ob.DOL,
+                                                       CreatedBy = obR.ResidentName,
+                                                       ob.IsActive
+                                                   });
+            return JsonConvert.SerializeObject(StaffMembersData);
+        }
+
+        /* Staff Members */
     }
 }

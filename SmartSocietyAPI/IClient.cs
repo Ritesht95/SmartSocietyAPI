@@ -53,5 +53,19 @@ namespace SmartSocietyAPI
         object AddVendorRating(int VendorID, double Rating);
 
         /* Vendors */
+
+        /* Events */
+
+
+
+        /* Events */
+
+        /* FacilityBookings */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "ProposeFacilityBooking/{FacilityID,FlatNo,StartTime,EndTime,Purpose,Description}", ResponseFormat = WebMessageFormat.Json)]
+        object ProposeFacilityBooking(int FacilityID, string FlatNo, string StartTime, string EndTime, string Purpose, string Description);
+
+        /* FacilityBookings */
     }
 }

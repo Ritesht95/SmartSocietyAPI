@@ -9,7 +9,7 @@ namespace SmartSocietyAPI
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-    public class Admin : IAdmin 
+    public class Admin : IAdmin
     {
         private Boolean Mail(string Email, string subject, string body)
         {
@@ -102,7 +102,7 @@ namespace SmartSocietyAPI
             var DC = new DataClassesDataContext();
             var ObjLogin = (from ob in DC.tblAdminLogins
                             where ob.AdminLoginName == Username && ob.Password == Encryptdata(Password)
-                            && ob.IsBlocked==false
+                            && ob.IsBlocked == false
                             select ob);
             if (ObjLogin.Count() == 1)
             {
@@ -118,12 +118,12 @@ namespace SmartSocietyAPI
         {
             var DC = new DataClassesDataContext();
             var ObjForgotPass = (from ob in DC.tblAdminLogins
-                            where ob.AdminLoginName == Username && ob.IsBlocked == false
-                            select ob);
+                                 where ob.AdminLoginName == Username && ob.IsBlocked == false
+                                 select ob);
             if (ObjForgotPass.Count() == 1)
             {
                 var ObjData = ObjForgotPass.Single();
-                if (Mail(ObjData.Email, "Smart Society: Reset Password", "Link to reset password: http://localhost/ForgetPassword.aspx?Username="+ObjData.AdminLoginName+"<br>Regards,<br>Smart Society(Society Management System)"))
+                if (Mail(ObjData.Email, "Smart Society: Reset Password", "Link to reset password: http://localhost:49724/ForgetPassword.aspx?Username=" + ObjData.AdminLoginName + "<br>Regards,<br>Smart Society(Society Management System)"))
                 {
                     return "True";
                 }
@@ -141,20 +141,13 @@ namespace SmartSocietyAPI
         public string ResetPassword(string Username, string Password)
         {
             var DC = new DataClassesDataContext();
-            var ObjReset = (from ob in DC.tblAdminLogins
-                            where ob.AdminLoginName == Username && ob.IsBlocked == false
-                            select ob);
-            if (ObjReset.Count() == 1)
-            {
-                var ObjUser = ObjReset.Single();
-                ObjUser.Password = Encryptdata(Password);
-                DC.SubmitChanges();
-                return "True";
-            }
-            else
-            {
-                return "False";
-            }
+            tblAdminLogin ObjReset = (from ob in DC.tblAdminLogins
+                                      where ob.AdminLoginName == Username && ob.IsBlocked == false
+                                      select ob).Single();
+            ObjReset.Password = Encryptdata(Password);
+            DC.SubmitChanges();
+            return "True";
+
         }
 
         /*Login And Forgot Password*/
@@ -189,7 +182,7 @@ namespace SmartSocietyAPI
         {
             var DC = new DataClassesDataContext();
             tblSociety SocietyInfoObj = (from ob in DC.tblSocieties
-                                         where ob.ID==1
+                                         where ob.ID == 1
                                          select ob).Single();
             SocietyInfoObj.Name = Name;
             SocietyInfoObj.Address = Address;
@@ -204,7 +197,7 @@ namespace SmartSocietyAPI
             SocietyInfoObj.CampusArea = CampusArea;
             SocietyInfoObj.SocietyType = SocietyType;
             SocietyInfoObj.LatLong = LatLong;
-            
+
             DC.SubmitChanges();
 
             return true;
@@ -256,7 +249,7 @@ namespace SmartSocietyAPI
                             where ob.FlatNo == FlatNo
                             select ob).Single();
 
-            tblLogin LoginObj = new tblLogin();           
+            tblLogin LoginObj = new tblLogin();
 
             LoginObj.LoginName = FlatData.FlatNo + ((FlatData.OnRent) ? "R" : "");
             LoginObj.PhoneNo = Contact1;
@@ -270,7 +263,7 @@ namespace SmartSocietyAPI
 
             DC.tblLogins.InsertOnSubmit(LoginObj);
 
-            string Message = "<!DOCTYPE html><html><head><title>Flat Holder Registration Email</title></head><body><p>Hello,<br>&nbsp;&nbsp;&nbsp;You are registered as Flat Holder in Smart Society app.<br>&nbsp;&nbsp;&nbsp;Your login credentials are as given below.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Username: <strong>" + LoginObj.Email + " or "+LoginObj.PhoneNo+"</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password: <strong>" + Decryptdata(LoginObj.Password) + "</strong><br><br>Thank you</p></body></html>";
+            string Message = "<!DOCTYPE html><html><head><title>Flat Holder Registration Email</title></head><body><p>Hello,<br>&nbsp;&nbsp;&nbsp;You are registered as Flat Holder in Smart Society app.<br>&nbsp;&nbsp;&nbsp;Your login credentials are as given below.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Username: <strong>" + LoginObj.Email + " or " + LoginObj.PhoneNo + "</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password: <strong>" + Decryptdata(LoginObj.Password) + "</strong><br><br>Thank you</p></body></html>";
 
             Mail(Email, "Flat Holder Registration: Login Credentials", Message);
 
@@ -326,7 +319,7 @@ namespace SmartSocietyAPI
         {
             var DC = new DataClassesDataContext();
             tblAsset AssetObj = (from ob in DC.tblAssets
-                                 where ob.AssetID==AssetID
+                                 where ob.AssetID == AssetID
                                  select ob).Single();
 
             AssetObj.AssetName = AssetName;
@@ -337,13 +330,13 @@ namespace SmartSocietyAPI
             AssetObj.PurchasedOn = Convert.ToDateTime(PurchasedOn);
             AssetObj.Status = Status;
             AssetObj.IsActive = IsActive;
-            
+
             DC.SubmitChanges();
 
             return true;
         }
 
-        public object AddStaffMember(string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, string CreatedBy)
+        public object AddStaffMember(string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, int CreatedBy)
         {
             var DC = new DataClassesDataContext();
             tblStaffMember StaffObj = new tblStaffMember();
@@ -362,8 +355,8 @@ namespace SmartSocietyAPI
             StaffObj.CreatedBy = CreatedBy;
 
             DC.tblStaffMembers.InsertOnSubmit(StaffObj);
-            
-            if(MemberType=="Security Guard")
+
+            if (MemberType == "Security Guard")
             {
                 int MemberID = (from ob in DC.tblStaffMembers
                                 select ob).OrderByDescending(ob => ob.MemberID).Single().MemberID;
@@ -382,7 +375,7 @@ namespace SmartSocietyAPI
                 DC.tblLogins.InsertOnSubmit(LoginObj);
 
                 SGFlag = 1;
-                
+
                 returningObj.PhoneNo = Contact1;
                 returningObj.Password = LoginObj.Password;
             }
@@ -395,14 +388,14 @@ namespace SmartSocietyAPI
             else
             {
                 return true;
-            }            
+            }
         }
 
-        public object EditStaffMember(int MemberID, string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, string CreatedBy, bool IsActive)
+        public object EditStaffMember(int MemberID, string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, int CreatedBy, bool IsActive)
         {
             var DC = new DataClassesDataContext();
             tblStaffMember StaffObj = (from ob in DC.tblStaffMembers
-                                       where ob.MemberID==MemberID
+                                       where ob.MemberID == MemberID
                                        select ob).Single();
 
             StaffObj.MemberName = Name;
@@ -416,11 +409,11 @@ namespace SmartSocietyAPI
             StaffObj.DOL = Convert.ToDateTime(DOL);
             StaffObj.CreatedBy = CreatedBy;
             StaffObj.IsActive = IsActive;
-            
+
             if (MemberType == "Security Guard")
             {
                 tblLogin LoginObj = (from ob in DC.tblLogins
-                                     where ob.MemberID==MemberID
+                                     where ob.MemberID == MemberID
                                      select ob).Single();
                 LoginObj.PhoneNo = Contact1;
                 LoginObj.IsBlocked = !IsActive;
@@ -436,7 +429,7 @@ namespace SmartSocietyAPI
         /*Society Setup*/
 
         /* Notices */
-        
+
         public object AddNotice(string Title, string Description, int Priority, int CreatedBy)
         {
             var DC = new DataClassesDataContext();
@@ -454,7 +447,7 @@ namespace SmartSocietyAPI
             return true;
         }
 
-        public object EditNotice(int NoticeID,string Title, string Description, int Priority, int CreatedBy, bool IsActive)
+        public object EditNotice(int NoticeID, string Title, string Description, int Priority, int CreatedBy, bool IsActive)
         {
             var DC = new DataClassesDataContext();
             tblNotice NoticeObj = (from ob in DC.tblNotices
@@ -473,14 +466,16 @@ namespace SmartSocietyAPI
         /* Notices */
 
         /* Vendors */
-        
-        public object AddNewVendor(string VendorName, string Address, string Location)
+
+        public object AddNewVendor(string VendorName, string Address, string Location, string VendorType, string Description)
         {
             var DC = new DataClassesDataContext();
             tblVendor VendorObj = new tblVendor();
             VendorObj.VendorName = VendorName;
             VendorObj.Address = Address;
             VendorObj.Location = Location;
+            VendorObj.VendorType = VendorType;
+            VendorObj.Description = Description;
             VendorObj.IsActive = true;
             VendorObj.Ratings = 0;
             VendorObj.RatingsNum = 0;
@@ -491,7 +486,7 @@ namespace SmartSocietyAPI
             return true;
         }
 
-        public object EditVendor(int VendorID, string VendorName, string Address, string Location, bool IsActive)
+        public object EditVendor(int VendorID, string VendorName, string Address, string Location, string VendorType, string Description, bool IsActive)
         {
             var DC = new DataClassesDataContext();
             tblVendor VendorObj = (from ob in DC.tblVendors
@@ -500,6 +495,8 @@ namespace SmartSocietyAPI
             VendorObj.VendorName = VendorName;
             VendorObj.Address = Address;
             VendorObj.Location = Location;
+            VendorObj.VendorType = VendorType;
+            VendorObj.Description = Description;
             VendorObj.IsActive = IsActive;
 
             DC.SubmitChanges();
@@ -507,5 +504,119 @@ namespace SmartSocietyAPI
         }
 
         /* Vendors */
+
+        /* Events */
+
+        public object GetAllEventTypes()
+        {
+            var DC = new DataClassesDataContext();
+            IQueryable<tblEventType> EventTypeData = (from ob in DC.tblEventTypes
+                                                      select ob);
+            return JsonConvert.SerializeObject(EventTypeData);
+        }
+
+        public object AddEvent(string EventName, int EventTypeID, string Venue, string StartTime, string EndTime, string Subject, string Description, int Priority, int CreatedBy)
+        {
+            var DC = new DataClassesDataContext();
+            tblEvent EventObj = new tblEvent();
+            EventObj.EventName = EventName;
+            EventObj.EventTypeID = EventTypeID;
+            EventObj.Venue = Venue;
+            EventObj.StartTime = Convert.ToDateTime(StartTime);
+            EventObj.EndTime = Convert.ToDateTime(EndTime);
+            EventObj.Subject = Subject;
+            EventObj.Description = Description;
+            EventObj.Priority = Convert.ToByte(Priority);
+            EventObj.CreatedBy = CreatedBy;
+            EventObj.IsActive = true;
+
+            DC.tblEvents.InsertOnSubmit(EventObj);
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object EditEvent(int EventID, string EventName, int EventTypeID, string Venue, string StartTime, string EndTime, string Subject, string Description, int Priority, int CreatedBy, bool IsActive)
+        {
+            var DC = new DataClassesDataContext();
+            tblEvent EventObj = (from ob in DC.tblEvents
+                                 where ob.EventID==EventID
+                                 select ob).Single();
+            EventObj.EventName = EventName;
+            EventObj.EventTypeID = EventTypeID;
+            EventObj.Venue = Venue;
+            EventObj.StartTime = Convert.ToDateTime(StartTime);
+            EventObj.EndTime = Convert.ToDateTime(EndTime);
+            EventObj.Subject = Subject;
+            EventObj.Description = Description;
+            EventObj.Priority = Convert.ToByte(Priority);
+            EventObj.CreatedBy = CreatedBy;
+            EventObj.IsActive = true;
+            
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        /* Events */
+
+        /* FacilityBookings */
+
+        public object AddFacility(string FacilityName, int RatePerHour)
+        {
+            var DC = new DataClassesDataContext();
+            tblFacility FacilityObj = new tblFacility();
+            FacilityObj.FacilityName = FacilityName;
+            FacilityObj.RatePerHour = RatePerHour;
+
+            DC.tblFacilities.InsertOnSubmit(FacilityObj);
+            DC.SubmitChanges();
+            return true;
+        }
+
+        public object EditFacility(int FacilityID, string FacilityName, int RatePerHour, bool IsActive)
+        {
+            var DC = new DataClassesDataContext();
+            tblFacility FacilityObj = (from ob in DC.tblFacilities
+                                       where ob.FacilityID == FacilityID
+                                       select ob).Single();
+            if (IsActive == true)
+            {
+                FacilityObj.FacilityName = FacilityName;
+                FacilityObj.RatePerHour = RatePerHour;
+            }
+            else
+            {
+                DC.tblFacilities.DeleteOnSubmit(FacilityObj);
+            }
+            DC.SubmitChanges();
+            return true;
+        }
+
+        public object ViewAllBookingProposals()
+        {
+            var DC = new DataClassesDataContext();
+            IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
+                                                    where ob.ApprovedBy == null && ob.Status == "Panel Review Pending"
+                                                    select ob);
+            return JsonConvert.SerializeObject(ProposalsData);
+        }
+
+        public object ApprovalOfBooking(int BookingID, bool Approval, int ApprovedBy)
+        {
+            var DC = new DataClassesDataContext();
+            tblBooking BookingObj = (from ob in DC.tblBookings
+                                     where ob.BookingID == BookingID
+                                     select ob).Single();
+            BookingObj.IsApproved = Approval;
+            BookingObj.ApprovedBy = ApprovedBy;
+            BookingObj.Status = "Reviewed";
+
+            return true;
+        }
+
+        /* FacilityBookings */
+
+       
     }
 }

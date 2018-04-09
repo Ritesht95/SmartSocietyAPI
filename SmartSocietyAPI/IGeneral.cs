@@ -24,7 +24,7 @@ namespace SmartSocietyAPI
         /* Gatekeeping */
 
         [OperationContract]
-        [WebGet(UriTemplate = "ViewGateKeeping/{CheckedInOnly,FromDate,ToDate}", ResponseFormat = WebMessageFormat.Json)]
+        [WebGet(UriTemplate = "ViewGateKeeping/{CheckedInOnly,FromDate,ToDate,FlatNo}", ResponseFormat = WebMessageFormat.Json)]
         object ViewGateKeeping(bool CheckedInOnly = false, string FromDate = "0", string ToDate = "0", string FlatNo="-1");
 
         /* Gatekeeping */
@@ -44,5 +44,29 @@ namespace SmartSocietyAPI
         object ViewAllVendors();
 
         /* Vendors */
+
+        /* Events */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "ViewAllEvents/{FromDate,ToDate,Priority}", ResponseFormat = WebMessageFormat.Json)]
+        object ViewAllEvents(string FromDate = "0", string ToDate = "0", int Priority = 0);
+
+        /* Events */
+
+        /* FacilityBookings */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GetAllFacilities/", ResponseFormat = WebMessageFormat.Json)]
+        object GetAllFacilities();
+
+        /* FacilityBookings */
+
+        /* Staff Members */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GetAllStaffMembers/", ResponseFormat = WebMessageFormat.Json)]
+        object GetAllStaffMembers();
+
+        /* Staff Members */
     }
 }

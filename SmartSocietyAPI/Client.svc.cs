@@ -262,11 +262,5 @@ namespace SmartSocietyAPI
         }
 
         /* FacilityBookings */
-
-        /* Staff Members */
-
-
-
-        /* Staff Members */
     }
 }

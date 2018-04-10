@@ -616,7 +616,6 @@ namespace SmartSocietyAPI
         }
 
         /* FacilityBookings */
-
        
     }
 }

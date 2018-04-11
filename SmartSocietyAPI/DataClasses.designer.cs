@@ -33,9 +33,9 @@ namespace SmartSocietyAPI
     partial void InserttblAccount(tblAccount instance);
     partial void UpdatetblAccount(tblAccount instance);
     partial void DeletetblAccount(tblAccount instance);
-    partial void InserttblVendor(tblVendor instance);
-    partial void UpdatetblVendor(tblVendor instance);
-    partial void DeletetblVendor(tblVendor instance);
+    partial void InserttblVisitor(tblVisitor instance);
+    partial void UpdatetblVisitor(tblVisitor instance);
+    partial void DeletetblVisitor(tblVisitor instance);
     partial void InserttblAdminLogin(tblAdminLogin instance);
     partial void UpdatetblAdminLogin(tblAdminLogin instance);
     partial void DeletetblAdminLogin(tblAdminLogin instance);
@@ -96,6 +96,9 @@ namespace SmartSocietyAPI
     partial void InserttblNotice(tblNotice instance);
     partial void UpdatetblNotice(tblNotice instance);
     partial void DeletetblNotice(tblNotice instance);
+    partial void InserttblNoticeTemplate(tblNoticeTemplate instance);
+    partial void UpdatetblNoticeTemplate(tblNoticeTemplate instance);
+    partial void DeletetblNoticeTemplate(tblNoticeTemplate instance);
     partial void InserttblOwnerDocument(tblOwnerDocument instance);
     partial void UpdatetblOwnerDocument(tblOwnerDocument instance);
     partial void DeletetblOwnerDocument(tblOwnerDocument instance);
@@ -120,15 +123,15 @@ namespace SmartSocietyAPI
     partial void InserttblSociety(tblSociety instance);
     partial void UpdatetblSociety(tblSociety instance);
     partial void DeletetblSociety(tblSociety instance);
-    partial void InserttblTransaction(tblTransaction instance);
-    partial void UpdatetblTransaction(tblTransaction instance);
-    partial void DeletetblTransaction(tblTransaction instance);
-    partial void InserttblVisitor(tblVisitor instance);
-    partial void UpdatetblVisitor(tblVisitor instance);
-    partial void DeletetblVisitor(tblVisitor instance);
     partial void InserttblStaffMember(tblStaffMember instance);
     partial void UpdatetblStaffMember(tblStaffMember instance);
     partial void DeletetblStaffMember(tblStaffMember instance);
+    partial void InserttblTransaction(tblTransaction instance);
+    partial void UpdatetblTransaction(tblTransaction instance);
+    partial void DeletetblTransaction(tblTransaction instance);
+    partial void InserttblVendor(tblVendor instance);
+    partial void UpdatetblVendor(tblVendor instance);
+    partial void DeletetblVendor(tblVendor instance);
     #endregion
 		
 		public DataClassesDataContext() : 
@@ -169,11 +172,11 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		public System.Data.Linq.Table<tblVendor> tblVendors
+		public System.Data.Linq.Table<tblVisitor> tblVisitors
 		{
 			get
 			{
-				return this.GetTable<tblVendor>();
+				return this.GetTable<tblVisitor>();
 			}
 		}
 		
@@ -337,6 +340,14 @@ namespace SmartSocietyAPI
 			}
 		}
 		
+		public System.Data.Linq.Table<tblNoticeTemplate> tblNoticeTemplates
+		{
+			get
+			{
+				return this.GetTable<tblNoticeTemplate>();
+			}
+		}
+		
 		public System.Data.Linq.Table<tblOwnerDocument> tblOwnerDocuments
 		{
 			get
@@ -401,6 +412,14 @@ namespace SmartSocietyAPI
 			}
 		}
 		
+		public System.Data.Linq.Table<tblStaffMember> tblStaffMembers
+		{
+			get
+			{
+				return this.GetTable<tblStaffMember>();
+			}
+		}
+		
 		public System.Data.Linq.Table<tblTransaction> tblTransactions
 		{
 			get
@@ -409,19 +428,11 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		public System.Data.Linq.Table<tblVisitor> tblVisitors
+		public System.Data.Linq.Table<tblVendor> tblVendors
 		{
 			get
 			{
-				return this.GetTable<tblVisitor>();
-			}
-		}
-		
-		public System.Data.Linq.Table<tblStaffMember> tblStaffMembers
-		{
-			get
-			{
-				return this.GetTable<tblStaffMember>();
+				return this.GetTable<tblVendor>();
 			}
 		}
 	}
@@ -455,7 +466,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int AccountID
 		{
 			get
@@ -536,235 +547,211 @@ namespace SmartSocietyAPI
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="ritesroq.tblVendors")]
-	public partial class tblVendor : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblVisitors")]
+	public partial class tblVisitor : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _VendorID;
+		private int _VisitorID;
 		
-		private string _VendorName;
+		private string _VisitorName;
 		
-		private string _Address;
+		private string _FlatNo;
 		
-		private string _Location;
+		private System.DateTime _InTime;
 		
-		private System.Nullable<decimal> _Ratings;
+		private System.Nullable<System.DateTime> _OutTime;
 		
-		private System.Nullable<int> _RatingsNum;
+		private string _Purpose;
 		
-		private bool _IsActive;
+		private string _VehicleNumber;
 		
-		private string _VendorType;
-		
-		private string _Description;
+		private string _MobileNo;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnVendorIDChanging(int value);
-    partial void OnVendorIDChanged();
-    partial void OnVendorNameChanging(string value);
-    partial void OnVendorNameChanged();
-    partial void OnAddressChanging(string value);
-    partial void OnAddressChanged();
-    partial void OnLocationChanging(string value);
-    partial void OnLocationChanged();
-    partial void OnRatingsChanging(System.Nullable<decimal> value);
-    partial void OnRatingsChanged();
-    partial void OnRatingsNumChanging(System.Nullable<int> value);
-    partial void OnRatingsNumChanged();
-    partial void OnIsActiveChanging(bool value);
-    partial void OnIsActiveChanged();
-    partial void OnVendorTypeChanging(string value);
-    partial void OnVendorTypeChanged();
-    partial void OnDescriptionChanging(string value);
-    partial void OnDescriptionChanged();
+    partial void OnVisitorIDChanging(int value);
+    partial void OnVisitorIDChanged();
+    partial void OnVisitorNameChanging(string value);
+    partial void OnVisitorNameChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
+    partial void OnInTimeChanging(System.DateTime value);
+    partial void OnInTimeChanged();
+    partial void OnOutTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnOutTimeChanged();
+    partial void OnPurposeChanging(string value);
+    partial void OnPurposeChanged();
+    partial void OnVehicleNumberChanging(string value);
+    partial void OnVehicleNumberChanged();
+    partial void OnMobileNoChanging(string value);
+    partial void OnMobileNoChanged();
     #endregion
 		
-		public tblVendor()
+		public tblVisitor()
 		{
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VendorID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int VendorID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VisitorID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int VisitorID
 		{
 			get
 			{
-				return this._VendorID;
+				return this._VisitorID;
 			}
 			set
 			{
-				if ((this._VendorID != value))
+				if ((this._VisitorID != value))
 				{
-					this.OnVendorIDChanging(value);
+					this.OnVisitorIDChanging(value);
 					this.SendPropertyChanging();
-					this._VendorID = value;
-					this.SendPropertyChanged("VendorID");
-					this.OnVendorIDChanged();
+					this._VisitorID = value;
+					this.SendPropertyChanged("VisitorID");
+					this.OnVisitorIDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VendorName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string VendorName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VisitorName", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string VisitorName
 		{
 			get
 			{
-				return this._VendorName;
+				return this._VisitorName;
 			}
 			set
 			{
-				if ((this._VendorName != value))
+				if ((this._VisitorName != value))
 				{
-					this.OnVendorNameChanging(value);
+					this.OnVisitorNameChanging(value);
 					this.SendPropertyChanging();
-					this._VendorName = value;
-					this.SendPropertyChanged("VendorName");
-					this.OnVendorNameChanged();
+					this._VisitorName = value;
+					this.SendPropertyChanged("VisitorName");
+					this.OnVisitorNameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
-		public string Address
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
 		{
 			get
 			{
-				return this._Address;
+				return this._FlatNo;
 			}
 			set
 			{
-				if ((this._Address != value))
+				if ((this._FlatNo != value))
 				{
-					this.OnAddressChanging(value);
+					this.OnFlatNoChanging(value);
 					this.SendPropertyChanging();
-					this._Address = value;
-					this.SendPropertyChanged("Address");
-					this.OnAddressChanged();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Location", DbType="VarChar(25)")]
-		public string Location
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InTime", DbType="DateTime NOT NULL")]
+		public System.DateTime InTime
 		{
 			get
 			{
-				return this._Location;
+				return this._InTime;
 			}
 			set
 			{
-				if ((this._Location != value))
+				if ((this._InTime != value))
 				{
-					this.OnLocationChanging(value);
+					this.OnInTimeChanging(value);
 					this.SendPropertyChanging();
-					this._Location = value;
-					this.SendPropertyChanged("Location");
-					this.OnLocationChanged();
+					this._InTime = value;
+					this.SendPropertyChanged("InTime");
+					this.OnInTimeChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ratings", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> Ratings
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OutTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> OutTime
 		{
 			get
 			{
-				return this._Ratings;
+				return this._OutTime;
 			}
 			set
 			{
-				if ((this._Ratings != value))
+				if ((this._OutTime != value))
 				{
-					this.OnRatingsChanging(value);
+					this.OnOutTimeChanging(value);
 					this.SendPropertyChanging();
-					this._Ratings = value;
-					this.SendPropertyChanged("Ratings");
-					this.OnRatingsChanged();
+					this._OutTime = value;
+					this.SendPropertyChanged("OutTime");
+					this.OnOutTimeChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingsNum", DbType="Int")]
-		public System.Nullable<int> RatingsNum
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Purpose", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string Purpose
 		{
 			get
 			{
-				return this._RatingsNum;
+				return this._Purpose;
 			}
 			set
 			{
-				if ((this._RatingsNum != value))
+				if ((this._Purpose != value))
 				{
-					this.OnRatingsNumChanging(value);
+					this.OnPurposeChanging(value);
 					this.SendPropertyChanging();
-					this._RatingsNum = value;
-					this.SendPropertyChanged("RatingsNum");
-					this.OnRatingsNumChanged();
+					this._Purpose = value;
+					this.SendPropertyChanged("Purpose");
+					this.OnPurposeChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
-		public bool IsActive
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VehicleNumber", DbType="VarChar(20)")]
+		public string VehicleNumber
 		{
 			get
 			{
-				return this._IsActive;
+				return this._VehicleNumber;
 			}
 			set
 			{
-				if ((this._IsActive != value))
+				if ((this._VehicleNumber != value))
 				{
-					this.OnIsActiveChanging(value);
+					this.OnVehicleNumberChanging(value);
 					this.SendPropertyChanging();
-					this._IsActive = value;
-					this.SendPropertyChanged("IsActive");
-					this.OnIsActiveChanged();
+					this._VehicleNumber = value;
+					this.SendPropertyChanged("VehicleNumber");
+					this.OnVehicleNumberChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VendorType", DbType="VarChar(50)")]
-		public string VendorType
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MobileNo", DbType="VarChar(15) NOT NULL", CanBeNull=false)]
+		public string MobileNo
 		{
 			get
 			{
-				return this._VendorType;
+				return this._MobileNo;
 			}
 			set
 			{
-				if ((this._VendorType != value))
+				if ((this._MobileNo != value))
 				{
-					this.OnVendorTypeChanging(value);
+					this.OnMobileNoChanging(value);
 					this.SendPropertyChanging();
-					this._VendorType = value;
-					this.SendPropertyChanged("VendorType");
-					this.OnVendorTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this.OnDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._Description = value;
-					this.SendPropertyChanged("Description");
-					this.OnDescriptionChanged();
+					this._MobileNo = value;
+					this.SendPropertyChanged("MobileNo");
+					this.OnMobileNoChanged();
 				}
 			}
 		}
@@ -989,7 +976,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AlbumID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AlbumID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int AlbumID
 		{
 			get
@@ -1183,7 +1170,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AMCID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AMCID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int AMCID
 		{
 			get
@@ -1429,7 +1416,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AMCServiceID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AMCServiceID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int AMCServiceID
 		{
 			get
@@ -1602,6 +1589,8 @@ namespace SmartSocietyAPI
 		
 		private int _AssetTypeID;
 		
+		private string _Description;
+		
 		private string _Image;
 		
 		private string _InvoiceDoc;
@@ -1624,6 +1613,8 @@ namespace SmartSocietyAPI
     partial void OnAssetNameChanged();
     partial void OnAssetTypeIDChanging(int value);
     partial void OnAssetTypeIDChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
     partial void OnImageChanging(string value);
     partial void OnImageChanged();
     partial void OnInvoiceDocChanging(string value);
@@ -1643,7 +1634,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AssetID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AssetID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int AssetID
 		{
 			get
@@ -1699,6 +1690,26 @@ namespace SmartSocietyAPI
 					this._AssetTypeID = value;
 					this.SendPropertyChanged("AssetTypeID");
 					this.OnAssetTypeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
 				}
 			}
 		}
@@ -1869,7 +1880,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AssetTypeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AssetTypeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int AssetTypeID
 		{
 			get
@@ -1991,7 +2002,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BookingID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BookingID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int BookingID
 		{
 			get
@@ -2293,7 +2304,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ComplaintID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ComplaintID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int ComplaintID
 		{
 			get
@@ -2559,7 +2570,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DocumentTypeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DocumentTypeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int DocumentTypeID
 		{
 			get
@@ -2681,7 +2692,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int EventID
 		{
 			get
@@ -2947,7 +2958,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventTypeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventTypeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int EventTypeID
 		{
 			get
@@ -3045,7 +3056,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExpenseID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExpenseID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int ExpenseID
 		{
 			get
@@ -3195,7 +3206,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacilityID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacilityID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int FacilityID
 		{
 			get
@@ -3427,7 +3438,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatHolderID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatHolderID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int FlatHolderID
 		{
 			get
@@ -3613,7 +3624,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ImageID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ImageID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int ImageID
 		{
 			get
@@ -3811,7 +3822,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IncomeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IncomeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int IncomeID
 		{
 			get
@@ -3989,7 +4000,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LoginID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LoginID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int LoginID
 		{
 			get
@@ -4255,7 +4266,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaintenanceID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaintenanceID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int MaintenanceID
 		{
 			get
@@ -4461,7 +4472,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoticeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoticeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int NoticeID
 		{
 			get
@@ -4622,6 +4633,116 @@ namespace SmartSocietyAPI
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblNoticeTemplate")]
+	public partial class tblNoticeTemplate : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TemplateID;
+		
+		private string _TemplateName;
+		
+		private string _Text;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTemplateIDChanging(int value);
+    partial void OnTemplateIDChanged();
+    partial void OnTemplateNameChanging(string value);
+    partial void OnTemplateNameChanged();
+    partial void OnTextChanging(string value);
+    partial void OnTextChanged();
+    #endregion
+		
+		public tblNoticeTemplate()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TemplateID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TemplateID
+		{
+			get
+			{
+				return this._TemplateID;
+			}
+			set
+			{
+				if ((this._TemplateID != value))
+				{
+					this.OnTemplateIDChanging(value);
+					this.SendPropertyChanging();
+					this._TemplateID = value;
+					this.SendPropertyChanged("TemplateID");
+					this.OnTemplateIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TemplateName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string TemplateName
+		{
+			get
+			{
+				return this._TemplateName;
+			}
+			set
+			{
+				if ((this._TemplateName != value))
+				{
+					this.OnTemplateNameChanging(value);
+					this.SendPropertyChanging();
+					this._TemplateName = value;
+					this.SendPropertyChanged("TemplateName");
+					this.OnTemplateNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Text", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string Text
+		{
+			get
+			{
+				return this._Text;
+			}
+			set
+			{
+				if ((this._Text != value))
+				{
+					this.OnTextChanging(value);
+					this.SendPropertyChanging();
+					this._Text = value;
+					this.SendPropertyChanged("Text");
+					this.OnTextChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblOwnerDocuments")]
 	public partial class tblOwnerDocument : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -4663,7 +4784,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DocumentID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DocumentID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int DocumentID
 		{
 			get
@@ -4833,7 +4954,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PollOptionID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PollOptionID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int PollOptionID
 		{
 			get
@@ -4924,7 +5045,7 @@ namespace SmartSocietyAPI
 		
 		private string _PollTitle;
 		
-		private byte _PollType;
+		private System.Nullable<int> _PollType;
 		
 		private System.DateTime _CreatedOn;
 		
@@ -4942,7 +5063,7 @@ namespace SmartSocietyAPI
     partial void OnPollIDChanged();
     partial void OnPollTitleChanging(string value);
     partial void OnPollTitleChanged();
-    partial void OnPollTypeChanging(byte value);
+    partial void OnPollTypeChanging(System.Nullable<int> value);
     partial void OnPollTypeChanged();
     partial void OnCreatedOnChanging(System.DateTime value);
     partial void OnCreatedOnChanged();
@@ -4959,7 +5080,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PollID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PollID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int PollID
 		{
 			get
@@ -4999,8 +5120,8 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PollType", DbType="TinyInt NOT NULL")]
-		public byte PollType
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PollType", DbType="Int")]
+		public System.Nullable<int> PollType
 		{
 			get
 			{
@@ -5128,7 +5249,7 @@ namespace SmartSocietyAPI
 		
 		private int _PollVotingID;
 		
-		private int _FlatNo;
+		private string _FlatNo;
 		
 		private int _PollOptionID;
 		
@@ -5140,7 +5261,7 @@ namespace SmartSocietyAPI
     partial void OnCreated();
     partial void OnPollVotingIDChanging(int value);
     partial void OnPollVotingIDChanged();
-    partial void OnFlatNoChanging(int value);
+    partial void OnFlatNoChanging(string value);
     partial void OnFlatNoChanged();
     partial void OnPollOptionIDChanging(int value);
     partial void OnPollOptionIDChanged();
@@ -5153,7 +5274,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PollVotingID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PollVotingID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int PollVotingID
 		{
 			get
@@ -5173,8 +5294,8 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="Int NOT NULL")]
-		public int FlatNo
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
 		{
 			get
 			{
@@ -5279,7 +5400,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PositionID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PositionID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int PositionID
 		{
 			get
@@ -5385,7 +5506,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RentID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RentID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int RentID
 		{
 			get
@@ -5615,7 +5736,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidentID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidentID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int ResidentID
 		{
 			get
@@ -5902,6 +6023,8 @@ namespace SmartSocietyAPI
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
+		private int _ID;
+		
 		private string _Name;
 		
 		private string _Address;
@@ -5928,12 +6051,12 @@ namespace SmartSocietyAPI
 		
 		private string _LatLong;
 		
-		private int _ID;
-		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
     partial void OnNameChanging(string value);
     partial void OnNameChanged();
     partial void OnAddressChanging(string value);
@@ -5960,13 +6083,31 @@ namespace SmartSocietyAPI
     partial void OnSocietyTypeChanged();
     partial void OnLatLongChanging(string value);
     partial void OnLatLongChanged();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
     #endregion
 		
 		public tblSociety()
 		{
 			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
@@ -6229,486 +6370,6 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblTransactions")]
-	public partial class tblTransaction : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _TransactionID;
-		
-		private string _TransactionType;
-		
-		private int _TransactionTypeID;
-		
-		private decimal _Amount;
-		
-		private string _PaymentMode;
-		
-		private string _ChequeNo;
-		
-		private System.DateTime _TransactionOn;
-		
-		private string _Status;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnTransactionIDChanging(int value);
-    partial void OnTransactionIDChanged();
-    partial void OnTransactionTypeChanging(string value);
-    partial void OnTransactionTypeChanged();
-    partial void OnTransactionTypeIDChanging(int value);
-    partial void OnTransactionTypeIDChanged();
-    partial void OnAmountChanging(decimal value);
-    partial void OnAmountChanged();
-    partial void OnPaymentModeChanging(string value);
-    partial void OnPaymentModeChanged();
-    partial void OnChequeNoChanging(string value);
-    partial void OnChequeNoChanged();
-    partial void OnTransactionOnChanging(System.DateTime value);
-    partial void OnTransactionOnChanged();
-    partial void OnStatusChanging(string value);
-    partial void OnStatusChanged();
-    #endregion
-		
-		public tblTransaction()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int TransactionID
-		{
-			get
-			{
-				return this._TransactionID;
-			}
-			set
-			{
-				if ((this._TransactionID != value))
-				{
-					this.OnTransactionIDChanging(value);
-					this.SendPropertyChanging();
-					this._TransactionID = value;
-					this.SendPropertyChanged("TransactionID");
-					this.OnTransactionIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionType", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string TransactionType
-		{
-			get
-			{
-				return this._TransactionType;
-			}
-			set
-			{
-				if ((this._TransactionType != value))
-				{
-					this.OnTransactionTypeChanging(value);
-					this.SendPropertyChanging();
-					this._TransactionType = value;
-					this.SendPropertyChanged("TransactionType");
-					this.OnTransactionTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionTypeID", DbType="Int NOT NULL")]
-		public int TransactionTypeID
-		{
-			get
-			{
-				return this._TransactionTypeID;
-			}
-			set
-			{
-				if ((this._TransactionTypeID != value))
-				{
-					this.OnTransactionTypeIDChanging(value);
-					this.SendPropertyChanging();
-					this._TransactionTypeID = value;
-					this.SendPropertyChanged("TransactionTypeID");
-					this.OnTransactionTypeIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amount", DbType="Decimal(18,0) NOT NULL")]
-		public decimal Amount
-		{
-			get
-			{
-				return this._Amount;
-			}
-			set
-			{
-				if ((this._Amount != value))
-				{
-					this.OnAmountChanging(value);
-					this.SendPropertyChanging();
-					this._Amount = value;
-					this.SendPropertyChanged("Amount");
-					this.OnAmountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentMode", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string PaymentMode
-		{
-			get
-			{
-				return this._PaymentMode;
-			}
-			set
-			{
-				if ((this._PaymentMode != value))
-				{
-					this.OnPaymentModeChanging(value);
-					this.SendPropertyChanging();
-					this._PaymentMode = value;
-					this.SendPropertyChanged("PaymentMode");
-					this.OnPaymentModeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChequeNo", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string ChequeNo
-		{
-			get
-			{
-				return this._ChequeNo;
-			}
-			set
-			{
-				if ((this._ChequeNo != value))
-				{
-					this.OnChequeNoChanging(value);
-					this.SendPropertyChanging();
-					this._ChequeNo = value;
-					this.SendPropertyChanged("ChequeNo");
-					this.OnChequeNoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionOn", DbType="DateTime NOT NULL")]
-		public System.DateTime TransactionOn
-		{
-			get
-			{
-				return this._TransactionOn;
-			}
-			set
-			{
-				if ((this._TransactionOn != value))
-				{
-					this.OnTransactionOnChanging(value);
-					this.SendPropertyChanging();
-					this._TransactionOn = value;
-					this.SendPropertyChanged("TransactionOn");
-					this.OnTransactionOnChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string Status
-		{
-			get
-			{
-				return this._Status;
-			}
-			set
-			{
-				if ((this._Status != value))
-				{
-					this.OnStatusChanging(value);
-					this.SendPropertyChanging();
-					this._Status = value;
-					this.SendPropertyChanged("Status");
-					this.OnStatusChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblVisitors")]
-	public partial class tblVisitor : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _VisitorID;
-		
-		private string _VisitorName;
-		
-		private string _FlatNo;
-		
-		private System.DateTime _InTime;
-		
-		private System.Nullable<System.DateTime> _OutTime;
-		
-		private string _Purpose;
-		
-		private string _VehicleNumber;
-		
-		private string _MobileNo;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnVisitorIDChanging(int value);
-    partial void OnVisitorIDChanged();
-    partial void OnVisitorNameChanging(string value);
-    partial void OnVisitorNameChanged();
-    partial void OnFlatNoChanging(string value);
-    partial void OnFlatNoChanged();
-    partial void OnInTimeChanging(System.DateTime value);
-    partial void OnInTimeChanged();
-    partial void OnOutTimeChanging(System.Nullable<System.DateTime> value);
-    partial void OnOutTimeChanged();
-    partial void OnPurposeChanging(string value);
-    partial void OnPurposeChanged();
-    partial void OnVehicleNumberChanging(string value);
-    partial void OnVehicleNumberChanged();
-    partial void OnMobileNoChanging(string value);
-    partial void OnMobileNoChanged();
-    #endregion
-		
-		public tblVisitor()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VisitorID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int VisitorID
-		{
-			get
-			{
-				return this._VisitorID;
-			}
-			set
-			{
-				if ((this._VisitorID != value))
-				{
-					this.OnVisitorIDChanging(value);
-					this.SendPropertyChanging();
-					this._VisitorID = value;
-					this.SendPropertyChanged("VisitorID");
-					this.OnVisitorIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VisitorName", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string VisitorName
-		{
-			get
-			{
-				return this._VisitorName;
-			}
-			set
-			{
-				if ((this._VisitorName != value))
-				{
-					this.OnVisitorNameChanging(value);
-					this.SendPropertyChanging();
-					this._VisitorName = value;
-					this.SendPropertyChanged("VisitorName");
-					this.OnVisitorNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string FlatNo
-		{
-			get
-			{
-				return this._FlatNo;
-			}
-			set
-			{
-				if ((this._FlatNo != value))
-				{
-					this.OnFlatNoChanging(value);
-					this.SendPropertyChanging();
-					this._FlatNo = value;
-					this.SendPropertyChanged("FlatNo");
-					this.OnFlatNoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InTime", DbType="DateTime NOT NULL")]
-		public System.DateTime InTime
-		{
-			get
-			{
-				return this._InTime;
-			}
-			set
-			{
-				if ((this._InTime != value))
-				{
-					this.OnInTimeChanging(value);
-					this.SendPropertyChanging();
-					this._InTime = value;
-					this.SendPropertyChanged("InTime");
-					this.OnInTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OutTime", DbType="DateTime")]
-		public System.Nullable<System.DateTime> OutTime
-		{
-			get
-			{
-				return this._OutTime;
-			}
-			set
-			{
-				if ((this._OutTime != value))
-				{
-					this.OnOutTimeChanging(value);
-					this.SendPropertyChanging();
-					this._OutTime = value;
-					this.SendPropertyChanged("OutTime");
-					this.OnOutTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Purpose", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
-		public string Purpose
-		{
-			get
-			{
-				return this._Purpose;
-			}
-			set
-			{
-				if ((this._Purpose != value))
-				{
-					this.OnPurposeChanging(value);
-					this.SendPropertyChanging();
-					this._Purpose = value;
-					this.SendPropertyChanged("Purpose");
-					this.OnPurposeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VehicleNumber", DbType="VarChar(20)")]
-		public string VehicleNumber
-		{
-			get
-			{
-				return this._VehicleNumber;
-			}
-			set
-			{
-				if ((this._VehicleNumber != value))
-				{
-					this.OnVehicleNumberChanging(value);
-					this.SendPropertyChanging();
-					this._VehicleNumber = value;
-					this.SendPropertyChanged("VehicleNumber");
-					this.OnVehicleNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MobileNo", DbType="VarChar(15) NOT NULL", CanBeNull=false)]
-		public string MobileNo
-		{
-			get
-			{
-				return this._MobileNo;
-			}
-			set
-			{
-				if ((this._MobileNo != value))
-				{
-					this.OnMobileNoChanging(value);
-					this.SendPropertyChanging();
-					this._MobileNo = value;
-					this.SendPropertyChanged("MobileNo");
-					this.OnMobileNoChanged();
-				}
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -6799,7 +6460,7 @@ namespace SmartSocietyAPI
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int MemberID
 		{
 			get
@@ -7055,6 +6716,490 @@ namespace SmartSocietyAPI
 					this._IsActive = value;
 					this.SendPropertyChanged("IsActive");
 					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblTransactions")]
+	public partial class tblTransaction : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TransactionID;
+		
+		private string _TransactionType;
+		
+		private int _TransactionTypeID;
+		
+		private decimal _Amount;
+		
+		private string _PaymentMode;
+		
+		private string _ChequeNo;
+		
+		private System.DateTime _TransactionOn;
+		
+		private string _Status;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTransactionIDChanging(int value);
+    partial void OnTransactionIDChanged();
+    partial void OnTransactionTypeChanging(string value);
+    partial void OnTransactionTypeChanged();
+    partial void OnTransactionTypeIDChanging(int value);
+    partial void OnTransactionTypeIDChanged();
+    partial void OnAmountChanging(decimal value);
+    partial void OnAmountChanged();
+    partial void OnPaymentModeChanging(string value);
+    partial void OnPaymentModeChanged();
+    partial void OnChequeNoChanging(string value);
+    partial void OnChequeNoChanged();
+    partial void OnTransactionOnChanging(System.DateTime value);
+    partial void OnTransactionOnChanged();
+    partial void OnStatusChanging(string value);
+    partial void OnStatusChanged();
+    #endregion
+		
+		public tblTransaction()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TransactionID
+		{
+			get
+			{
+				return this._TransactionID;
+			}
+			set
+			{
+				if ((this._TransactionID != value))
+				{
+					this.OnTransactionIDChanging(value);
+					this.SendPropertyChanging();
+					this._TransactionID = value;
+					this.SendPropertyChanged("TransactionID");
+					this.OnTransactionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionType", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string TransactionType
+		{
+			get
+			{
+				return this._TransactionType;
+			}
+			set
+			{
+				if ((this._TransactionType != value))
+				{
+					this.OnTransactionTypeChanging(value);
+					this.SendPropertyChanging();
+					this._TransactionType = value;
+					this.SendPropertyChanged("TransactionType");
+					this.OnTransactionTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionTypeID", DbType="Int NOT NULL")]
+		public int TransactionTypeID
+		{
+			get
+			{
+				return this._TransactionTypeID;
+			}
+			set
+			{
+				if ((this._TransactionTypeID != value))
+				{
+					this.OnTransactionTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._TransactionTypeID = value;
+					this.SendPropertyChanged("TransactionTypeID");
+					this.OnTransactionTypeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amount", DbType="Decimal(18,0) NOT NULL")]
+		public decimal Amount
+		{
+			get
+			{
+				return this._Amount;
+			}
+			set
+			{
+				if ((this._Amount != value))
+				{
+					this.OnAmountChanging(value);
+					this.SendPropertyChanging();
+					this._Amount = value;
+					this.SendPropertyChanged("Amount");
+					this.OnAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentMode", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string PaymentMode
+		{
+			get
+			{
+				return this._PaymentMode;
+			}
+			set
+			{
+				if ((this._PaymentMode != value))
+				{
+					this.OnPaymentModeChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentMode = value;
+					this.SendPropertyChanged("PaymentMode");
+					this.OnPaymentModeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChequeNo", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string ChequeNo
+		{
+			get
+			{
+				return this._ChequeNo;
+			}
+			set
+			{
+				if ((this._ChequeNo != value))
+				{
+					this.OnChequeNoChanging(value);
+					this.SendPropertyChanging();
+					this._ChequeNo = value;
+					this.SendPropertyChanged("ChequeNo");
+					this.OnChequeNoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionOn", DbType="DateTime NOT NULL")]
+		public System.DateTime TransactionOn
+		{
+			get
+			{
+				return this._TransactionOn;
+			}
+			set
+			{
+				if ((this._TransactionOn != value))
+				{
+					this.OnTransactionOnChanging(value);
+					this.SendPropertyChanging();
+					this._TransactionOn = value;
+					this.SendPropertyChanged("TransactionOn");
+					this.OnTransactionOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this.OnStatusChanging(value);
+					this.SendPropertyChanging();
+					this._Status = value;
+					this.SendPropertyChanged("Status");
+					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblVendors")]
+	public partial class tblVendor : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _VendorID;
+		
+		private string _VendorName;
+		
+		private string _Address;
+		
+		private string _Location;
+		
+		private System.Nullable<decimal> _Ratings;
+		
+		private System.Nullable<int> _RatingsNum;
+		
+		private bool _IsActive;
+		
+		private string _VendorType;
+		
+		private string _Description;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnVendorIDChanging(int value);
+    partial void OnVendorIDChanged();
+    partial void OnVendorNameChanging(string value);
+    partial void OnVendorNameChanged();
+    partial void OnAddressChanging(string value);
+    partial void OnAddressChanged();
+    partial void OnLocationChanging(string value);
+    partial void OnLocationChanged();
+    partial void OnRatingsChanging(System.Nullable<decimal> value);
+    partial void OnRatingsChanged();
+    partial void OnRatingsNumChanging(System.Nullable<int> value);
+    partial void OnRatingsNumChanged();
+    partial void OnIsActiveChanging(bool value);
+    partial void OnIsActiveChanged();
+    partial void OnVendorTypeChanging(string value);
+    partial void OnVendorTypeChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public tblVendor()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VendorID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int VendorID
+		{
+			get
+			{
+				return this._VendorID;
+			}
+			set
+			{
+				if ((this._VendorID != value))
+				{
+					this.OnVendorIDChanging(value);
+					this.SendPropertyChanging();
+					this._VendorID = value;
+					this.SendPropertyChanged("VendorID");
+					this.OnVendorIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VendorName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string VendorName
+		{
+			get
+			{
+				return this._VendorName;
+			}
+			set
+			{
+				if ((this._VendorName != value))
+				{
+					this.OnVendorNameChanging(value);
+					this.SendPropertyChanging();
+					this._VendorName = value;
+					this.SendPropertyChanged("VendorName");
+					this.OnVendorNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string Address
+		{
+			get
+			{
+				return this._Address;
+			}
+			set
+			{
+				if ((this._Address != value))
+				{
+					this.OnAddressChanging(value);
+					this.SendPropertyChanging();
+					this._Address = value;
+					this.SendPropertyChanged("Address");
+					this.OnAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Location", DbType="VarChar(25)")]
+		public string Location
+		{
+			get
+			{
+				return this._Location;
+			}
+			set
+			{
+				if ((this._Location != value))
+				{
+					this.OnLocationChanging(value);
+					this.SendPropertyChanging();
+					this._Location = value;
+					this.SendPropertyChanged("Location");
+					this.OnLocationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ratings", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> Ratings
+		{
+			get
+			{
+				return this._Ratings;
+			}
+			set
+			{
+				if ((this._Ratings != value))
+				{
+					this.OnRatingsChanging(value);
+					this.SendPropertyChanging();
+					this._Ratings = value;
+					this.SendPropertyChanged("Ratings");
+					this.OnRatingsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RatingsNum", DbType="Int")]
+		public System.Nullable<int> RatingsNum
+		{
+			get
+			{
+				return this._RatingsNum;
+			}
+			set
+			{
+				if ((this._RatingsNum != value))
+				{
+					this.OnRatingsNumChanging(value);
+					this.SendPropertyChanging();
+					this._RatingsNum = value;
+					this.SendPropertyChanged("RatingsNum");
+					this.OnRatingsNumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
+		public bool IsActive
+		{
+			get
+			{
+				return this._IsActive;
+			}
+			set
+			{
+				if ((this._IsActive != value))
+				{
+					this.OnIsActiveChanging(value);
+					this.SendPropertyChanging();
+					this._IsActive = value;
+					this.SendPropertyChanged("IsActive");
+					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VendorType", DbType="VarChar(50)")]
+		public string VendorType
+		{
+			get
+			{
+				return this._VendorType;
+			}
+			set
+			{
+				if ((this._VendorType != value))
+				{
+					this.OnVendorTypeChanging(value);
+					this.SendPropertyChanging();
+					this._VendorType = value;
+					this.SendPropertyChanged("VendorType");
+					this.OnVendorTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
 				}
 			}
 		}

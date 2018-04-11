@@ -183,21 +183,21 @@ namespace SmartSocietyAPI
             else
             {
                 var AssetObj = (from ob in DC.tblAssets
-                                  join obAT in DC.tblAssetTypes on ob.AssetTypeID equals obAT.AssetTypeID
-                                  where ob.AssetID==AssetID
-                                  select new
-                                  {
-                                      ob.AssetID,
-                                      ob.AssetName,
-                                      ob.AssetTypeID,
-                                      ob.AssetValue,
-                                      ob.Image,
-                                      ob.InvoiceDoc,
-                                      ob.IsActive,
-                                      ob.PurchasedOn,
-                                      ob.Status,
-                                      obAT.AssetTypeName
-                                  });
+                                join obAT in DC.tblAssetTypes on ob.AssetTypeID equals obAT.AssetTypeID
+                                where ob.AssetID == AssetID
+                                select new
+                                {
+                                    ob.AssetID,
+                                    ob.AssetName,
+                                    ob.AssetTypeID,
+                                    ob.AssetValue,
+                                    ob.Image,
+                                    ob.InvoiceDoc,
+                                    ob.IsActive,
+                                    ob.PurchasedOn,
+                                    ob.Status,
+                                    obAT.AssetTypeName
+                                });
                 return JsonConvert.SerializeObject(AssetObj);
             }
         }
@@ -362,21 +362,20 @@ namespace SmartSocietyAPI
             }
             else
             {
-                EventObj= (from ob in DC.tblEvents
-                           join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
-                           join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
-                           where ob.EventID==EventID
-                           select ob).Single();
+                EventObj = (from ob in DC.tblEvents
+                            join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
+                            join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                            where ob.EventID == EventID
+                            select ob).Single();
                 return JsonConvert.SerializeObject(EventObj);
             }
         }
 
         /* Events */
 
-
         /* FacilityBookings */
 
-        public object GetAllFacilities(int FacilityID=0)
+        public object GetAllFacilities(int FacilityID = 0)
         {
             var DC = new DataClassesDataContext();
             if (FacilityID == 0)
@@ -387,12 +386,12 @@ namespace SmartSocietyAPI
             }
             else
             {
-                tblFacility FacilityObj= (from ob in DC.tblFacilities
-                              where ob.FacilityID==FacilityID
-                              select ob).Single();
+                tblFacility FacilityObj = (from ob in DC.tblFacilities
+                                           where ob.FacilityID == FacilityID
+                                           select ob).Single();
                 return JsonConvert.SerializeObject(FacilityObj);
             }
-            
+
         }
 
         /* FacilityBookings */
@@ -425,28 +424,95 @@ namespace SmartSocietyAPI
             }
             else
             {
-                object MemberObj= (from ob in DC.tblStaffMembers
-                                   join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
-                                   where ob.MemberID==MemberID
-                                   select new
-                                   {
-                                       ob.MemberName,
-                                       ob.MemberType,
-                                       ob.DOB,
-                                       ob.ContactNo1,
-                                       ob.ContactNo2,
-                                       ob.Image,
-                                       ob.IDProofDoc,
-                                       ob.Address,
-                                       ob.DOJ,
-                                       ob.DOL,
-                                       CreatedBy = obR.ResidentName,
-                                       ob.IsActive
-                                   });
+                object MemberObj = (from ob in DC.tblStaffMembers
+                                    join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                                    where ob.MemberID == MemberID
+                                    select new
+                                    {
+                                        ob.MemberName,
+                                        ob.MemberType,
+                                        ob.DOB,
+                                        ob.ContactNo1,
+                                        ob.ContactNo2,
+                                        ob.Image,
+                                        ob.IDProofDoc,
+                                        ob.Address,
+                                        ob.DOJ,
+                                        ob.DOL,
+                                        CreatedBy = obR.ResidentName,
+                                        ob.IsActive
+                                    });
                 return JsonConvert.SerializeObject(MemberObj);
             }
         }
 
         /* Staff Members */
+
+        /* Polls */
+
+        public object GetAllPolls(int PollID = 0, bool IsActive=false)
+        {
+            var DC = new DataClassesDataContext();
+            if (PollID == 0)
+            {
+                IQueryable<object> PollsData;
+                if (IsActive == false)
+                {
+                     PollsData = (from ob in DC.tblPolls
+                                     select new
+                                     {
+                                         ob.PollID,
+                                         ob.PollTitle,
+                                         ob.PollType,
+                                         ob.CreatedBy,
+                                         ob.CreatedOn,
+                                         ob.EndTime,
+                                         PollOptions = (from obPO in DC.tblPollOptions
+                                                        where obPO.PollID == ob.PollID
+                                                        select obPO)
+                                     });
+                }
+                else
+                {
+                    PollsData = (from ob in DC.tblPolls
+                                 where ob.IsActive==true
+                                 select new
+                                 {
+                                     ob.PollID,
+                                     ob.PollTitle,
+                                     ob.PollType,
+                                     ob.CreatedBy,
+                                     ob.CreatedOn,
+                                     ob.EndTime,
+                                     PollOptions = (from obPO in DC.tblPollOptions
+                                                    where obPO.PollID == ob.PollID
+                                                    select obPO)
+                                 });
+                }
+                
+                return JsonConvert.SerializeObject(PollsData);
+            }
+            else
+            {
+                var PollObj = (from ob in DC.tblPolls
+                               where ob.PollID == PollID
+                               select new
+                               {
+                                   ob.PollID,
+                                   ob.PollTitle,
+                                   ob.PollType,
+                                   ob.CreatedBy,
+                                   ob.CreatedOn,
+                                   ob.EndTime,
+                                   PollOptions = (from obPO in DC.tblPollOptions
+                                                  where obPO.PollID == ob.PollID
+                                                  select obPO)
+                               });
+                return JsonConvert.SerializeObject(PollObj);
+            }
+        }
+
+        /* Polls */
+
     }
 }

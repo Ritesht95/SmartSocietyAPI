@@ -72,5 +72,13 @@ namespace SmartSocietyAPI
         object GetAllStaffMembers(int MemberID = 0);
 
         /* Staff Members */
+
+        /* Polls */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GetAllPolls/{PollID,IsActive}", ResponseFormat = WebMessageFormat.Json)]
+        object GetAllPolls(int PollID = 0, bool IsActive = false);
+
+        /* Polls */
     }
 }

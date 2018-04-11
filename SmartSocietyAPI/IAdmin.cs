@@ -126,5 +126,24 @@ namespace SmartSocietyAPI
         object ApprovalOfBooking(int BookingID, bool Approval, int ApprovedBy);
 
         /* FacilityBookings */
+
+        /* Polls */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AddPoll/{PollTitle,PollType,CreatedBy,EndTime}", ResponseFormat = WebMessageFormat.Json)]
+        object AddPoll(string PollTitle, int PollType, int CreatedBy, string EndTime);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "EditPoll/{PollID,PollTitle,PollType,CreatedBy,EndTime,IsActive}", ResponseFormat = WebMessageFormat.Json)]
+        object EditPoll(int PollID, string PollTitle, int PollType, int CreatedBy, string EndTime, bool IsActive);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AddPollOptions/{PollOptionNames}", ResponseFormat = WebMessageFormat.Json)]
+        object AddPollOptions(object PollOptionNames, int PollID);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "EditPollOptions/{PollOption,PollID}", ResponseFormat = WebMessageFormat.Json)]
+        object EditPollOptions(object PollOptions, int PollID);
+        /* Polls */
     }
 }

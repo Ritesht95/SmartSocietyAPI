@@ -23,6 +23,9 @@ namespace SmartSocietyAPI
         /* Login & Registration */
 
         /* Society Setup */
+        [OperationContract]
+        [WebGet(UriTemplate = "GetPositionData/", ResponseFormat = WebMessageFormat.Json)]
+        object GetPositionData();
 
         [OperationContract]
         [WebGet(UriTemplate = "SetResident/{Name,DOB,FlatID,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID}", ResponseFormat = WebMessageFormat.Json)]
@@ -67,5 +70,13 @@ namespace SmartSocietyAPI
         object ProposeFacilityBooking(int FacilityID, string FlatNo, string StartTime, string EndTime, string Purpose, string Description);
 
         /* FacilityBookings */
+
+        /* Polls */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "SetPollVote/{FlatNo,PollOptionID,PollID}", ResponseFormat = WebMessageFormat.Json)]
+        object SetPollVote(string FlatNo, int PollOptionID, int PollID);
+
+        /* Polls */
     }
 }

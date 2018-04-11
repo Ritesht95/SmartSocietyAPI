@@ -137,6 +137,14 @@ namespace SmartSocietyAPI
 
         /* Society Setup */
 
+        public object GetPositionData()
+        {
+            var DC = new DataClassesDataContext();
+            var PositionsData = (from ob in DC.tblPositions
+                                 select ob);
+            return JsonConvert.SerializeObject(PositionsData);
+        }
+
         public object SetResident(string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID)
         {
             var DC = new DataClassesDataContext();
@@ -262,5 +270,23 @@ namespace SmartSocietyAPI
         }
 
         /* FacilityBookings */
+
+        /* Polls */
+
+        public object SetPollVote(string FlatNo, int PollOptionID, int PollID)
+        {
+            var DC = new DataClassesDataContext();
+            tblPollVoting PollVotingObj = new tblPollVoting();
+            PollVotingObj.PollID = PollID;
+            PollVotingObj.PollOptionID = PollOptionID;
+            PollVotingObj.FlatNo = FlatNo;
+
+            DC.tblPollVotings.InsertOnSubmit(PollVotingObj);
+            DC.SubmitChanges();
+
+            return "True";
+        }
+        
+        /* Polls */
     }
 }

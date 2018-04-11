@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Net;
@@ -616,6 +617,77 @@ namespace SmartSocietyAPI
         }
 
         /* FacilityBookings */
-       
+
+        /* Polls */
+
+        public object AddPoll(string PollTitle, int PollType, int CreatedBy, string EndTime)
+        {
+            var DC = new DataClassesDataContext();
+            tblPoll PollObj = new tblPoll();
+            PollObj.PollTitle = PollTitle;
+            PollObj.PollType = PollType;
+            PollObj.CreatedBy = CreatedBy;
+            PollObj.EndTime = Convert.ToDateTime(EndTime);
+            PollObj.IsActive = true;
+
+            DC.tblPolls.InsertOnSubmit(PollObj);
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object EditPoll(int PollID, string PollTitle, int PollType, int CreatedBy, string EndTime, bool IsActive)
+        {
+            var DC = new DataClassesDataContext();
+            tblPoll PollObj = (from ob in DC.tblPolls
+                               where ob.PollID==PollID
+                               select ob).Single();
+            PollObj.PollTitle = PollTitle;
+            PollObj.PollType = PollType;
+            PollObj.CreatedBy = CreatedBy;
+            PollObj.EndTime = Convert.ToDateTime(EndTime);
+            PollObj.IsActive = IsActive;
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object AddPollOptions(object PollOptionNames, int PollID)
+        {
+            var DC = new DataClassesDataContext();
+            JArray JPollOptionNames = JArray.Parse(PollOptionNames.ToString());
+            foreach(JObject PollOption in JPollOptionNames)
+            {
+                tblPollOption OptionObj = new tblPollOption();
+                OptionObj.PollOptionName = PollOption.ToString();
+                OptionObj.PollID = PollID;
+
+                DC.tblPollOptions.InsertOnSubmit(OptionObj);
+            }
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+        public object EditPollOptions(object PollOptions, int PollID)
+        {
+            var DC = new DataClassesDataContext();
+            JArray JPollOptions = JArray.Parse(PollOptions.ToString());
+            foreach (JObject PollOption in JPollOptions)
+            {
+                tblPollOption OptionObj = (from ob in DC.tblPollOptions
+                                           where ob.PollOptionID== Convert.ToInt32(PollOption["PollOptionID"])
+                                           select ob).Single();
+                OptionObj.PollOptionName = PollOption["PollOptionName"].ToString();
+                OptionObj.PollID = PollID;
+            }
+            DC.SubmitChanges();
+
+            return true;
+        }
+
+
+        /* Polls */
+
     }
 }

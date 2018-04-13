@@ -14,6 +14,14 @@ namespace SmartSocietyAPI
         [WebGet(UriTemplate = "GetAllResidentsDetails/{FlagMemType,ResidentID}", ResponseFormat = WebMessageFormat.Json)]
         object GetAllResidentsDetails(int FlagMemType = 0, int ResidentID = 0);
 
+        [OperationContract]
+        [WebGet(UriTemplate = "GetAllResidentsDetails/{FlatID,Name}", ResponseFormat = WebMessageFormat.Json)]
+        object ResidentSearch(string Name="", string FlatNo="0");
+
+        [OperationContract]
+        [WebGet(UriTemplate = "ResidentDelete/{ResidentID}", ResponseFormat = WebMessageFormat.Json)]
+        object ResidentDelete(int ResidentID);
+
         // 0 for All, 1 for Owners, -1 for On Rent Flats
         [OperationContract]
         [WebGet(UriTemplate = "GetAllFlatDetails/{FlagFlatType,FlatNo}", ResponseFormat = WebMessageFormat.Json)]
@@ -22,6 +30,14 @@ namespace SmartSocietyAPI
         [OperationContract]
         [WebGet(UriTemplate = "ViewAllAssets/{AssetID}", ResponseFormat = WebMessageFormat.Json)]
         object ViewAllAssets(int AssetID=0);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AssetSearch/{Name,Type}", ResponseFormat = WebMessageFormat.Json)]
+        object AssetSearch(string Name="", string Type="");
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AssetDelete/{AssetID}", ResponseFormat = WebMessageFormat.Json)]
+        object AssetDelete(int AssetID);
 
         /* Society Setup */
 
@@ -47,6 +63,14 @@ namespace SmartSocietyAPI
         [WebGet(UriTemplate = "ViewAllVendors/{VendorID}", ResponseFormat = WebMessageFormat.Json)]
         object ViewAllVendors(int VendorID = 0);
 
+        [OperationContract]
+        [WebGet(UriTemplate = "VendorSearch/{Name,Type}", ResponseFormat = WebMessageFormat.Json)]
+        object VendorSearch(string Name="", string Type="");
+
+        [OperationContract]
+        [WebGet(UriTemplate = "VendorDelete/{VendorID}", ResponseFormat = WebMessageFormat.Json)]
+        object VendorDelete(int VendorID);
+
         /* Vendors */
 
         /* Events */
@@ -54,6 +78,14 @@ namespace SmartSocietyAPI
         [OperationContract]
         [WebGet(UriTemplate = "ViewAllEvents/{FromDate,ToDate,Priority,EventID}", ResponseFormat = WebMessageFormat.Json)]
         object ViewAllEvents(string FromDate = "0", string ToDate = "0", int Priority = 0, int EventID=0);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "EventSearch/{Name, Type}", ResponseFormat = WebMessageFormat.Json)]
+        object EventSearch(string Name = "", string Type = "");
+
+        [OperationContract]
+        [WebGet(UriTemplate = "EventDelete/{EventID}", ResponseFormat = WebMessageFormat.Json)]
+        object EventDelete(int EventID);
 
         /* Events */
 
@@ -63,6 +95,10 @@ namespace SmartSocietyAPI
         [WebGet(UriTemplate = "GetAllFacilities/{FacilityID}", ResponseFormat = WebMessageFormat.Json)]
         object GetAllFacilities(int FacilityID = 0);
 
+        [OperationContract]
+        [WebGet(UriTemplate = "FacilitiesBookingSearch/{Facility,Date}", ResponseFormat = WebMessageFormat.Json)]
+        object FacilitiesBookingSearch(string Facility="", string Date="");
+
         /* FacilityBookings */
 
         /* Staff Members */
@@ -70,6 +106,14 @@ namespace SmartSocietyAPI
         [OperationContract]
         [WebGet(UriTemplate = "GetAllStaffMembers/{MemberID}", ResponseFormat = WebMessageFormat.Json)]
         object GetAllStaffMembers(int MemberID = 0);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "StaffSearch/{Name, Type}", ResponseFormat = WebMessageFormat.Json)]
+        object StaffSearch(string Name="", string Type="");
+
+        [OperationContract]
+        [WebGet(UriTemplate = "StaffDelete/{StaffID}", ResponseFormat = WebMessageFormat.Json)]
+        object StaffDelete(int StaffID);
 
         /* Staff Members */
 

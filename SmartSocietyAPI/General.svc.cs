@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Data.Linq.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -60,6 +61,7 @@ namespace SmartSocietyAPI
                                            ob.ResidentID,
                                            ob.ResidentName,
                                            ob.PositionID,
+                                           obP.PositionName,
                                            ob.Occupation,
                                            ob.IsActive,
                                            ob.Image,
@@ -70,12 +72,12 @@ namespace SmartSocietyAPI
                                            ob.DOB,
                                            ob.Email,
                                            ob.FlatHolderID,
-                                           FlatHolderName=obR.ResidentName
+                                           FlatHolderName = obR.ResidentName
                                        });
                 }
                 else if (FlagMemType == 1)
                 {
-                    ObjAllResidents = (from ob in DC.tblResidents                                       
+                    ObjAllResidents = (from ob in DC.tblResidents
                                        join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
                                        join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
                                        join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
@@ -85,6 +87,7 @@ namespace SmartSocietyAPI
                                            ob.ResidentID,
                                            ob.ResidentName,
                                            ob.PositionID,
+                                           obP.PositionName,
                                            ob.Occupation,
                                            ob.IsActive,
                                            ob.Image,
@@ -110,6 +113,7 @@ namespace SmartSocietyAPI
                                            ob.ResidentID,
                                            ob.ResidentName,
                                            ob.PositionID,
+                                           obP.PositionName,
                                            ob.Occupation,
                                            ob.IsActive,
                                            ob.Image,
@@ -137,6 +141,7 @@ namespace SmartSocietyAPI
                                    ob.ResidentID,
                                    ob.ResidentName,
                                    ob.PositionID,
+                                   obP.PositionName,
                                    ob.Occupation,
                                    ob.IsActive,
                                    ob.Image,
@@ -153,6 +158,104 @@ namespace SmartSocietyAPI
                 return JsonConvert.SerializeObject(ResidentObj);
             }
 
+        }
+
+        public object ResidentSearch(string Name = "", string FlatNo = "0")
+        {
+            var DC = new DataClassesDataContext();
+            if (FlatNo != "0" && Name != "")
+            {
+                var ObjAllResidents = (from ob in DC.tblResidents
+                                       join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
+                                       join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
+                                       join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
+                                       where SqlMethods.Like(ob.ResidentName.ToLower(), "%" + Name.ToLower() + "%") &&
+                                       ob.FlatNo == FlatNo
+                                       select new
+                                       {
+                                           ob.ResidentID,
+                                           ob.ResidentName,
+                                           ob.PositionID,
+                                           obP.PositionName,
+                                           ob.Occupation,
+                                           ob.IsActive,
+                                           ob.Image,
+                                           ob.FlatNo,
+                                           ob.ContactNo1,
+                                           ob.ContactNo2,
+                                           ob.CreatedOn,
+                                           ob.DOB,
+                                           ob.Email,
+                                           ob.FlatHolderID,
+                                           FlatHolderName = obR.ResidentName
+                                       });
+                return JsonConvert.SerializeObject(ObjAllResidents);
+            }
+            else if (FlatNo == "0")
+            {
+                var ObjAllResidents = (from ob in DC.tblResidents
+                                       join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
+                                       join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
+                                       join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
+                                       where SqlMethods.Like(ob.ResidentName.ToLower(), "%" + Name.ToLower() + "%")
+                                       select new
+                                       {
+                                           ob.ResidentID,
+                                           ob.ResidentName,
+                                           ob.PositionID,
+                                           obP.PositionName,
+                                           ob.Occupation,
+                                           ob.IsActive,
+                                           ob.Image,
+                                           ob.FlatNo,
+                                           ob.ContactNo1,
+                                           ob.ContactNo2,
+                                           ob.CreatedOn,
+                                           ob.DOB,
+                                           ob.Email,
+                                           ob.FlatHolderID,
+                                           FlatHolderName = obR.ResidentName
+                                       });
+                return JsonConvert.SerializeObject(ObjAllResidents);
+            }
+            else
+            {
+                var ObjAllResidents = (from ob in DC.tblResidents
+                                       join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
+                                       join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
+                                       join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
+                                       where ob.FlatNo == FlatNo
+                                       select new
+                                       {
+                                           ob.ResidentID,
+                                           ob.ResidentName,
+                                           ob.PositionID,
+                                           obP.PositionName,
+                                           ob.Occupation,
+                                           ob.IsActive,
+                                           ob.Image,
+                                           ob.FlatNo,
+                                           ob.ContactNo1,
+                                           ob.ContactNo2,
+                                           ob.CreatedOn,
+                                           ob.DOB,
+                                           ob.Email,
+                                           ob.FlatHolderID,
+                                           FlatHolderName = obR.ResidentName
+                                       });
+                return JsonConvert.SerializeObject(ObjAllResidents);
+            }
+        }
+
+        public object ResidentDelete(int ResidentID)
+        {
+            var DC = new DataClassesDataContext();
+            var ResidentObj = (from ob in DC.tblResidents
+                               where ob.ResidentID == ResidentID
+                               select ob).Single();
+            ResidentObj.IsActive = false;
+            DC.SubmitChanges();
+            return "True";
         }
 
         // 0 for All, 1 for Owners, -1 for On Rent Flats
@@ -279,6 +382,83 @@ namespace SmartSocietyAPI
             }
         }
 
+        public object AssetSearch(string Name = "", string Type = "")
+        {
+            var DC = new DataClassesDataContext();
+            if (Name != "" && Type != "")
+            {
+                var AssetsData = (from ob in DC.tblAssets
+                                  join obAT in DC.tblAssetTypes on ob.AssetTypeID equals obAT.AssetTypeID
+                                  where SqlMethods.Like(ob.AssetName.ToLower(), "%" + Name.ToLower() + "%")
+                                  && obAT.AssetTypeName.ToLower() == Type.ToLower()
+                                  select new
+                                  {
+                                      ob.AssetID,
+                                      ob.AssetName,
+                                      ob.AssetTypeID,
+                                      ob.AssetValue,
+                                      ob.Image,
+                                      ob.InvoiceDoc,
+                                      ob.IsActive,
+                                      ob.PurchasedOn,
+                                      ob.Status,
+                                      obAT.AssetTypeName
+                                  });
+                return JsonConvert.SerializeObject(AssetsData);
+            }
+            else if (Name == "")
+            {
+                var AssetsData = (from ob in DC.tblAssets
+                                  join obAT in DC.tblAssetTypes on ob.AssetTypeID equals obAT.AssetTypeID
+                                  where obAT.AssetTypeName.ToLower() == Type.ToLower()
+                                  select new
+                                  {
+                                      ob.AssetID,
+                                      ob.AssetName,
+                                      ob.AssetTypeID,
+                                      ob.AssetValue,
+                                      ob.Image,
+                                      ob.InvoiceDoc,
+                                      ob.IsActive,
+                                      ob.PurchasedOn,
+                                      ob.Status,
+                                      obAT.AssetTypeName
+                                  });
+                return JsonConvert.SerializeObject(AssetsData);
+            }
+            else
+            {
+                var AssetsData = (from ob in DC.tblAssets
+                                  join obAT in DC.tblAssetTypes on ob.AssetTypeID equals obAT.AssetTypeID
+                                  where SqlMethods.Like(ob.AssetName, "%" + Name + "%")
+                                  select new
+                                  {
+                                      ob.AssetID,
+                                      ob.AssetName,
+                                      ob.AssetTypeID,
+                                      ob.AssetValue,
+                                      ob.Image,
+                                      ob.InvoiceDoc,
+                                      ob.IsActive,
+                                      ob.PurchasedOn,
+                                      ob.Status,
+                                      obAT.AssetTypeName
+                                  });
+                return JsonConvert.SerializeObject(AssetsData);
+            }
+        }
+
+        public object AssetDelete(int AssetID)
+        {
+            var DC = new DataClassesDataContext();
+            var AssetObj = (from ob in DC.tblAssets
+                            where ob.AssetID == AssetID
+                            select ob).Single();
+            AssetObj.IsActive = false;
+            DC.SubmitChanges();
+            return "True";
+        }
+
         /* Society Setup */
 
         /* Gatekeeping */
@@ -401,6 +581,47 @@ namespace SmartSocietyAPI
 
         }
 
+        public object VendorSearch(string Name = "", string Type = "")
+        {
+            var DC = new DataClassesDataContext();
+            if (Name != "" && Type != "")
+            {
+                var VendorsData = (from ob in DC.tblVendors
+                                   where ob.IsActive == true
+                                   && SqlMethods.Like(ob.VendorName.ToLower(), "%" + Name.ToLower() + "%")
+                                   && ob.VendorType.ToLower() == Type.ToLower()
+                                   select ob);
+                return JsonConvert.SerializeObject(VendorsData);
+            }
+            else if (Name == "")
+            {
+                var VendorsData = (from ob in DC.tblVendors
+                                   where ob.IsActive == true
+                                   && ob.VendorType.ToLower() == Type.ToLower()
+                                   select ob);
+                return JsonConvert.SerializeObject(VendorsData);
+            }
+            else
+            {
+                var VendorsData = (from ob in DC.tblVendors
+                                   where ob.IsActive == true
+                                   && SqlMethods.Like(ob.VendorName.ToLower(), "%" + Name.ToLower() + "%")
+                                   select ob);
+                return JsonConvert.SerializeObject(VendorsData);
+            }
+        }
+
+        public object VendorDelete(int VendorID)
+        {
+            var DC = new DataClassesDataContext();
+            var VendorObj = (from ob in DC.tblVendors
+                             where ob.VendorID == VendorID
+                             select ob).Single();
+            VendorObj.IsActive = false;
+            DC.SubmitChanges();
+            return "True";
+        }
+
         /* Vendors */
 
         /* Events */
@@ -448,6 +669,54 @@ namespace SmartSocietyAPI
             }
         }
 
+        public object EventSearch(string Name = "", string Type = "")
+        {
+            var DC = new DataClassesDataContext();
+
+            if (Name != "" && Type != "")
+            {
+                var EventsData = (from ob in DC.tblEvents
+                                  join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
+                                  join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                                  where SqlMethods.Like(ob.EventName.ToLower(), "%" + Name.ToLower() + "%")
+                                  && obET.EventTypeName.ToLower() == Type.ToLower()
+                                  select ob);
+
+                return JsonConvert.SerializeObject(EventsData);
+            }
+            else if (Name == "")
+            {
+                var EventsData = (from ob in DC.tblEvents
+                                  join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
+                                  join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                                  where obET.EventTypeName.ToLower() == Type.ToLower()
+                                  select ob);
+
+                return JsonConvert.SerializeObject(EventsData);
+            }
+            else
+            {
+                var EventsData = (from ob in DC.tblEvents
+                                  join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
+                                  join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                                  where SqlMethods.Like(ob.EventName.ToLower(), "%" + Name.ToLower() + "%")
+                                  select ob);
+
+                return JsonConvert.SerializeObject(EventsData);
+            }
+        }
+
+        public object EventDelete(int EventID)
+        {
+            var DC = new DataClassesDataContext();
+            var EventObj = (from ob in DC.tblEvents
+                             where ob.EventID == EventID
+                             select ob).Single();
+            EventObj.IsActive = false;
+            DC.SubmitChanges();
+            return "True";
+        }
+
         /* Events */
 
         /* FacilityBookings */
@@ -467,6 +736,40 @@ namespace SmartSocietyAPI
                                            where ob.FacilityID == FacilityID
                                            select ob).Single();
                 return JsonConvert.SerializeObject(FacilityObj);
+            }
+
+        }
+
+        public object FacilitiesBookingSearch(string Facility = "", string Date = "")
+        {
+            var DC = new DataClassesDataContext();
+            if (Facility != "" && Date != "")
+            {
+                IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
+                                                        join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
+                                                        where ob.IsActive == true
+                                                        && obF.FacilityName.ToLower() == Facility.ToLower()
+                                                        && ob.EndTime.Date == Convert.ToDateTime(Date).Date
+                                                        select ob);
+                return JsonConvert.SerializeObject(ProposalsData);
+            }
+            else if (Facility == "")
+            {
+                IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
+                                                        join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
+                                                        where ob.IsActive == true
+                                                        && ob.EndTime.Date == Convert.ToDateTime(Date).Date
+                                                        select ob);
+                return JsonConvert.SerializeObject(ProposalsData);
+            }
+            else
+            {
+                IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
+                                                        join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
+                                                        where ob.IsActive == true &&
+                                                        obF.FacilityName.ToLower() == Facility.ToLower()
+                                                        select ob);
+                return JsonConvert.SerializeObject(ProposalsData);
             }
 
         }
@@ -523,11 +826,94 @@ namespace SmartSocietyAPI
             }
         }
 
+        public object StaffSearch(string Name = "", string Type = "")
+        {
+            var DC = new DataClassesDataContext();
+            if (Name != "" && Type != "")
+            {
+                IQueryable<object> StaffMembersData = (from ob in DC.tblStaffMembers
+                                                       join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                                                       where SqlMethods.Like(ob.MemberName.ToLower(), "%" + Name.ToLower() + "%")
+                                                       && ob.MemberType.ToLower() == Type.ToLower()
+                                                       select new
+                                                       {
+                                                           ob.MemberName,
+                                                           ob.MemberType,
+                                                           ob.DOB,
+                                                           ob.ContactNo1,
+                                                           ob.ContactNo2,
+                                                           ob.Image,
+                                                           ob.IDProofDoc,
+                                                           ob.Address,
+                                                           ob.DOJ,
+                                                           ob.DOL,
+                                                           CreatedBy = obR.ResidentName,
+                                                           ob.IsActive
+                                                       });
+                return JsonConvert.SerializeObject(StaffMembersData);
+            }
+            else if (Name == "")
+            {
+                IQueryable<object> StaffMembersData = (from ob in DC.tblStaffMembers
+                                                       join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                                                       where ob.MemberType.ToLower() == Type.ToLower()
+                                                       select new
+                                                       {
+                                                           ob.MemberName,
+                                                           ob.MemberType,
+                                                           ob.DOB,
+                                                           ob.ContactNo1,
+                                                           ob.ContactNo2,
+                                                           ob.Image,
+                                                           ob.IDProofDoc,
+                                                           ob.Address,
+                                                           ob.DOJ,
+                                                           ob.DOL,
+                                                           CreatedBy = obR.ResidentName,
+                                                           ob.IsActive
+                                                       });
+                return JsonConvert.SerializeObject(StaffMembersData);
+            }
+            else
+            {
+                IQueryable<object> StaffMembersData = (from ob in DC.tblStaffMembers
+                                                       join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                                                       where SqlMethods.Like(ob.MemberName.ToLower(), "%" + Name.ToLower() + "%")
+                                                       select new
+                                                       {
+                                                           ob.MemberName,
+                                                           ob.MemberType,
+                                                           ob.DOB,
+                                                           ob.ContactNo1,
+                                                           ob.ContactNo2,
+                                                           ob.Image,
+                                                           ob.IDProofDoc,
+                                                           ob.Address,
+                                                           ob.DOJ,
+                                                           ob.DOL,
+                                                           CreatedBy = obR.ResidentName,
+                                                           ob.IsActive
+                                                       });
+                return JsonConvert.SerializeObject(StaffMembersData);
+            }
+        }
+
+        public object StaffDelete(int StaffID)
+        {
+            var DC = new DataClassesDataContext();
+            var StaffObj = (from ob in DC.tblStaffMembers
+                            where ob.MemberID == StaffID
+                            select ob).Single();
+            StaffObj.IsActive = false;
+            DC.SubmitChanges();
+            return "True";
+        }
+
         /* Staff Members */
 
         /* Polls */
 
-        public object GetAllPolls(int PollID = 0, bool IsActive=false)
+        public object GetAllPolls(int PollID = 0, bool IsActive = false)
         {
             var DC = new DataClassesDataContext();
             if (PollID == 0)
@@ -535,24 +921,7 @@ namespace SmartSocietyAPI
                 IQueryable<object> PollsData;
                 if (IsActive == false)
                 {
-                     PollsData = (from ob in DC.tblPolls
-                                     select new
-                                     {
-                                         ob.PollID,
-                                         ob.PollTitle,
-                                         ob.PollType,
-                                         ob.CreatedBy,
-                                         ob.CreatedOn,
-                                         ob.EndTime,
-                                         PollOptions = (from obPO in DC.tblPollOptions
-                                                        where obPO.PollID == ob.PollID
-                                                        select obPO)
-                                     });
-                }
-                else
-                {
                     PollsData = (from ob in DC.tblPolls
-                                 where ob.IsActive==true
                                  select new
                                  {
                                      ob.PollID,
@@ -566,7 +935,24 @@ namespace SmartSocietyAPI
                                                     select obPO)
                                  });
                 }
-                
+                else
+                {
+                    PollsData = (from ob in DC.tblPolls
+                                 where ob.IsActive == true
+                                 select new
+                                 {
+                                     ob.PollID,
+                                     ob.PollTitle,
+                                     ob.PollType,
+                                     ob.CreatedBy,
+                                     ob.CreatedOn,
+                                     ob.EndTime,
+                                     PollOptions = (from obPO in DC.tblPollOptions
+                                                    where obPO.PollID == ob.PollID
+                                                    select obPO)
+                                 });
+                }
+
                 return JsonConvert.SerializeObject(PollsData);
             }
             else
@@ -589,7 +975,7 @@ namespace SmartSocietyAPI
             }
         }
 
-        public object GetPollResults(int PollID=0)
+        public object GetPollResults(int PollID = 0)
         {
             var DC = new DataClassesDataContext();
             if (PollID == 0)
@@ -611,20 +997,20 @@ namespace SmartSocietyAPI
             else
             {
                 var PollResultsObj = (from ob in DC.tblPolls
-                                       where ob.PollID==PollID
-                                       select new
-                                       {
-                                           ob,
-                                           PollOptions = (from obPO in DC.tblPollOptions
-                                                          where obPO.PollID == ob.PollID
-                                                          select obPO),
-                                           PollVoting = (from obPV in DC.tblPollVotings
-                                                         where obPV.PollID == ob.PollID
-                                                         select obPV)
-                                       });
+                                      where ob.PollID == PollID
+                                      select new
+                                      {
+                                          ob,
+                                          PollOptions = (from obPO in DC.tblPollOptions
+                                                         where obPO.PollID == ob.PollID
+                                                         select obPO),
+                                          PollVoting = (from obPV in DC.tblPollVotings
+                                                        where obPV.PollID == ob.PollID
+                                                        select obPV)
+                                      });
 
                 return JsonConvert.SerializeObject(PollResultsObj);
-            }            
+            }
         }
 
         /* Polls */

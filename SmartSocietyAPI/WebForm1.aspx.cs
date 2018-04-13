@@ -20,9 +20,7 @@ namespace SmartSocietyAPI
             SmartSocietyAPI.Admin ServiceObject = new SmartSocietyAPI.Admin();
             SmartSocietyAPI.General ServiceObject1 = new SmartSocietyAPI.General();
             SmartSocietyAPI.Client ServiceObject2 = new SmartSocietyAPI.Client();
-            Response.Write(Encryptdata("12345"));
-            Response.Write(ServiceObject1.ViewGateKeeping(false,"0","0","-1"));
-            Response.Write(ServiceObject2.GateCheckIn("Ritesh", "1", "sdvkbsdkjvb", "sdbvksb", "sdkvbjk"));
+            Response.Write(ServiceObject1.GetAllResidentsDetails(0, 0));
         }
     }
 }

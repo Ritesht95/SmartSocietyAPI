@@ -594,13 +594,30 @@ namespace SmartSocietyAPI
             return true;
         }
 
-        public object ViewAllBookingProposals()
+        public object ViewAllBookingProposals(int Approved=0)
         {
             var DC = new DataClassesDataContext();
-            IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
-                                                    where ob.ApprovedBy == null && ob.Status == "Panel Review Pending"
-                                                    select ob);
-            return JsonConvert.SerializeObject(ProposalsData);
+            if (Approved == 0)
+            {
+                IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
+                                                        where ob.ApprovedBy == null && ob.Status == "Panel Review Pending" && ob.IsActive==true
+                                                        select ob);
+                return JsonConvert.SerializeObject(ProposalsData);
+            }
+            else if(Approved==-1)
+            {
+                IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
+                                                        where ob.Status == "Rejected" && ob.IsActive == true
+                                                        select ob);
+                return JsonConvert.SerializeObject(ProposalsData);
+            }
+            else
+            {
+                IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
+                                                        where ob.Status == "Accepted" && ob.IsActive == true
+                                                        select ob);
+                return JsonConvert.SerializeObject(ProposalsData);
+            }
         }
 
         public object ApprovalOfBooking(int BookingID, bool Approval, int ApprovedBy)
@@ -611,7 +628,7 @@ namespace SmartSocietyAPI
                                      select ob).Single();
             BookingObj.IsApproved = Approval;
             BookingObj.ApprovedBy = ApprovedBy;
-            BookingObj.Status = "Reviewed";
+            BookingObj.Status = (BookingObj.IsApproved==true)? "Accepted" : "Rejected";
 
             return true;
         }

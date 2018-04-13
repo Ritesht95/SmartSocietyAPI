@@ -118,8 +118,8 @@ namespace SmartSocietyAPI
         object EditFacility(int FacilityID, string FacilityName, int RatePerHour, bool IsActive);
 
         [OperationContract]
-        [WebGet(UriTemplate = "ViewAllBookingProposals/", ResponseFormat = WebMessageFormat.Json)]
-        object ViewAllBookingProposals();
+        [WebGet(UriTemplate = "ViewAllBookingProposals/{Approved}", ResponseFormat = WebMessageFormat.Json)]
+        object ViewAllBookingProposals(int Approved = 0);
 
         [OperationContract]
         [WebGet(UriTemplate = "ApprovalOfBooking/{BookingID,Approval,ApprovedBy}", ResponseFormat = WebMessageFormat.Json)]

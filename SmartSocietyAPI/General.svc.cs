@@ -787,6 +787,7 @@ namespace SmartSocietyAPI
                                                        join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
                                                        select new
                                                        {
+                                                           ob.MemberID,
                                                            ob.MemberName,
                                                            ob.MemberType,
                                                            ob.DOB,
@@ -809,6 +810,7 @@ namespace SmartSocietyAPI
                                     where ob.MemberID == MemberID
                                     select new
                                     {
+                                        ob.MemberID,
                                         ob.MemberName,
                                         ob.MemberType,
                                         ob.DOB,

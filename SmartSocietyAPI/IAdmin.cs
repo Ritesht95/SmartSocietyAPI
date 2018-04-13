@@ -145,5 +145,21 @@ namespace SmartSocietyAPI
         [WebGet(UriTemplate = "EditPollOptions/{PollOption,PollID}", ResponseFormat = WebMessageFormat.Json)]
         object EditPollOptions(object PollOptions, int PollID);
         /* Polls */
+
+        /* Complaints */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GetAllComplaints/{ComplaintID,NotHandled}", ResponseFormat = WebMessageFormat.Json)]
+        object GetAllComplaints(int ComplaintID=0, bool NotHandled = false);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "SendComplaintResponse/{ComplaintID,Response,HandledBy}", ResponseFormat = WebMessageFormat.Json)]
+        object SendComplaintResponse(int ComplaintID, string Response, int HandledBy);
+
+        /* Complaints */
+
+        /* Payments & Transactions */
+
+        /* Payments & Transactions */
     }
 }

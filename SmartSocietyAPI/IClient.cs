@@ -78,5 +78,25 @@ namespace SmartSocietyAPI
         object SetPollVote(string FlatNo, int PollOptionID, int PollID);
 
         /* Polls */
+
+        /* Complaints */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AddComplaint/{ComplaintType,Subject,Description,Priority}", ResponseFormat = WebMessageFormat.Json)]
+        object AddComplaint(string ComplaintType, string Subject, string Description, int Priority);
+
+        /* Complaints */
+
+        /* Payments & Transactions */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GetAllPaymentDues/{FlatNo}", ResponseFormat = WebMessageFormat.Json)]
+        object GetAllPaymentDues(string FlatNo);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "SetPayment/{FlatNo,PaymentID,PaymentMode,ChequeNo,Amount,Penalty}", ResponseFormat = WebMessageFormat.Json)]
+        object SetPayment(string FlatNo, int PaymentID, string PaymentMode, string ChequeNo, decimal Amount, decimal Penalty);
+
+        /* Payments & Transactions */
     }
 }

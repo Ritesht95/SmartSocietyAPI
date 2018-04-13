@@ -45,34 +45,111 @@ namespace SmartSocietyAPI
         public object GetAllResidentsDetails(int FlagMemType = 0, int ResidentID = 0)
         {
             var DC = new DataClassesDataContext();
-            IQueryable<tblResident> ObjAllResidents;
-            tblResident ResidentObj;
+            IQueryable<object> ObjAllResidents;
+            object ResidentObj;
             if (ResidentID == 0)
             {
                 if (FlagMemType == 0)
                 {
                     ObjAllResidents = (from ob in DC.tblResidents
-                                       select ob);
+                                       join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
+                                       join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
+                                       join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
+                                       select new
+                                       {
+                                           ob.ResidentID,
+                                           ob.ResidentName,
+                                           ob.PositionID,
+                                           ob.Occupation,
+                                           ob.IsActive,
+                                           ob.Image,
+                                           ob.FlatNo,
+                                           ob.ContactNo1,
+                                           ob.ContactNo2,
+                                           ob.CreatedOn,
+                                           ob.DOB,
+                                           ob.Email,
+                                           ob.FlatHolderID,
+                                           FlatHolderName=obR.ResidentName
+                                       });
                 }
                 else if (FlagMemType == 1)
                 {
-                    ObjAllResidents = (from ob in DC.tblResidents
+                    ObjAllResidents = (from ob in DC.tblResidents                                       
+                                       join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
+                                       join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
+                                       join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
                                        where ob.IsActive == true
-                                       select ob);
+                                       select new
+                                       {
+                                           ob.ResidentID,
+                                           ob.ResidentName,
+                                           ob.PositionID,
+                                           ob.Occupation,
+                                           ob.IsActive,
+                                           ob.Image,
+                                           ob.FlatNo,
+                                           ob.ContactNo1,
+                                           ob.ContactNo2,
+                                           ob.CreatedOn,
+                                           ob.DOB,
+                                           ob.Email,
+                                           ob.FlatHolderID,
+                                           FlatHolderName = obR.ResidentName
+                                       });
                 }
                 else
                 {
                     ObjAllResidents = (from ob in DC.tblResidents
+                                       join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
+                                       join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
+                                       join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
                                        where ob.IsActive == false
-                                       select ob);
+                                       select new
+                                       {
+                                           ob.ResidentID,
+                                           ob.ResidentName,
+                                           ob.PositionID,
+                                           ob.Occupation,
+                                           ob.IsActive,
+                                           ob.Image,
+                                           ob.FlatNo,
+                                           ob.ContactNo1,
+                                           ob.ContactNo2,
+                                           ob.CreatedOn,
+                                           ob.DOB,
+                                           ob.Email,
+                                           ob.FlatHolderID,
+                                           FlatHolderName = obR.ResidentName
+                                       });
                 }
                 return JsonConvert.SerializeObject(ObjAllResidents);
             }
             else
             {
                 ResidentObj = (from ob in DC.tblResidents
+                               join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
+                               join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
+                               join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
                                where ob.ResidentID == ResidentID
-                               select ob).Single();
+                               select new
+                               {
+                                   ob.ResidentID,
+                                   ob.ResidentName,
+                                   ob.PositionID,
+                                   ob.Occupation,
+                                   ob.IsActive,
+                                   ob.Image,
+                                   ob.FlatNo,
+                                   ob.ContactNo1,
+                                   ob.ContactNo2,
+                                   ob.CreatedOn,
+                                   ob.DOB,
+                                   ob.Email,
+                                   ob.FlatHolderID,
+                                   FlatHolderName = obR.ResidentName
+                               }).Single();
+
                 return JsonConvert.SerializeObject(ResidentObj);
             }
 
@@ -512,7 +589,53 @@ namespace SmartSocietyAPI
             }
         }
 
+        public object GetPollResults(int PollID=0)
+        {
+            var DC = new DataClassesDataContext();
+            if (PollID == 0)
+            {
+                var PollResultsData = (from ob in DC.tblPolls
+                                       select new
+                                       {
+                                           ob,
+                                           PollOptions = (from obPO in DC.tblPollOptions
+                                                          where obPO.PollID == ob.PollID
+                                                          select obPO),
+                                           PollVoting = (from obPV in DC.tblPollVotings
+                                                         where obPV.PollID == ob.PollID
+                                                         select obPV)
+                                       });
+
+                return JsonConvert.SerializeObject(PollResultsData);
+            }
+            else
+            {
+                var PollResultsObj = (from ob in DC.tblPolls
+                                       where ob.PollID==PollID
+                                       select new
+                                       {
+                                           ob,
+                                           PollOptions = (from obPO in DC.tblPollOptions
+                                                          where obPO.PollID == ob.PollID
+                                                          select obPO),
+                                           PollVoting = (from obPV in DC.tblPollVotings
+                                                         where obPV.PollID == ob.PollID
+                                                         select obPV)
+                                       });
+
+                return JsonConvert.SerializeObject(PollResultsObj);
+            }            
+        }
+
         /* Polls */
+
+        /* Complaints */
+
+        /* Complaints */
+
+        /* Payments & Transactions */
+
+        /* Payments & Transactions */
 
     }
 }

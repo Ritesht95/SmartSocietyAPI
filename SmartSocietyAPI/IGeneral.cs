@@ -80,5 +80,15 @@ namespace SmartSocietyAPI
         object GetAllPolls(int PollID = 0, bool IsActive = false);
 
         /* Polls */
+
+        /* Complaints */
+
+
+
+        /* Complaints */
+
+        /* Payments & Transactions */
+
+        /* Payments & Transactions */
     }
 }

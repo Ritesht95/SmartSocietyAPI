@@ -69,10 +69,10 @@ namespace SmartSocietyAPI
             var DC = new DataClassesDataContext();
             var enpass = Encryptdata(Password);
             IQueryable<tblLogin> ObjLogin = (from ob in DC.tblLogins
-                            where (ob.Email == Username || ob.PhoneNo==Username)
-                            && ob.Password== enpass
-                            && ob.IsBlocked == false
-                            select ob);
+                                             where (ob.Email == Username || ob.PhoneNo == Username)
+                                             && ob.Password == enpass
+                                             && ob.IsBlocked == false
+                                             select ob);
             if (ObjLogin.Count() == 1)
             {
                 return JsonConvert.SerializeObject(ObjLogin.Single());
@@ -202,7 +202,7 @@ namespace SmartSocietyAPI
             VisitorObj.InTime = DateTime.Now;
             VisitorObj.OutTime = null;
             VisitorObj.Purpose = Purpose;
-            VisitorObj.VehicleNumber = (VehicleNo!="0")?VehicleNo:null;
+            VisitorObj.VehicleNumber = (VehicleNo != "0") ? VehicleNo : null;
             VisitorObj.MobileNo = MobileNo;
 
             DC.tblVisitors.InsertOnSubmit(VisitorObj);
@@ -234,7 +234,7 @@ namespace SmartSocietyAPI
                              where ob.VendorID == VendorID
                              select ob).Single();
             double ratings = (double)(VendorObj.RatingsNum * VendorObj.Ratings);
-            VendorObj.Ratings = (decimal)((ratings + Rating)/(++VendorObj.RatingsNum));
+            VendorObj.Ratings = (decimal)((ratings + Rating) / (++VendorObj.RatingsNum));
 
             DC.SubmitChanges();
 
@@ -247,8 +247,8 @@ namespace SmartSocietyAPI
 
         /* Events */
 
-        /* FacilityBookings */        
-            
+        /* FacilityBookings */
+
         public object ProposeFacilityBooking(int FacilityID, string FlatNo, string StartTime, string EndTime, string Purpose, string Description)
         {
             var DC = new DataClassesDataContext();
@@ -286,7 +286,91 @@ namespace SmartSocietyAPI
 
             return "True";
         }
-        
+
         /* Polls */
+
+        /* Complaints */
+
+        public object AddComplaint(string ComplaintType, string Subject, string Description, int Priority)
+        {
+            var DC = new DataClassesDataContext();
+            tblComplaint ComplaintObj = new tblComplaint();
+            ComplaintObj.ComplaintType = ComplaintType;
+            ComplaintObj.Subject = Subject;
+            ComplaintObj.Description = Description;
+            ComplaintObj.Priority = Priority;
+            ComplaintObj.CreatedOn = DateTime.Now;
+            ComplaintObj.IsActive = true;
+
+            DC.tblComplaints.InsertOnSubmit(ComplaintObj);
+            DC.SubmitChanges();
+
+            return "True";
+        }
+
+        /* Complaints */
+
+        /* Payments & Transactions */
+
+        public object GetAllPaymentDues(string FlatNo)
+        {
+            var DC = new DataClassesDataContext();
+            var FlatData = (from ob in DC.tblFlats
+                            where ob.FlatNo == FlatNo
+                            select ob).Single();
+            if (FlatData.OnRent == true)
+            {
+                var PaymentDuesData = (from ob in DC.tblPayments
+                                       from obT in DC.tblTransactions
+                                       where ob.PaymentID != obT.PaymentID && obT.FlatNo != FlatNo &&
+                                       (ob.PaymentFor == 0 || ob.PaymentFor == -2 || ob.PaymentFor == Convert.ToInt32(FlatNo))
+                                       select ob);
+                return JsonConvert.SerializeObject(PaymentDuesData);
+            }
+            else
+            {
+                var PaymentDuesData = (from ob in DC.tblPayments
+                                       from obT in DC.tblTransactions
+                                       where ob.PaymentID != obT.PaymentID && obT.FlatNo != FlatNo &&
+                                       (ob.PaymentFor == 0 || ob.PaymentFor == -1 || ob.PaymentFor == Convert.ToInt32(FlatNo))
+                                       select ob);
+                return JsonConvert.SerializeObject(PaymentDuesData);
+            }
+        }
+
+        public object SetPayment(string FlatNo, int PaymentID, string PaymentMode, string ChequeNo, decimal Amount, decimal Penalty)
+        {
+            var DC = new DataClassesDataContext();
+            tblTransaction TransactionObj = new tblTransaction();
+            TransactionObj.PaymentID = PaymentID;
+            TransactionObj.PaymentMode = PaymentMode;
+            TransactionObj.Penalty = Convert.ToDecimal(Penalty);
+            TransactionObj.TransactionType = "Income";
+            TransactionObj.TransactionOn = DateTime.Now;
+            TransactionObj.FlatNo = FlatNo;
+            TransactionObj.Amount = Amount;
+            if (ChequeNo != "")
+            {
+                TransactionObj.ChequeNo = ChequeNo;
+            }
+
+            DC.tblTransactions.InsertOnSubmit(TransactionObj);
+
+            tblIncome IncomeObj = new tblIncome();
+            IncomeObj.Amount = Amount;
+            IncomeObj.Description = "Maintenance from " + FlatNo + " with " + Penalty + " Penalty";
+            IncomeObj.IncomeName = "Maintenance from " + FlatNo;
+            IncomeObj.PaymentMode = PaymentMode;
+            IncomeObj.IncomeType = "Maintenance";
+            IncomeObj.IsDeleted = false;
+
+            DC.tblIncomes.InsertOnSubmit(IncomeObj);
+
+            DC.SubmitChanges();
+
+            return "True";
+        }
+
+        /* Payments & Transactions */
     }
 }

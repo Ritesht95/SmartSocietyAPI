@@ -541,7 +541,7 @@ namespace SmartSocietyAPI
         {
             var DC = new DataClassesDataContext();
             tblEvent EventObj = (from ob in DC.tblEvents
-                                 where ob.EventID==EventID
+                                 where ob.EventID == EventID
                                  select ob).Single();
             EventObj.EventName = EventName;
             EventObj.EventTypeID = EventTypeID;
@@ -553,7 +553,7 @@ namespace SmartSocietyAPI
             EventObj.Priority = Convert.ToByte(Priority);
             EventObj.CreatedBy = CreatedBy;
             EventObj.IsActive = true;
-            
+
             DC.SubmitChanges();
 
             return true;
@@ -640,7 +640,7 @@ namespace SmartSocietyAPI
         {
             var DC = new DataClassesDataContext();
             tblPoll PollObj = (from ob in DC.tblPolls
-                               where ob.PollID==PollID
+                               where ob.PollID == PollID
                                select ob).Single();
             PollObj.PollTitle = PollTitle;
             PollObj.PollType = PollType;
@@ -656,7 +656,7 @@ namespace SmartSocietyAPI
         {
             var DC = new DataClassesDataContext();
             JArray JPollOptionNames = JArray.Parse(PollOptionNames.ToString());
-            foreach(JObject PollOption in JPollOptionNames)
+            foreach (JObject PollOption in JPollOptionNames)
             {
                 tblPollOption OptionObj = new tblPollOption();
                 OptionObj.PollOptionName = PollOption.ToString();
@@ -676,7 +676,7 @@ namespace SmartSocietyAPI
             foreach (JObject PollOption in JPollOptions)
             {
                 tblPollOption OptionObj = (from ob in DC.tblPollOptions
-                                           where ob.PollOptionID== Convert.ToInt32(PollOption["PollOptionID"])
+                                           where ob.PollOptionID == Convert.ToInt32(PollOption["PollOptionID"])
                                            select ob).Single();
                 OptionObj.PollOptionName = PollOption["PollOptionName"].ToString();
                 OptionObj.PollID = PollID;
@@ -686,8 +686,92 @@ namespace SmartSocietyAPI
             return true;
         }
 
-
         /* Polls */
+
+        /* Complaints */
+
+        public object GetAllComplaints(int ComplaintID = 0, bool NotHandled = false)
+        {
+            var DC = new DataClassesDataContext();
+            if (ComplaintID == 0)
+            {
+                if (!NotHandled)
+                {
+                    var ComplaintsData = (from ob in DC.tblComplaints
+                                          join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
+                                          join obFH in DC.tblFlatHolders on ob.FlatNo equals obFH.FlatNo
+                                          join obR1 in DC.tblResidents on obFH.ResidentID equals obR1.ResidentID
+                                          select new
+                                          {
+                                              ob,
+                                              HandledBy = obR.ResidentID,
+                                              FlatNo = ob.FlatNo,
+                                              SentBy = obR1.ResidentName
+                                          });
+                    return JsonConvert.SerializeObject(ComplaintsData);
+                }
+                else
+                {
+                    var ComplaintsData = (from ob in DC.tblComplaints
+                                          join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
+                                          join obFH in DC.tblFlatHolders on ob.FlatNo equals obFH.FlatNo
+                                          join obR1 in DC.tblResidents on obFH.ResidentID equals obR1.ResidentID
+                                          where ob.HandledBy == null
+                                          select new
+                                          {
+                                              ob,
+                                              HandledBy = obR.ResidentID,
+                                              FlatNo = ob.FlatNo,
+                                              SentBy = obR1.ResidentName
+                                          });
+                    return JsonConvert.SerializeObject(ComplaintsData);
+                }
+            }
+            else
+            {
+                var ComplaintObj = (from ob in DC.tblComplaints
+                                    join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
+                                    join obFH in DC.tblFlatHolders on ob.FlatNo equals obFH.FlatNo
+                                    join obR1 in DC.tblResidents on obFH.ResidentID equals obR1.ResidentID
+                                    where ob.ComplaintID == ComplaintID
+                                    select new
+                                    {
+                                        ob,
+                                        HandledBy = obR.ResidentID,
+                                        FlatNo = ob.FlatNo,
+                                        SentBy = obR1.ResidentName
+                                    });
+                return JsonConvert.SerializeObject(ComplaintObj);
+            }
+        }
+
+        public object SendComplaintResponse(int ComplaintID, string Response, int HandledBy)
+        {
+            var DC = new DataClassesDataContext();
+            var ComplaintObj = (from ob in DC.tblComplaints
+                                join obF in DC.tblFlats on ob.FlatNo equals obF.FlatNo
+                                join obR in DC.tblResidents on obF.FlatNo equals obR.FlatNo
+                                where obR.FlatHolderID == null && ob.ComplaintID == ComplaintID
+                                select new
+                                {
+                                    ob,
+                                    obR.ResidentName,
+                                    obR.Email
+                                }).Single();
+            Mail(ComplaintObj.Email, "Reply: " + ComplaintObj.ob.Subject, Response);
+            ComplaintObj.ob.Response = Response;
+            ComplaintObj.ob.RespondedOn = DateTime.Now;
+            ComplaintObj.ob.HandledBy = HandledBy;
+
+            DC.SubmitChanges();
+            return true;
+        }
+
+        /* Complaints */
+
+        /* Payments & Transactions */
+
+        /* Payments & Transactions */
 
     }
 }

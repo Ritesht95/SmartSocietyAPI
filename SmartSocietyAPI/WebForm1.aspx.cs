@@ -20,7 +20,7 @@ namespace SmartSocietyAPI
             SmartSocietyAPI.Admin ServiceObject = new SmartSocietyAPI.Admin();
             SmartSocietyAPI.General ServiceObject1 = new SmartSocietyAPI.General();
             SmartSocietyAPI.Client ServiceObject2 = new SmartSocietyAPI.Client();
-            Response.Write(ServiceObject1.GetAllResidentsDetails(0, 0));
+            Response.Write(ServiceObject1.GetAllStaffMembers());
         }
     }
 }

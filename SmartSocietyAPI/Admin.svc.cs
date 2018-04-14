@@ -594,33 +594,60 @@ namespace SmartSocietyAPI
             return true;
         }
 
-        public object ViewAllBookingProposals(int Approved=0)
+        public object ViewAllBookingProposals(int Approved = 0)
         {
             var DC = new DataClassesDataContext();
             if (Approved == 0)
             {
-                IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
-                                                        where ob.ApprovedBy == null && ob.Status == "Panel Review Pending" && ob.IsActive==true
-                                                        select ob);
+                var ProposalsData = (from ob in DC.tblBookings
+                                     join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
+                                     where ob.ApprovedBy == null && ob.Status == "Panel Review Pending" && ob.IsActive == true
+                                     select new
+                                     {
+                                         ob.FacilityID,
+                                         obF.FacilityName,
+                                         ob.FlatNo,
+                                         ob.IsApproved,
+                                         ob.Status,
+                                         obF.RatePerHour
+                                     });
                 return JsonConvert.SerializeObject(ProposalsData);
             }
-            else if(Approved==-1)
+            else if (Approved == -1)
             {
-                IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
-                                                        where ob.Status == "Rejected" && ob.IsActive == true
-                                                        select ob);
+                var ProposalsData = (from ob in DC.tblBookings
+                                     join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
+                                     where ob.Status == "Rejected" && ob.IsActive == true
+                                     select new
+                                     {
+                                         ob.FacilityID,
+                                         obF.FacilityName,
+                                         ob.FlatNo,
+                                         ob.IsApproved,
+                                         ob.Status,
+                                         obF.RatePerHour
+                                     });
                 return JsonConvert.SerializeObject(ProposalsData);
             }
             else
             {
-                IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
-                                                        where ob.Status == "Accepted" && ob.IsActive == true
-                                                        select ob);
+                var ProposalsData = (from ob in DC.tblBookings
+                                     join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
+                                     where ob.Status == "Accepted" && ob.IsActive == true
+                                     select new
+                                     {
+                                         ob.FacilityID,
+                                         obF.FacilityName,
+                                         ob.FlatNo,
+                                         ob.IsApproved,
+                                         ob.Status,
+                                         obF.RatePerHour
+                                     });
                 return JsonConvert.SerializeObject(ProposalsData);
             }
         }
 
-        public object ApprovalOfBooking(int BookingID, bool Approval, int ApprovedBy)
+        public object ApprovalOfBooking(int BookingID, bool Approval, int ApprovedBy, decimal RatePerHour, string Reason)
         {
             var DC = new DataClassesDataContext();
             tblBooking BookingObj = (from ob in DC.tblBookings
@@ -628,7 +655,25 @@ namespace SmartSocietyAPI
                                      select ob).Single();
             BookingObj.IsApproved = Approval;
             BookingObj.ApprovedBy = ApprovedBy;
-            BookingObj.Status = (BookingObj.IsApproved==true)? "Accepted" : "Rejected";
+            BookingObj.Status = (BookingObj.IsApproved == true) ? "Accepted" : "Rejected";
+            BookingObj.Reason = (BookingObj.IsApproved == true) ? Reason : null;
+
+            if (Approval)
+            {
+                tblPayment PaymentObj = new tblPayment();
+                var Amount = (BookingObj.EndTime.Hour - BookingObj.StartTime.Hour)*RatePerHour;
+                PaymentObj.Amount = Amount;
+                PaymentObj.DueDate = BookingObj.StartTime.Date.AddDays(-1);
+                PaymentObj.InitiateDate = DateTime.Now;
+                PaymentObj.PaymentFor = Convert.ToInt32(BookingObj.FlatNo);
+                PaymentObj.PaymentName = "Facility Booking";
+                PaymentObj.Penalty = 0;
+                PaymentObj.IsActive = true;
+
+                DC.tblPayments.InsertOnSubmit(PaymentObj);
+            }
+
+            DC.SubmitChanges();
 
             return true;
         }
@@ -787,6 +832,23 @@ namespace SmartSocietyAPI
         /* Complaints */
 
         /* Payments & Transactions */
+
+        public object AddIncome(string IncomeName, string Type, string Description, decimal Amount, string PaymentMode)
+        {
+            var DC = new DataClassesDataContext();
+            tblIncome IncomeObj = new tblIncome();
+            IncomeObj.IncomeName = IncomeName;
+            IncomeObj.IncomeType = Type;
+            IncomeObj.Description = Description;
+            IncomeObj.Amount = Amount;
+            IncomeObj.PaymentMode = PaymentMode;
+            IncomeObj.IsDeleted = false;
+
+            DC.tblIncomes.InsertOnSubmit(IncomeObj);
+            DC.SubmitChanges();
+
+            return true;
+        }
 
         /* Payments & Transactions */
 

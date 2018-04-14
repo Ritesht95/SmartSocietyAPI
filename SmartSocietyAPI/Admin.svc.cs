@@ -765,7 +765,7 @@ namespace SmartSocietyAPI
                 if (!NotHandled)
                 {
                     var ComplaintsData = (from ob in DC.tblComplaints
-                                          join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
+                                          //join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
                                           join obFH in DC.tblFlatHolders on ob.FlatNo equals obFH.FlatNo
                                           join obR1 in DC.tblResidents on obFH.ResidentID equals obR1.ResidentID
                                           select new
@@ -780,7 +780,7 @@ namespace SmartSocietyAPI
                                               ob.RespondedOn,
                                               ob.Response,
                                               ob.Subject,
-                                              HandledBy = obR.ResidentName,
+                                              //HandledBy = obR.ResidentName,
                                               SentBy = obR1.ResidentName
                                           });
                     return JsonConvert.SerializeObject(ComplaintsData);
@@ -788,7 +788,7 @@ namespace SmartSocietyAPI
                 else
                 {
                     var ComplaintsData = (from ob in DC.tblComplaints
-                                          join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
+                                          //join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
                                           join obFH in DC.tblFlatHolders on ob.FlatNo equals obFH.FlatNo
                                           join obR1 in DC.tblResidents on obFH.ResidentID equals obR1.ResidentID
                                           where ob.HandledBy == null
@@ -804,7 +804,7 @@ namespace SmartSocietyAPI
                                               ob.RespondedOn,
                                               ob.Response,
                                               ob.Subject,
-                                              HandledBy = obR.ResidentName,
+                                              //HandledBy = obR.ResidentName,
                                               SentBy = obR1.ResidentName
                                           });
                     return JsonConvert.SerializeObject(ComplaintsData);
@@ -813,7 +813,7 @@ namespace SmartSocietyAPI
             else
             {
                 var ComplaintObj = (from ob in DC.tblComplaints
-                                    join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
+                                    //join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
                                     join obFH in DC.tblFlatHolders on ob.FlatNo equals obFH.FlatNo
                                     join obR1 in DC.tblResidents on obFH.ResidentID equals obR1.ResidentID
                                     where ob.ComplaintID == ComplaintID
@@ -829,7 +829,7 @@ namespace SmartSocietyAPI
                                         ob.RespondedOn,
                                         ob.Response,
                                         ob.Subject,
-                                        HandledBy = obR.ResidentName,
+                                        //HandledBy = obR.ResidentName,
                                         SentBy = obR1.ResidentName
                                     });
                 return JsonConvert.SerializeObject(ComplaintObj);

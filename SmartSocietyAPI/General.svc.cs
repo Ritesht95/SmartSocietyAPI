@@ -173,8 +173,8 @@ namespace SmartSocietyAPI
                                        join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
                                        join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
                                        join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
-                                       where SqlMethods.Like(ob.ResidentName.ToLower(), "%" + Name.ToLower() + "%") &&
-                                       ob.FlatNo == FlatNo
+                                       where SqlMethods.Like(ob.ResidentName.ToLower(), "%" + Name.ToLower() + "%") 
+                                       || ob.FlatNo == FlatNo
                                        select new
                                        {
                                            ob.ResidentID,
@@ -394,7 +394,7 @@ namespace SmartSocietyAPI
                 var AssetsData = (from ob in DC.tblAssets
                                   join obAT in DC.tblAssetTypes on ob.AssetTypeID equals obAT.AssetTypeID
                                   where SqlMethods.Like(ob.AssetName.ToLower(), "%" + Name.ToLower() + "%")
-                                  && obAT.AssetTypeName.ToLower() == Type.ToLower()
+                                  || obAT.AssetTypeName.ToLower() == Type.ToLower()
                                   select new
                                   {
                                       ob.AssetID,
@@ -593,7 +593,7 @@ namespace SmartSocietyAPI
                 var VendorsData = (from ob in DC.tblVendors
                                    where ob.IsActive == true
                                    && SqlMethods.Like(ob.VendorName.ToLower(), "%" + Name.ToLower() + "%")
-                                   && ob.VendorType.ToLower() == Type.ToLower()
+                                   || ob.VendorType.ToLower() == Type.ToLower()
                                    select ob);
                 return JsonConvert.SerializeObject(VendorsData);
             }
@@ -683,7 +683,7 @@ namespace SmartSocietyAPI
                                   join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
                                   join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
                                   where SqlMethods.Like(ob.EventName.ToLower(), "%" + Name.ToLower() + "%")
-                                  && obET.EventTypeName.ToLower() == Type.ToLower()
+                                  || obET.EventTypeName.ToLower() == Type.ToLower()
                                   select ob);
 
                 return JsonConvert.SerializeObject(EventsData);
@@ -840,7 +840,7 @@ namespace SmartSocietyAPI
                 IQueryable<object> StaffMembersData = (from ob in DC.tblStaffMembers
                                                        join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
                                                        where SqlMethods.Like(ob.MemberName.ToLower(), "%" + Name.ToLower() + "%")
-                                                       && ob.MemberType.ToLower() == Type.ToLower()
+                                                       || ob.MemberType.ToLower() == Type.ToLower()
                                                        select new
                                                        {
                                                            ob.MemberName,

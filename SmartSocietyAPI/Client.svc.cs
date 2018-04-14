@@ -76,7 +76,7 @@ namespace SmartSocietyAPI
             if (ObjLogin.Count() == 1)
             {
                 var TempObj = ObjLogin.Single();
-                if(TempObj.MemberType!="Security Guard")
+                if(TempObj.MemberType=="Security Guard")
                 {
                     return JsonConvert.SerializeObject(TempObj);
                 }
@@ -99,7 +99,7 @@ namespace SmartSocietyAPI
                                        ob.MemberType,
                                        ob.VerificationCode,
                                        obR.Gender
-                                   });
+                                   }).Single();
                     return JsonConvert.SerializeObject(TempObj1);
                 }
                 

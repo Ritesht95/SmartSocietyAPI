@@ -28,12 +28,12 @@ namespace SmartSocietyAPI
         object GetPositionData();
 
         [OperationContract]
-        [WebGet(UriTemplate = "SetResident/{Name,DOB,FlatID,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID}", ResponseFormat = WebMessageFormat.Json)]
-        object SetResident(string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID);
+        [WebGet(UriTemplate = "SetResident/{Name,DOB,FlatNo,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID,Gender}", ResponseFormat = WebMessageFormat.Json)]
+        object SetResident(string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, string Gender);
 
         [OperationContract]
-        [WebGet(UriTemplate = "EditResident/{ResidentID,Name,DOB,FlatID,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID,IsActive}", ResponseFormat = WebMessageFormat.Json)]
-        object EditResident(int ResidentID, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive);
+        [WebGet(UriTemplate = "EditResident/{ResidentID,Name,DOB,FlatID,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID,IsActive,Gender}", ResponseFormat = WebMessageFormat.Json)]
+        object EditResident(int ResidentID, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive, string Gender);
 
         /* Society Setup */
 

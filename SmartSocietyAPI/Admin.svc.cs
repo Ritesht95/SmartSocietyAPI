@@ -770,9 +770,17 @@ namespace SmartSocietyAPI
                                           join obR1 in DC.tblResidents on obFH.ResidentID equals obR1.ResidentID
                                           select new
                                           {
-                                              ob,
-                                              HandledBy = obR.ResidentID,
-                                              FlatNo = ob.FlatNo,
+                                              ob.ComplaintID,
+                                              ob.ComplaintType,
+                                              ob.CreatedOn,
+                                              ob.Description,
+                                              ob.FlatNo,
+                                              ob.Priority,
+                                              ob.IsActive,
+                                              ob.RespondedOn,
+                                              ob.Response,
+                                              ob.Subject,
+                                              HandledBy = obR.ResidentName,
                                               SentBy = obR1.ResidentName
                                           });
                     return JsonConvert.SerializeObject(ComplaintsData);
@@ -786,9 +794,17 @@ namespace SmartSocietyAPI
                                           where ob.HandledBy == null
                                           select new
                                           {
-                                              ob,
-                                              HandledBy = obR.ResidentID,
-                                              FlatNo = ob.FlatNo,
+                                              ob.ComplaintID,
+                                              ob.ComplaintType,
+                                              ob.CreatedOn,
+                                              ob.Description,
+                                              ob.FlatNo,
+                                              ob.Priority,
+                                              ob.IsActive,
+                                              ob.RespondedOn,
+                                              ob.Response,
+                                              ob.Subject,
+                                              HandledBy = obR.ResidentName,
                                               SentBy = obR1.ResidentName
                                           });
                     return JsonConvert.SerializeObject(ComplaintsData);
@@ -803,9 +819,17 @@ namespace SmartSocietyAPI
                                     where ob.ComplaintID == ComplaintID
                                     select new
                                     {
-                                        ob,
-                                        HandledBy = obR.ResidentID,
-                                        FlatNo = ob.FlatNo,
+                                        ob.ComplaintID,
+                                        ob.ComplaintType,
+                                        ob.CreatedOn,
+                                        ob.Description,
+                                        ob.FlatNo,
+                                        ob.Priority,
+                                        ob.IsActive,
+                                        ob.RespondedOn,
+                                        ob.Response,
+                                        ob.Subject,
+                                        HandledBy = obR.ResidentName,
                                         SentBy = obR1.ResidentName
                                     });
                 return JsonConvert.SerializeObject(ComplaintObj);

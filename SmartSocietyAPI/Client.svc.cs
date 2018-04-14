@@ -172,11 +172,12 @@ namespace SmartSocietyAPI
             return JsonConvert.SerializeObject(PositionsData);
         }
 
-        public object SetResident(string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID)
+        public object SetResident(string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, string Gender)
         {
             var DC = new DataClassesDataContext();
             tblResident ResidentObj = new tblResident();
             ResidentObj.ResidentName = Name;
+            ResidentObj.Gender = Gender;
             ResidentObj.DOB = Convert.ToDateTime(DOB).Date;
             ResidentObj.FlatNo = FlatNo;
             ResidentObj.Occupation = Occupation;
@@ -194,7 +195,7 @@ namespace SmartSocietyAPI
             return "True";
         }
 
-        public object EditResident(int ResidentID, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive)
+        public object EditResident(int ResidentID, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive, string Gender)
         {
             var DC = new DataClassesDataContext();
             var ResidentObj = (from ob in DC.tblResidents
@@ -211,6 +212,7 @@ namespace SmartSocietyAPI
             ResidentObj.PositionID = PositionID;
             ResidentObj.FlatHolderID = FlatHolderID;
             ResidentObj.IsActive = IsActive;
+            ResidentObj.Gender = Gender;
 
             DC.SubmitChanges();
             return "True";

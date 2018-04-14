@@ -22,7 +22,8 @@ namespace SmartSocietyAPI
             SmartSocietyAPI.Client ServiceObject2 = new SmartSocietyAPI.Client();
             Response.Write(ServiceObject1.GetAllStaffMembers());
             Response.Write(ServiceObject2.CheckLogin("bachani62@gmail.com","234567"));
-            Response.Write(ServiceObject2.SetResident("KuchhBhi","18-04-2018", "1","Student","3225453453","3225453453","rdtailor@gmail.com","",3,1,"Male"));
+            //Response.Write(ServiceObject2.SetResident("KuchhBhi","18-04-2018", "1","Student","3225453453","3225453453","rdtailor@gmail.com","",3,1,"Male"));
+            Response.Write(ServiceObject.GetAllComplaints(0, false));
         }
     }
 }

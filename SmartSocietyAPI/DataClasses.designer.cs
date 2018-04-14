@@ -54,9 +54,6 @@ namespace SmartSocietyAPI
     partial void InserttblAssetType(tblAssetType instance);
     partial void UpdatetblAssetType(tblAssetType instance);
     partial void DeletetblAssetType(tblAssetType instance);
-    partial void InserttblBooking(tblBooking instance);
-    partial void UpdatetblBooking(tblBooking instance);
-    partial void DeletetblBooking(tblBooking instance);
     partial void InserttblComplaint(tblComplaint instance);
     partial void UpdatetblComplaint(tblComplaint instance);
     partial void DeletetblComplaint(tblComplaint instance);
@@ -135,6 +132,9 @@ namespace SmartSocietyAPI
     partial void InserttblVisitor(tblVisitor instance);
     partial void UpdatetblVisitor(tblVisitor instance);
     partial void DeletetblVisitor(tblVisitor instance);
+    partial void InserttblBooking(tblBooking instance);
+    partial void UpdatetblBooking(tblBooking instance);
+    partial void DeletetblBooking(tblBooking instance);
     #endregion
 		
 		public DataClassesDataContext() : 
@@ -228,14 +228,6 @@ namespace SmartSocietyAPI
 			get
 			{
 				return this.GetTable<tblAssetType>();
-			}
-		}
-		
-		public System.Data.Linq.Table<tblBooking> tblBookings
-		{
-			get
-			{
-				return this.GetTable<tblBooking>();
 			}
 		}
 		
@@ -444,6 +436,14 @@ namespace SmartSocietyAPI
 			get
 			{
 				return this.GetTable<tblVisitor>();
+			}
+		}
+		
+		public System.Data.Linq.Table<tblBooking> tblBookings
+		{
+			get
+			{
+				return this.GetTable<tblBooking>();
 			}
 		}
 	}
@@ -1927,308 +1927,6 @@ namespace SmartSocietyAPI
 					this._AssetTypeName = value;
 					this.SendPropertyChanged("AssetTypeName");
 					this.OnAssetTypeNameChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblBookings")]
-	public partial class tblBooking : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _BookingID;
-		
-		private int _FacilityID;
-		
-		private string _FlatNo;
-		
-		private System.DateTime _StartTime;
-		
-		private System.DateTime _EndTime;
-		
-		private string _Status;
-		
-		private string _Purpose;
-		
-		private string _Description;
-		
-		private bool _IsApproved;
-		
-		private System.Nullable<int> _ApprovedBy;
-		
-		private bool _IsActive;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnBookingIDChanging(int value);
-    partial void OnBookingIDChanged();
-    partial void OnFacilityIDChanging(int value);
-    partial void OnFacilityIDChanged();
-    partial void OnFlatNoChanging(string value);
-    partial void OnFlatNoChanged();
-    partial void OnStartTimeChanging(System.DateTime value);
-    partial void OnStartTimeChanged();
-    partial void OnEndTimeChanging(System.DateTime value);
-    partial void OnEndTimeChanged();
-    partial void OnStatusChanging(string value);
-    partial void OnStatusChanged();
-    partial void OnPurposeChanging(string value);
-    partial void OnPurposeChanged();
-    partial void OnDescriptionChanging(string value);
-    partial void OnDescriptionChanged();
-    partial void OnIsApprovedChanging(bool value);
-    partial void OnIsApprovedChanged();
-    partial void OnApprovedByChanging(System.Nullable<int> value);
-    partial void OnApprovedByChanged();
-    partial void OnIsActiveChanging(bool value);
-    partial void OnIsActiveChanged();
-    #endregion
-		
-		public tblBooking()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BookingID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int BookingID
-		{
-			get
-			{
-				return this._BookingID;
-			}
-			set
-			{
-				if ((this._BookingID != value))
-				{
-					this.OnBookingIDChanging(value);
-					this.SendPropertyChanging();
-					this._BookingID = value;
-					this.SendPropertyChanged("BookingID");
-					this.OnBookingIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacilityID", DbType="Int NOT NULL")]
-		public int FacilityID
-		{
-			get
-			{
-				return this._FacilityID;
-			}
-			set
-			{
-				if ((this._FacilityID != value))
-				{
-					this.OnFacilityIDChanging(value);
-					this.SendPropertyChanging();
-					this._FacilityID = value;
-					this.SendPropertyChanged("FacilityID");
-					this.OnFacilityIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string FlatNo
-		{
-			get
-			{
-				return this._FlatNo;
-			}
-			set
-			{
-				if ((this._FlatNo != value))
-				{
-					this.OnFlatNoChanging(value);
-					this.SendPropertyChanging();
-					this._FlatNo = value;
-					this.SendPropertyChanged("FlatNo");
-					this.OnFlatNoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartTime", DbType="DateTime NOT NULL")]
-		public System.DateTime StartTime
-		{
-			get
-			{
-				return this._StartTime;
-			}
-			set
-			{
-				if ((this._StartTime != value))
-				{
-					this.OnStartTimeChanging(value);
-					this.SendPropertyChanging();
-					this._StartTime = value;
-					this.SendPropertyChanged("StartTime");
-					this.OnStartTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndTime", DbType="DateTime NOT NULL")]
-		public System.DateTime EndTime
-		{
-			get
-			{
-				return this._EndTime;
-			}
-			set
-			{
-				if ((this._EndTime != value))
-				{
-					this.OnEndTimeChanging(value);
-					this.SendPropertyChanging();
-					this._EndTime = value;
-					this.SendPropertyChanged("EndTime");
-					this.OnEndTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string Status
-		{
-			get
-			{
-				return this._Status;
-			}
-			set
-			{
-				if ((this._Status != value))
-				{
-					this.OnStatusChanging(value);
-					this.SendPropertyChanging();
-					this._Status = value;
-					this.SendPropertyChanged("Status");
-					this.OnStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Purpose", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string Purpose
-		{
-			get
-			{
-				return this._Purpose;
-			}
-			set
-			{
-				if ((this._Purpose != value))
-				{
-					this.OnPurposeChanging(value);
-					this.SendPropertyChanging();
-					this._Purpose = value;
-					this.SendPropertyChanged("Purpose");
-					this.OnPurposeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this.OnDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._Description = value;
-					this.SendPropertyChanged("Description");
-					this.OnDescriptionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsApproved", DbType="Bit NOT NULL")]
-		public bool IsApproved
-		{
-			get
-			{
-				return this._IsApproved;
-			}
-			set
-			{
-				if ((this._IsApproved != value))
-				{
-					this.OnIsApprovedChanging(value);
-					this.SendPropertyChanging();
-					this._IsApproved = value;
-					this.SendPropertyChanged("IsApproved");
-					this.OnIsApprovedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApprovedBy", DbType="Int")]
-		public System.Nullable<int> ApprovedBy
-		{
-			get
-			{
-				return this._ApprovedBy;
-			}
-			set
-			{
-				if ((this._ApprovedBy != value))
-				{
-					this.OnApprovedByChanging(value);
-					this.SendPropertyChanging();
-					this._ApprovedBy = value;
-					this.SendPropertyChanged("ApprovedBy");
-					this.OnApprovedByChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
-		public bool IsActive
-		{
-			get
-			{
-				return this._IsActive;
-			}
-			set
-			{
-				if ((this._IsActive != value))
-				{
-					this.OnIsActiveChanging(value);
-					this.SendPropertyChanging();
-					this._IsActive = value;
-					this.SendPropertyChanged("IsActive");
-					this.OnIsActiveChanged();
 				}
 			}
 		}
@@ -7561,6 +7259,332 @@ namespace SmartSocietyAPI
 					this._MobileNo = value;
 					this.SendPropertyChanged("MobileNo");
 					this.OnMobileNoChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblBookings")]
+	public partial class tblBooking : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _BookingID;
+		
+		private int _FacilityID;
+		
+		private string _FlatNo;
+		
+		private System.DateTime _StartTime;
+		
+		private System.DateTime _EndTime;
+		
+		private string _Status;
+		
+		private string _Purpose;
+		
+		private string _Description;
+		
+		private bool _IsApproved;
+		
+		private System.Nullable<int> _ApprovedBy;
+		
+		private bool _IsActive;
+		
+		private string _Reason;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnBookingIDChanging(int value);
+    partial void OnBookingIDChanged();
+    partial void OnFacilityIDChanging(int value);
+    partial void OnFacilityIDChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
+    partial void OnStartTimeChanging(System.DateTime value);
+    partial void OnStartTimeChanged();
+    partial void OnEndTimeChanging(System.DateTime value);
+    partial void OnEndTimeChanged();
+    partial void OnStatusChanging(string value);
+    partial void OnStatusChanged();
+    partial void OnPurposeChanging(string value);
+    partial void OnPurposeChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnIsApprovedChanging(bool value);
+    partial void OnIsApprovedChanged();
+    partial void OnApprovedByChanging(System.Nullable<int> value);
+    partial void OnApprovedByChanged();
+    partial void OnIsActiveChanging(bool value);
+    partial void OnIsActiveChanged();
+    partial void OnReasonChanging(string value);
+    partial void OnReasonChanged();
+    #endregion
+		
+		public tblBooking()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BookingID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int BookingID
+		{
+			get
+			{
+				return this._BookingID;
+			}
+			set
+			{
+				if ((this._BookingID != value))
+				{
+					this.OnBookingIDChanging(value);
+					this.SendPropertyChanging();
+					this._BookingID = value;
+					this.SendPropertyChanged("BookingID");
+					this.OnBookingIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacilityID", DbType="Int NOT NULL")]
+		public int FacilityID
+		{
+			get
+			{
+				return this._FacilityID;
+			}
+			set
+			{
+				if ((this._FacilityID != value))
+				{
+					this.OnFacilityIDChanging(value);
+					this.SendPropertyChanging();
+					this._FacilityID = value;
+					this.SendPropertyChanged("FacilityID");
+					this.OnFacilityIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
+		{
+			get
+			{
+				return this._FlatNo;
+			}
+			set
+			{
+				if ((this._FlatNo != value))
+				{
+					this.OnFlatNoChanging(value);
+					this.SendPropertyChanging();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartTime", DbType="DateTime NOT NULL")]
+		public System.DateTime StartTime
+		{
+			get
+			{
+				return this._StartTime;
+			}
+			set
+			{
+				if ((this._StartTime != value))
+				{
+					this.OnStartTimeChanging(value);
+					this.SendPropertyChanging();
+					this._StartTime = value;
+					this.SendPropertyChanged("StartTime");
+					this.OnStartTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndTime", DbType="DateTime NOT NULL")]
+		public System.DateTime EndTime
+		{
+			get
+			{
+				return this._EndTime;
+			}
+			set
+			{
+				if ((this._EndTime != value))
+				{
+					this.OnEndTimeChanging(value);
+					this.SendPropertyChanging();
+					this._EndTime = value;
+					this.SendPropertyChanged("EndTime");
+					this.OnEndTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this.OnStatusChanging(value);
+					this.SendPropertyChanging();
+					this._Status = value;
+					this.SendPropertyChanged("Status");
+					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Purpose", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Purpose
+		{
+			get
+			{
+				return this._Purpose;
+			}
+			set
+			{
+				if ((this._Purpose != value))
+				{
+					this.OnPurposeChanging(value);
+					this.SendPropertyChanging();
+					this._Purpose = value;
+					this.SendPropertyChanged("Purpose");
+					this.OnPurposeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsApproved", DbType="Bit NOT NULL")]
+		public bool IsApproved
+		{
+			get
+			{
+				return this._IsApproved;
+			}
+			set
+			{
+				if ((this._IsApproved != value))
+				{
+					this.OnIsApprovedChanging(value);
+					this.SendPropertyChanging();
+					this._IsApproved = value;
+					this.SendPropertyChanged("IsApproved");
+					this.OnIsApprovedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApprovedBy", DbType="Int")]
+		public System.Nullable<int> ApprovedBy
+		{
+			get
+			{
+				return this._ApprovedBy;
+			}
+			set
+			{
+				if ((this._ApprovedBy != value))
+				{
+					this.OnApprovedByChanging(value);
+					this.SendPropertyChanging();
+					this._ApprovedBy = value;
+					this.SendPropertyChanged("ApprovedBy");
+					this.OnApprovedByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
+		public bool IsActive
+		{
+			get
+			{
+				return this._IsActive;
+			}
+			set
+			{
+				if ((this._IsActive != value))
+				{
+					this.OnIsActiveChanging(value);
+					this.SendPropertyChanging();
+					this._IsActive = value;
+					this.SendPropertyChanged("IsActive");
+					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Reason", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Reason
+		{
+			get
+			{
+				return this._Reason;
+			}
+			set
+			{
+				if ((this._Reason != value))
+				{
+					this.OnReasonChanging(value);
+					this.SendPropertyChanging();
+					this._Reason = value;
+					this.SendPropertyChanged("Reason");
+					this.OnReasonChanged();
 				}
 			}
 		}

@@ -123,7 +123,7 @@ namespace SmartSocietyAPI
 
         [OperationContract]
         [WebGet(UriTemplate = "ApprovalOfBooking/{BookingID,Approval,ApprovedBy}", ResponseFormat = WebMessageFormat.Json)]
-        object ApprovalOfBooking(int BookingID, bool Approval, int ApprovedBy);
+        object ApprovalOfBooking(int BookingID, bool Approval, int ApprovedBy, decimal RatePerHour, string Reason);
 
         /* FacilityBookings */
 
@@ -159,6 +159,10 @@ namespace SmartSocietyAPI
         /* Complaints */
 
         /* Payments & Transactions */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AddIncome/{IncomeName,Type,Description,Amount,PaymentMode}", ResponseFormat = WebMessageFormat.Json)]
+        object AddIncome(string IncomeName, string Type, string Description, decimal Amount, string PaymentMode);
 
         /* Payments & Transactions */
     }

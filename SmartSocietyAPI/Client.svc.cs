@@ -75,7 +75,33 @@ namespace SmartSocietyAPI
                                              select ob);
             if (ObjLogin.Count() == 1)
             {
-                return JsonConvert.SerializeObject(ObjLogin.Single());
+                var TempObj = ObjLogin.Single();
+                if(TempObj.MemberType!="Security Guard")
+                {
+                    return JsonConvert.SerializeObject(TempObj);
+                }
+                else
+                {
+                    var TempObj1= (from ob in DC.tblLogins
+                                   join obR in DC.tblResidents on ob.MemberID equals obR.ResidentID
+                                   join obFH in DC.tblFlatHolders on obR.ResidentID equals obFH.ResidentID
+                                   where ob.LoginID==TempObj.LoginID && obFH.IsActive==true
+                                   select new
+                                   {
+                                       ob.LoginID,
+                                       ob.LoginName,
+                                       ob.MemberID,
+                                       obR.ResidentName,
+                                       obFH.FlatHolderID,
+                                       ob.PhoneNo,
+                                       ob.Email,
+                                       ob.FlatNo,
+                                       ob.MemberType,
+                                       ob.VerificationCode
+                                   });
+                    return JsonConvert.SerializeObject(TempObj1);
+                }
+                
             }
             else
             {
@@ -370,6 +396,8 @@ namespace SmartSocietyAPI
 
             return "True";
         }
+
+        
 
         /* Payments & Transactions */
     }

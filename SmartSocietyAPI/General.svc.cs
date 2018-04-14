@@ -72,7 +72,8 @@ namespace SmartSocietyAPI
                                            ob.DOB,
                                            ob.Email,
                                            ob.FlatHolderID,
-                                           FlatHolderName = obR.ResidentName
+                                           FlatHolderName = obR.ResidentName,
+                                           ob.Gender
                                        });
                 }
                 else if (FlagMemType == 1)
@@ -98,7 +99,8 @@ namespace SmartSocietyAPI
                                            ob.DOB,
                                            ob.Email,
                                            ob.FlatHolderID,
-                                           FlatHolderName = obR.ResidentName
+                                           FlatHolderName = obR.ResidentName,
+                                           ob.Gender
                                        });
                 }
                 else
@@ -124,7 +126,8 @@ namespace SmartSocietyAPI
                                            ob.DOB,
                                            ob.Email,
                                            ob.FlatHolderID,
-                                           FlatHolderName = obR.ResidentName
+                                           FlatHolderName = obR.ResidentName,
+                                           ob.Gender
                                        });
                 }
                 return JsonConvert.SerializeObject(ObjAllResidents);
@@ -152,7 +155,8 @@ namespace SmartSocietyAPI
                                    ob.DOB,
                                    ob.Email,
                                    ob.FlatHolderID,
-                                   FlatHolderName = obR.ResidentName
+                                   FlatHolderName = obR.ResidentName,
+                                   ob.Gender
                                }).Single();
 
                 return JsonConvert.SerializeObject(ResidentObj);

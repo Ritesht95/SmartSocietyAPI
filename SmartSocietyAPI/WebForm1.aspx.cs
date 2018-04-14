@@ -21,6 +21,7 @@ namespace SmartSocietyAPI
             SmartSocietyAPI.General ServiceObject1 = new SmartSocietyAPI.General();
             SmartSocietyAPI.Client ServiceObject2 = new SmartSocietyAPI.Client();
             Response.Write(ServiceObject1.GetAllStaffMembers());
+            Response.Write(ServiceObject2.CheckLogin("bachani62@gmail.com","234567"));
         }
     }
 }

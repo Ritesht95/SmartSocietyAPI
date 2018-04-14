@@ -605,11 +605,16 @@ namespace SmartSocietyAPI
                                      select new
                                      {
                                          ob.FacilityID,
+                                         ob.BookingID,
                                          obF.FacilityName,
                                          ob.FlatNo,
                                          ob.IsApproved,
                                          ob.Status,
-                                         obF.RatePerHour
+                                         obF.RatePerHour,
+                                         ob.Description,
+                                         ob.StartTime,
+                                         ob.EndTime,
+                                         ob.Reason
                                      });
                 return JsonConvert.SerializeObject(ProposalsData);
             }

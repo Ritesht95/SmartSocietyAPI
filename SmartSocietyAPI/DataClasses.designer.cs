@@ -114,9 +114,6 @@ namespace SmartSocietyAPI
     partial void InserttblRent(tblRent instance);
     partial void UpdatetblRent(tblRent instance);
     partial void DeletetblRent(tblRent instance);
-    partial void InserttblResident(tblResident instance);
-    partial void UpdatetblResident(tblResident instance);
-    partial void DeletetblResident(tblResident instance);
     partial void InserttblSociety(tblSociety instance);
     partial void UpdatetblSociety(tblSociety instance);
     partial void DeletetblSociety(tblSociety instance);
@@ -135,6 +132,9 @@ namespace SmartSocietyAPI
     partial void InserttblBooking(tblBooking instance);
     partial void UpdatetblBooking(tblBooking instance);
     partial void DeletetblBooking(tblBooking instance);
+    partial void InserttblResident(tblResident instance);
+    partial void UpdatetblResident(tblResident instance);
+    partial void DeletetblResident(tblResident instance);
     #endregion
 		
 		public DataClassesDataContext() : 
@@ -391,14 +391,6 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		public System.Data.Linq.Table<tblResident> tblResidents
-		{
-			get
-			{
-				return this.GetTable<tblResident>();
-			}
-		}
-		
 		public System.Data.Linq.Table<tblSociety> tblSocieties
 		{
 			get
@@ -444,6 +436,14 @@ namespace SmartSocietyAPI
 			get
 			{
 				return this.GetTable<tblBooking>();
+			}
+		}
+		
+		public System.Data.Linq.Table<tblResident> tblResidents
+		{
+			get
+			{
+				return this.GetTable<tblResident>();
 			}
 		}
 	}
@@ -5472,356 +5472,6 @@ namespace SmartSocietyAPI
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblResidents")]
-	public partial class tblResident : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ResidentID;
-		
-		private string _ResidentName;
-		
-		private System.DateTime _DOB;
-		
-		private string _FlatNo;
-		
-		private string _Occupation;
-		
-		private string _ContactNo1;
-		
-		private string _ContactNo2;
-		
-		private string _Email;
-		
-		private string _Image;
-		
-		private System.Nullable<int> _PositionID;
-		
-		private System.Nullable<int> _FlatHolderID;
-		
-		private bool _IsActive;
-		
-		private System.DateTime _CreatedOn;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnResidentIDChanging(int value);
-    partial void OnResidentIDChanged();
-    partial void OnResidentNameChanging(string value);
-    partial void OnResidentNameChanged();
-    partial void OnDOBChanging(System.DateTime value);
-    partial void OnDOBChanged();
-    partial void OnFlatNoChanging(string value);
-    partial void OnFlatNoChanged();
-    partial void OnOccupationChanging(string value);
-    partial void OnOccupationChanged();
-    partial void OnContactNo1Changing(string value);
-    partial void OnContactNo1Changed();
-    partial void OnContactNo2Changing(string value);
-    partial void OnContactNo2Changed();
-    partial void OnEmailChanging(string value);
-    partial void OnEmailChanged();
-    partial void OnImageChanging(string value);
-    partial void OnImageChanged();
-    partial void OnPositionIDChanging(System.Nullable<int> value);
-    partial void OnPositionIDChanged();
-    partial void OnFlatHolderIDChanging(System.Nullable<int> value);
-    partial void OnFlatHolderIDChanged();
-    partial void OnIsActiveChanging(bool value);
-    partial void OnIsActiveChanged();
-    partial void OnCreatedOnChanging(System.DateTime value);
-    partial void OnCreatedOnChanged();
-    #endregion
-		
-		public tblResident()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidentID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ResidentID
-		{
-			get
-			{
-				return this._ResidentID;
-			}
-			set
-			{
-				if ((this._ResidentID != value))
-				{
-					this.OnResidentIDChanging(value);
-					this.SendPropertyChanging();
-					this._ResidentID = value;
-					this.SendPropertyChanged("ResidentID");
-					this.OnResidentIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidentName", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string ResidentName
-		{
-			get
-			{
-				return this._ResidentName;
-			}
-			set
-			{
-				if ((this._ResidentName != value))
-				{
-					this.OnResidentNameChanging(value);
-					this.SendPropertyChanging();
-					this._ResidentName = value;
-					this.SendPropertyChanged("ResidentName");
-					this.OnResidentNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DOB", DbType="Date NOT NULL")]
-		public System.DateTime DOB
-		{
-			get
-			{
-				return this._DOB;
-			}
-			set
-			{
-				if ((this._DOB != value))
-				{
-					this.OnDOBChanging(value);
-					this.SendPropertyChanging();
-					this._DOB = value;
-					this.SendPropertyChanged("DOB");
-					this.OnDOBChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string FlatNo
-		{
-			get
-			{
-				return this._FlatNo;
-			}
-			set
-			{
-				if ((this._FlatNo != value))
-				{
-					this.OnFlatNoChanging(value);
-					this.SendPropertyChanging();
-					this._FlatNo = value;
-					this.SendPropertyChanged("FlatNo");
-					this.OnFlatNoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Occupation", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Occupation
-		{
-			get
-			{
-				return this._Occupation;
-			}
-			set
-			{
-				if ((this._Occupation != value))
-				{
-					this.OnOccupationChanging(value);
-					this.SendPropertyChanging();
-					this._Occupation = value;
-					this.SendPropertyChanged("Occupation");
-					this.OnOccupationChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNo1", DbType="VarChar(15) NOT NULL", CanBeNull=false)]
-		public string ContactNo1
-		{
-			get
-			{
-				return this._ContactNo1;
-			}
-			set
-			{
-				if ((this._ContactNo1 != value))
-				{
-					this.OnContactNo1Changing(value);
-					this.SendPropertyChanging();
-					this._ContactNo1 = value;
-					this.SendPropertyChanged("ContactNo1");
-					this.OnContactNo1Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNo2", DbType="VarChar(15)")]
-		public string ContactNo2
-		{
-			get
-			{
-				return this._ContactNo2;
-			}
-			set
-			{
-				if ((this._ContactNo2 != value))
-				{
-					this.OnContactNo2Changing(value);
-					this.SendPropertyChanging();
-					this._ContactNo2 = value;
-					this.SendPropertyChanged("ContactNo2");
-					this.OnContactNo2Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(255)")]
-		public string Email
-		{
-			get
-			{
-				return this._Email;
-			}
-			set
-			{
-				if ((this._Email != value))
-				{
-					this.OnEmailChanging(value);
-					this.SendPropertyChanging();
-					this._Email = value;
-					this.SendPropertyChanged("Email");
-					this.OnEmailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Image", DbType="VarChar(255)")]
-		public string Image
-		{
-			get
-			{
-				return this._Image;
-			}
-			set
-			{
-				if ((this._Image != value))
-				{
-					this.OnImageChanging(value);
-					this.SendPropertyChanging();
-					this._Image = value;
-					this.SendPropertyChanged("Image");
-					this.OnImageChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PositionID", DbType="Int")]
-		public System.Nullable<int> PositionID
-		{
-			get
-			{
-				return this._PositionID;
-			}
-			set
-			{
-				if ((this._PositionID != value))
-				{
-					this.OnPositionIDChanging(value);
-					this.SendPropertyChanging();
-					this._PositionID = value;
-					this.SendPropertyChanged("PositionID");
-					this.OnPositionIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatHolderID", DbType="Int")]
-		public System.Nullable<int> FlatHolderID
-		{
-			get
-			{
-				return this._FlatHolderID;
-			}
-			set
-			{
-				if ((this._FlatHolderID != value))
-				{
-					this.OnFlatHolderIDChanging(value);
-					this.SendPropertyChanging();
-					this._FlatHolderID = value;
-					this.SendPropertyChanged("FlatHolderID");
-					this.OnFlatHolderIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
-		public bool IsActive
-		{
-			get
-			{
-				return this._IsActive;
-			}
-			set
-			{
-				if ((this._IsActive != value))
-				{
-					this.OnIsActiveChanging(value);
-					this.SendPropertyChanging();
-					this._IsActive = value;
-					this.SendPropertyChanged("IsActive");
-					this.OnIsActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="Date NOT NULL")]
-		public System.DateTime CreatedOn
-		{
-			get
-			{
-				return this._CreatedOn;
-			}
-			set
-			{
-				if ((this._CreatedOn != value))
-				{
-					this.OnCreatedOnChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedOn = value;
-					this.SendPropertyChanged("CreatedOn");
-					this.OnCreatedOnChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblSociety")]
 	public partial class tblSociety : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -7585,6 +7235,380 @@ namespace SmartSocietyAPI
 					this._Reason = value;
 					this.SendPropertyChanged("Reason");
 					this.OnReasonChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblResidents")]
+	public partial class tblResident : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ResidentID;
+		
+		private string _ResidentName;
+		
+		private System.DateTime _DOB;
+		
+		private string _FlatNo;
+		
+		private string _Occupation;
+		
+		private string _ContactNo1;
+		
+		private string _ContactNo2;
+		
+		private string _Email;
+		
+		private string _Image;
+		
+		private System.Nullable<int> _PositionID;
+		
+		private System.Nullable<int> _FlatHolderID;
+		
+		private bool _IsActive;
+		
+		private System.DateTime _CreatedOn;
+		
+		private string _Gender;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnResidentIDChanging(int value);
+    partial void OnResidentIDChanged();
+    partial void OnResidentNameChanging(string value);
+    partial void OnResidentNameChanged();
+    partial void OnDOBChanging(System.DateTime value);
+    partial void OnDOBChanged();
+    partial void OnFlatNoChanging(string value);
+    partial void OnFlatNoChanged();
+    partial void OnOccupationChanging(string value);
+    partial void OnOccupationChanged();
+    partial void OnContactNo1Changing(string value);
+    partial void OnContactNo1Changed();
+    partial void OnContactNo2Changing(string value);
+    partial void OnContactNo2Changed();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnImageChanging(string value);
+    partial void OnImageChanged();
+    partial void OnPositionIDChanging(System.Nullable<int> value);
+    partial void OnPositionIDChanged();
+    partial void OnFlatHolderIDChanging(System.Nullable<int> value);
+    partial void OnFlatHolderIDChanged();
+    partial void OnIsActiveChanging(bool value);
+    partial void OnIsActiveChanged();
+    partial void OnCreatedOnChanging(System.DateTime value);
+    partial void OnCreatedOnChanged();
+    partial void OnGenderChanging(string value);
+    partial void OnGenderChanged();
+    #endregion
+		
+		public tblResident()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidentID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ResidentID
+		{
+			get
+			{
+				return this._ResidentID;
+			}
+			set
+			{
+				if ((this._ResidentID != value))
+				{
+					this.OnResidentIDChanging(value);
+					this.SendPropertyChanging();
+					this._ResidentID = value;
+					this.SendPropertyChanged("ResidentID");
+					this.OnResidentIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidentName", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string ResidentName
+		{
+			get
+			{
+				return this._ResidentName;
+			}
+			set
+			{
+				if ((this._ResidentName != value))
+				{
+					this.OnResidentNameChanging(value);
+					this.SendPropertyChanging();
+					this._ResidentName = value;
+					this.SendPropertyChanged("ResidentName");
+					this.OnResidentNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DOB", DbType="Date NOT NULL")]
+		public System.DateTime DOB
+		{
+			get
+			{
+				return this._DOB;
+			}
+			set
+			{
+				if ((this._DOB != value))
+				{
+					this.OnDOBChanging(value);
+					this.SendPropertyChanging();
+					this._DOB = value;
+					this.SendPropertyChanged("DOB");
+					this.OnDOBChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string FlatNo
+		{
+			get
+			{
+				return this._FlatNo;
+			}
+			set
+			{
+				if ((this._FlatNo != value))
+				{
+					this.OnFlatNoChanging(value);
+					this.SendPropertyChanging();
+					this._FlatNo = value;
+					this.SendPropertyChanged("FlatNo");
+					this.OnFlatNoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Occupation", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Occupation
+		{
+			get
+			{
+				return this._Occupation;
+			}
+			set
+			{
+				if ((this._Occupation != value))
+				{
+					this.OnOccupationChanging(value);
+					this.SendPropertyChanging();
+					this._Occupation = value;
+					this.SendPropertyChanged("Occupation");
+					this.OnOccupationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNo1", DbType="VarChar(15) NOT NULL", CanBeNull=false)]
+		public string ContactNo1
+		{
+			get
+			{
+				return this._ContactNo1;
+			}
+			set
+			{
+				if ((this._ContactNo1 != value))
+				{
+					this.OnContactNo1Changing(value);
+					this.SendPropertyChanging();
+					this._ContactNo1 = value;
+					this.SendPropertyChanged("ContactNo1");
+					this.OnContactNo1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNo2", DbType="VarChar(15)")]
+		public string ContactNo2
+		{
+			get
+			{
+				return this._ContactNo2;
+			}
+			set
+			{
+				if ((this._ContactNo2 != value))
+				{
+					this.OnContactNo2Changing(value);
+					this.SendPropertyChanging();
+					this._ContactNo2 = value;
+					this.SendPropertyChanged("ContactNo2");
+					this.OnContactNo2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(255)")]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Image", DbType="VarChar(255)")]
+		public string Image
+		{
+			get
+			{
+				return this._Image;
+			}
+			set
+			{
+				if ((this._Image != value))
+				{
+					this.OnImageChanging(value);
+					this.SendPropertyChanging();
+					this._Image = value;
+					this.SendPropertyChanged("Image");
+					this.OnImageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PositionID", DbType="Int")]
+		public System.Nullable<int> PositionID
+		{
+			get
+			{
+				return this._PositionID;
+			}
+			set
+			{
+				if ((this._PositionID != value))
+				{
+					this.OnPositionIDChanging(value);
+					this.SendPropertyChanging();
+					this._PositionID = value;
+					this.SendPropertyChanged("PositionID");
+					this.OnPositionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatHolderID", DbType="Int")]
+		public System.Nullable<int> FlatHolderID
+		{
+			get
+			{
+				return this._FlatHolderID;
+			}
+			set
+			{
+				if ((this._FlatHolderID != value))
+				{
+					this.OnFlatHolderIDChanging(value);
+					this.SendPropertyChanging();
+					this._FlatHolderID = value;
+					this.SendPropertyChanged("FlatHolderID");
+					this.OnFlatHolderIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
+		public bool IsActive
+		{
+			get
+			{
+				return this._IsActive;
+			}
+			set
+			{
+				if ((this._IsActive != value))
+				{
+					this.OnIsActiveChanging(value);
+					this.SendPropertyChanging();
+					this._IsActive = value;
+					this.SendPropertyChanged("IsActive");
+					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="Date NOT NULL")]
+		public System.DateTime CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this.OnCreatedOnChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedOn = value;
+					this.SendPropertyChanged("CreatedOn");
+					this.OnCreatedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gender", DbType="VarChar(10)")]
+		public string Gender
+		{
+			get
+			{
+				return this._Gender;
+			}
+			set
+			{
+				if ((this._Gender != value))
+				{
+					this.OnGenderChanging(value);
+					this.SendPropertyChanging();
+					this._Gender = value;
+					this.SendPropertyChanged("Gender");
+					this.OnGenderChanged();
 				}
 			}
 		}

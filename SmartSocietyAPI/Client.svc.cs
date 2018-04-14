@@ -97,7 +97,8 @@ namespace SmartSocietyAPI
                                        ob.Email,
                                        ob.FlatNo,
                                        ob.MemberType,
-                                       ob.VerificationCode
+                                       ob.VerificationCode,
+                                       obR.Gender
                                    });
                     return JsonConvert.SerializeObject(TempObj1);
                 }

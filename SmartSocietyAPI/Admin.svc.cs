@@ -272,6 +272,14 @@ namespace SmartSocietyAPI
             return true;
         }
 
+        public object GetAllAssetTypes()
+        {
+            var DC = new DataClassesDataContext();
+            var AssetTypesData = (from ob in DC.tblAssetTypes
+                                  select ob);
+            return JsonConvert.SerializeObject(AssetTypesData);
+        }
+
         public object AddAssetType(string AssetTypeName)
         {
             var DC = new DataClassesDataContext();
@@ -788,7 +796,7 @@ namespace SmartSocietyAPI
                 else
                 {
                     var ComplaintsData = (from ob in DC.tblComplaints
-                                          //join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
+                                          join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
                                           join obFH in DC.tblFlatHolders on ob.FlatNo equals obFH.FlatNo
                                           join obR1 in DC.tblResidents on obFH.ResidentID equals obR1.ResidentID
                                           where ob.HandledBy == null
@@ -804,7 +812,7 @@ namespace SmartSocietyAPI
                                               ob.RespondedOn,
                                               ob.Response,
                                               ob.Subject,
-                                              //HandledBy = obR.ResidentName,
+                                              HandledBy = obR.ResidentName,
                                               SentBy = obR1.ResidentName
                                           });
                     return JsonConvert.SerializeObject(ComplaintsData);
@@ -839,20 +847,17 @@ namespace SmartSocietyAPI
         public object SendComplaintResponse(int ComplaintID, string Response, int HandledBy)
         {
             var DC = new DataClassesDataContext();
-            var ComplaintObj = (from ob in DC.tblComplaints
-                                join obF in DC.tblFlats on ob.FlatNo equals obF.FlatNo
-                                join obR in DC.tblResidents on obF.FlatNo equals obR.FlatNo
-                                where obR.FlatHolderID == null && ob.ComplaintID == ComplaintID
-                                select new
-                                {
-                                    ob,
-                                    obR.ResidentName,
-                                    obR.Email
-                                }).Single();
-            Mail(ComplaintObj.Email, "Reply: " + ComplaintObj.ob.Subject, Response);
-            ComplaintObj.ob.Response = Response;
-            ComplaintObj.ob.RespondedOn = DateTime.Now;
-            ComplaintObj.ob.HandledBy = HandledBy;
+            var ComplaintObj = (from ob in DC.tblComplaints       
+                                where ob.ComplaintID==ComplaintID
+                                select ob).Single();
+            var ResidentObj = (from ob in DC.tblFlatHolders
+                               join obR in DC.tblResidents on ob.ResidentID equals obR.ResidentID
+                               where obR.FlatNo==ComplaintObj.FlatNo
+                               select obR).Single();
+            var b=Mail(ResidentObj.Email, "Reply: " + ComplaintObj.Subject, Response);
+            ComplaintObj.Response = Response;
+            ComplaintObj.RespondedOn = DateTime.Now;
+            ComplaintObj.HandledBy = HandledBy;
 
             DC.SubmitChanges();
             return true;

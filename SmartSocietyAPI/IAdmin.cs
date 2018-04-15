@@ -42,6 +42,10 @@ namespace SmartSocietyAPI
         object SetFlatHolder(string StartDate, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive);
 
         [OperationContract]
+        [WebGet(UriTemplate = "GetAllAssetTypes/{}", ResponseFormat = WebMessageFormat.Json)]
+        object GetAllAssetTypes();
+
+        [OperationContract]
         [WebGet(UriTemplate = "AddAssetType/{AssetTypeName}", ResponseFormat = WebMessageFormat.Json)]
         object AddAssetType(string AssetTypeName);
 

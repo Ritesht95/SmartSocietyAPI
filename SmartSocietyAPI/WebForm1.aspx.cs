@@ -20,10 +20,7 @@ namespace SmartSocietyAPI
             SmartSocietyAPI.Admin ServiceObject = new SmartSocietyAPI.Admin();
             SmartSocietyAPI.General ServiceObject1 = new SmartSocietyAPI.General();
             SmartSocietyAPI.Client ServiceObject2 = new SmartSocietyAPI.Client();
-            Response.Write(ServiceObject1.GetAllStaffMembers());
-            Response.Write(ServiceObject2.CheckLogin("bachani62@gmail.com","234567"));
-            //Response.Write(ServiceObject2.SetResident("KuchhBhi","18-04-2018", "1","Student","3225453453","3225453453","rdtailor@gmail.com","",3,1,"Male"));
-            Response.Write(ServiceObject.GetAllComplaints(0, false));
+            Response.Write(ServiceObject1.FacilitiesBookingSearch("", Convert.ToDateTime("2018-04-18").ToLongDateString()));
         }
     }
 }

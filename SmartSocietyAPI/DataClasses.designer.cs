@@ -5197,6 +5197,8 @@ namespace SmartSocietyAPI
 		
 		private bool _IsActive;
 		
+		private bool _IsDeleted;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -5215,6 +5217,8 @@ namespace SmartSocietyAPI
     partial void OnEndTimeChanged();
     partial void OnIsActiveChanging(bool value);
     partial void OnIsActiveChanged();
+    partial void OnIsDeletedChanging(bool value);
+    partial void OnIsDeletedChanged();
     #endregion
 		
 		public tblPoll()
@@ -5358,6 +5362,26 @@ namespace SmartSocietyAPI
 					this._IsActive = value;
 					this.SendPropertyChanged("IsActive");
 					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Bit NOT NULL")]
+		public bool IsDeleted
+		{
+			get
+			{
+				return this._IsDeleted;
+			}
+			set
+			{
+				if ((this._IsDeleted != value))
+				{
+					this.OnIsDeletedChanging(value);
+					this.SendPropertyChanging();
+					this._IsDeleted = value;
+					this.SendPropertyChanged("IsDeleted");
+					this.OnIsDeletedChanged();
 				}
 			}
 		}
@@ -5843,6 +5867,8 @@ namespace SmartSocietyAPI
 		
 		private string _Gender;
 		
+		private bool _IsDeleted;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -5875,6 +5901,8 @@ namespace SmartSocietyAPI
     partial void OnCreatedOnChanged();
     partial void OnGenderChanging(string value);
     partial void OnGenderChanged();
+    partial void OnIsDeletedChanging(bool value);
+    partial void OnIsDeletedChanged();
     #endregion
 		
 		public tblResident()
@@ -6158,6 +6186,26 @@ namespace SmartSocietyAPI
 					this._Gender = value;
 					this.SendPropertyChanged("Gender");
 					this.OnGenderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Bit NOT NULL")]
+		public bool IsDeleted
+		{
+			get
+			{
+				return this._IsDeleted;
+			}
+			set
+			{
+				if ((this._IsDeleted != value))
+				{
+					this.OnIsDeletedChanging(value);
+					this.SendPropertyChanging();
+					this._IsDeleted = value;
+					this.SendPropertyChanged("IsDeleted");
+					this.OnIsDeletedChanged();
 				}
 			}
 		}
@@ -6589,6 +6637,8 @@ namespace SmartSocietyAPI
 		
 		private bool _IsActive;
 		
+		private bool _IsDeleted;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -6619,6 +6669,8 @@ namespace SmartSocietyAPI
     partial void OnCreatedByChanged();
     partial void OnIsActiveChanging(bool value);
     partial void OnIsActiveChanged();
+    partial void OnIsDeletedChanging(bool value);
+    partial void OnIsDeletedChanged();
     #endregion
 		
 		public tblStaffMember()
@@ -6882,6 +6934,26 @@ namespace SmartSocietyAPI
 					this._IsActive = value;
 					this.SendPropertyChanged("IsActive");
 					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Bit NOT NULL")]
+		public bool IsDeleted
+		{
+			get
+			{
+				return this._IsDeleted;
+			}
+			set
+			{
+				if ((this._IsDeleted != value))
+				{
+					this.OnIsDeletedChanging(value);
+					this.SendPropertyChanging();
+					this._IsDeleted = value;
+					this.SendPropertyChanged("IsDeleted");
+					this.OnIsDeletedChanged();
 				}
 			}
 		}

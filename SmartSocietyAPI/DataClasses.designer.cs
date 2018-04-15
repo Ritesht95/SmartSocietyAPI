@@ -138,6 +138,9 @@ namespace SmartSocietyAPI
     partial void InserttblNotification(tblNotification instance);
     partial void UpdatetblNotification(tblNotification instance);
     partial void DeletetblNotification(tblNotification instance);
+    partial void InserttblAutomation(tblAutomation instance);
+    partial void UpdatetblAutomation(tblAutomation instance);
+    partial void DeletetblAutomation(tblAutomation instance);
     #endregion
 		
 		public DataClassesDataContext() : 
@@ -455,6 +458,14 @@ namespace SmartSocietyAPI
 			get
 			{
 				return this.GetTable<tblNotification>();
+			}
+		}
+		
+		public System.Data.Linq.Table<tblAutomation> tblAutomations
+		{
+			get
+			{
+				return this.GetTable<tblAutomation>();
 			}
 		}
 	}
@@ -7922,6 +7933,260 @@ namespace SmartSocietyAPI
 					this._IsActive = value;
 					this.SendPropertyChanged("IsActive");
 					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="ritesroq.tblAutomation")]
+	public partial class tblAutomation : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TankLevel;
+		
+		private bool _StreetLight1;
+		
+		private bool _StreetLight2;
+		
+		private bool _Floor1;
+		
+		private bool _Floor2;
+		
+		private bool _Floor3;
+		
+		private bool _Floor4;
+		
+		private int _ID;
+		
+		private string _temp;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTankLevelChanging(int value);
+    partial void OnTankLevelChanged();
+    partial void OnStreetLight1Changing(bool value);
+    partial void OnStreetLight1Changed();
+    partial void OnStreetLight2Changing(bool value);
+    partial void OnStreetLight2Changed();
+    partial void OnFloor1Changing(bool value);
+    partial void OnFloor1Changed();
+    partial void OnFloor2Changing(bool value);
+    partial void OnFloor2Changed();
+    partial void OnFloor3Changing(bool value);
+    partial void OnFloor3Changed();
+    partial void OnFloor4Changing(bool value);
+    partial void OnFloor4Changed();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OntempChanging(string value);
+    partial void OntempChanged();
+    #endregion
+		
+		public tblAutomation()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TankLevel", DbType="Int NOT NULL")]
+		public int TankLevel
+		{
+			get
+			{
+				return this._TankLevel;
+			}
+			set
+			{
+				if ((this._TankLevel != value))
+				{
+					this.OnTankLevelChanging(value);
+					this.SendPropertyChanging();
+					this._TankLevel = value;
+					this.SendPropertyChanged("TankLevel");
+					this.OnTankLevelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StreetLight1", DbType="Bit NOT NULL")]
+		public bool StreetLight1
+		{
+			get
+			{
+				return this._StreetLight1;
+			}
+			set
+			{
+				if ((this._StreetLight1 != value))
+				{
+					this.OnStreetLight1Changing(value);
+					this.SendPropertyChanging();
+					this._StreetLight1 = value;
+					this.SendPropertyChanged("StreetLight1");
+					this.OnStreetLight1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StreetLight2", DbType="Bit NOT NULL")]
+		public bool StreetLight2
+		{
+			get
+			{
+				return this._StreetLight2;
+			}
+			set
+			{
+				if ((this._StreetLight2 != value))
+				{
+					this.OnStreetLight2Changing(value);
+					this.SendPropertyChanging();
+					this._StreetLight2 = value;
+					this.SendPropertyChanged("StreetLight2");
+					this.OnStreetLight2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Floor1", DbType="Bit NOT NULL")]
+		public bool Floor1
+		{
+			get
+			{
+				return this._Floor1;
+			}
+			set
+			{
+				if ((this._Floor1 != value))
+				{
+					this.OnFloor1Changing(value);
+					this.SendPropertyChanging();
+					this._Floor1 = value;
+					this.SendPropertyChanged("Floor1");
+					this.OnFloor1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Floor2", DbType="Bit NOT NULL")]
+		public bool Floor2
+		{
+			get
+			{
+				return this._Floor2;
+			}
+			set
+			{
+				if ((this._Floor2 != value))
+				{
+					this.OnFloor2Changing(value);
+					this.SendPropertyChanging();
+					this._Floor2 = value;
+					this.SendPropertyChanged("Floor2");
+					this.OnFloor2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Floor3", DbType="Bit NOT NULL")]
+		public bool Floor3
+		{
+			get
+			{
+				return this._Floor3;
+			}
+			set
+			{
+				if ((this._Floor3 != value))
+				{
+					this.OnFloor3Changing(value);
+					this.SendPropertyChanging();
+					this._Floor3 = value;
+					this.SendPropertyChanged("Floor3");
+					this.OnFloor3Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Floor4", DbType="Bit NOT NULL")]
+		public bool Floor4
+		{
+			get
+			{
+				return this._Floor4;
+			}
+			set
+			{
+				if ((this._Floor4 != value))
+				{
+					this.OnFloor4Changing(value);
+					this.SendPropertyChanging();
+					this._Floor4 = value;
+					this.SendPropertyChanged("Floor4");
+					this.OnFloor4Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_temp", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string temp
+		{
+			get
+			{
+				return this._temp;
+			}
+			set
+			{
+				if ((this._temp != value))
+				{
+					this.OntempChanging(value);
+					this.SendPropertyChanging();
+					this._temp = value;
+					this.SendPropertyChanged("temp");
+					this.OntempChanged();
 				}
 			}
 		}

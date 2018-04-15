@@ -345,7 +345,7 @@ namespace SmartSocietyAPI
             return true;
         }
 
-        public object AddStaffMember(string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, int CreatedBy)
+        public object AddStaffMember(string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Document, string Address, string DOJ, string DOL, int CreatedBy)
         {
             var DC = new DataClassesDataContext();
             tblStaffMember StaffObj = new tblStaffMember();
@@ -355,6 +355,7 @@ namespace SmartSocietyAPI
             StaffObj.MemberName = Name;
             StaffObj.MemberType = MemberType;
             StaffObj.DOB = Convert.ToDateTime(DOB);
+            StaffObj.IDProofDoc = Document;
             StaffObj.ContactNo1 = Contact1;
             StaffObj.ContactNo2 = Contact2;
             StaffObj.Image = Image;
@@ -400,7 +401,7 @@ namespace SmartSocietyAPI
             }
         }
 
-        public object EditStaffMember(int MemberID, string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, int CreatedBy, bool IsActive)
+        public object EditStaffMember(int MemberID, string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Document, string Address, string DOJ, string DOL, int CreatedBy, bool IsActive)
         {
             var DC = new DataClassesDataContext();
             tblStaffMember StaffObj = (from ob in DC.tblStaffMembers
@@ -413,6 +414,7 @@ namespace SmartSocietyAPI
             StaffObj.ContactNo1 = Contact1;
             StaffObj.ContactNo2 = Contact2;
             StaffObj.Image = Image;
+            StaffObj.IDProofDoc=Document;
             StaffObj.Address = Address;
             StaffObj.DOJ = Convert.ToDateTime(DOJ);
             StaffObj.DOL = Convert.ToDateTime(DOL);
@@ -634,11 +636,16 @@ namespace SmartSocietyAPI
                                      select new
                                      {
                                          ob.FacilityID,
+                                         ob.BookingID,
                                          obF.FacilityName,
                                          ob.FlatNo,
                                          ob.IsApproved,
                                          ob.Status,
-                                         obF.RatePerHour
+                                         obF.RatePerHour,
+                                         ob.Description,
+                                         ob.StartTime,
+                                         ob.EndTime,
+                                         ob.Reason
                                      });
                 return JsonConvert.SerializeObject(ProposalsData);
             }
@@ -650,11 +657,16 @@ namespace SmartSocietyAPI
                                      select new
                                      {
                                          ob.FacilityID,
+                                         ob.BookingID,
                                          obF.FacilityName,
                                          ob.FlatNo,
                                          ob.IsApproved,
                                          ob.Status,
-                                         obF.RatePerHour
+                                         obF.RatePerHour,
+                                         ob.Description,
+                                         ob.StartTime,
+                                         ob.EndTime,
+                                         ob.Reason
                                      });
                 return JsonConvert.SerializeObject(ProposalsData);
             }

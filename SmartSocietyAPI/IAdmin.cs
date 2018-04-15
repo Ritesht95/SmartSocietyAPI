@@ -62,12 +62,12 @@ namespace SmartSocietyAPI
         object EditAsset(int AssetID, string AssetName, int AssetTypeID, string Image, string InvoiceDoc, int AssetValue, string PurchasedOn, string Status, bool IsActive);
 
         [OperationContract]
-        [WebGet(UriTemplate = "AddStaffMember/{Name, MemberType, DOB, Contact1, Contact2, Image, Address, DOJ, DOL, CreatedBy}", ResponseFormat = WebMessageFormat.Json)]
-        object AddStaffMember(string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, int CreatedBy);
+        [WebGet(UriTemplate = "AddStaffMember/{Name, MemberType, DOB, Contact1, Contact2, Image, Document, Address, DOJ, DOL, CreatedBy}", ResponseFormat = WebMessageFormat.Json)]
+        object AddStaffMember(string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Document, string Address, string DOJ, string DOL, int CreatedBy);
 
         [OperationContract]
-        [WebGet(UriTemplate = "EditStaffMember/{MemberID, Name, MemberType, DOB, Contact1, Contact2, Image, Address, DOJ, DOL, CreatedBy, IsActive}", ResponseFormat = WebMessageFormat.Json)]
-        object EditStaffMember(int MemberID, string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Address, string DOJ, string DOL, int CreatedBy, bool IsActive);
+        [WebGet(UriTemplate = "EditStaffMember/{MemberID, Name, MemberType, DOB, Contact1, Contact2, Image, Document, Address, DOJ, DOL, CreatedBy, IsActive}", ResponseFormat = WebMessageFormat.Json)]
+        object EditStaffMember(int MemberID, string Name, string MemberType, string DOB, string Contact1, string Contact2, string Image, string Document, string Address, string DOJ, string DOL, int CreatedBy, bool IsActive);
 
         /*Society Setup*/
 

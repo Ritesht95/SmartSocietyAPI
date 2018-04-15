@@ -56,6 +56,7 @@ namespace SmartSocietyAPI
                                        join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
                                        join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
                                        join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
+                                       where ob.IsDeleted == false
                                        select new
                                        {
                                            ob.ResidentID,
@@ -82,7 +83,7 @@ namespace SmartSocietyAPI
                                        join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
                                        join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
                                        join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
-                                       where ob.IsActive == true
+                                       where ob.IsActive == true && ob.IsDeleted == false
                                        select new
                                        {
                                            ob.ResidentID,
@@ -109,7 +110,7 @@ namespace SmartSocietyAPI
                                        join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
                                        join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
                                        join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
-                                       where ob.IsActive == false
+                                       where ob.IsActive == false && ob.IsDeleted == false
                                        select new
                                        {
                                            ob.ResidentID,
@@ -138,7 +139,7 @@ namespace SmartSocietyAPI
                                join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
                                join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
                                join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
-                               where ob.ResidentID == ResidentID
+                               where ob.ResidentID == ResidentID 
                                select new
                                {
                                    ob.ResidentID,
@@ -173,7 +174,7 @@ namespace SmartSocietyAPI
                                        join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
                                        join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
                                        join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
-                                       where SqlMethods.Like(ob.ResidentName.ToLower(), "%" + Name.ToLower() + "%") 
+                                       where ob.IsDeleted == false && SqlMethods.Like(ob.ResidentName.ToLower(), "%" + Name.ToLower() + "%")
                                        || ob.FlatNo == FlatNo
                                        select new
                                        {
@@ -201,7 +202,7 @@ namespace SmartSocietyAPI
                                        join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
                                        join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
                                        join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
-                                       where SqlMethods.Like(ob.ResidentName.ToLower(), "%" + Name.ToLower() + "%")
+                                       where ob.IsDeleted == false && SqlMethods.Like(ob.ResidentName.ToLower(), "%" + Name.ToLower() + "%")
                                        select new
                                        {
                                            ob.ResidentID,
@@ -228,7 +229,7 @@ namespace SmartSocietyAPI
                                        join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
                                        join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
                                        join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
-                                       where ob.FlatNo == FlatNo
+                                       where ob.IsDeleted == false && ob.FlatNo == FlatNo
                                        select new
                                        {
                                            ob.ResidentID,
@@ -257,7 +258,7 @@ namespace SmartSocietyAPI
             var ResidentObj = (from ob in DC.tblResidents
                                where ob.ResidentID == ResidentID
                                select ob).Single();
-            ResidentObj.IsActive = false;
+            ResidentObj.IsDeleted = true;
             DC.SubmitChanges();
             return "True";
         }
@@ -349,6 +350,7 @@ namespace SmartSocietyAPI
             {
                 var AssetsData = (from ob in DC.tblAssets
                                   join obAT in DC.tblAssetTypes on ob.AssetTypeID equals obAT.AssetTypeID
+                                  where ob.IsActive == true
                                   select new
                                   {
                                       ob.AssetID,
@@ -393,7 +395,7 @@ namespace SmartSocietyAPI
             {
                 var AssetsData = (from ob in DC.tblAssets
                                   join obAT in DC.tblAssetTypes on ob.AssetTypeID equals obAT.AssetTypeID
-                                  where SqlMethods.Like(ob.AssetName.ToLower(), "%" + Name.ToLower() + "%")
+                                  where ob.IsActive == true && SqlMethods.Like(ob.AssetName.ToLower(), "%" + Name.ToLower() + "%")
                                   || obAT.AssetTypeName.ToLower() == Type.ToLower()
                                   select new
                                   {
@@ -414,7 +416,7 @@ namespace SmartSocietyAPI
             {
                 var AssetsData = (from ob in DC.tblAssets
                                   join obAT in DC.tblAssetTypes on ob.AssetTypeID equals obAT.AssetTypeID
-                                  where obAT.AssetTypeName.ToLower() == Type.ToLower()
+                                  where ob.IsActive == true && obAT.AssetTypeName.ToLower() == Type.ToLower()
                                   select new
                                   {
                                       ob.AssetID,
@@ -434,7 +436,7 @@ namespace SmartSocietyAPI
             {
                 var AssetsData = (from ob in DC.tblAssets
                                   join obAT in DC.tblAssetTypes on ob.AssetTypeID equals obAT.AssetTypeID
-                                  where SqlMethods.Like(ob.AssetName, "%" + Name + "%")
+                                  where ob.IsActive == true && SqlMethods.Like(ob.AssetName, "%" + Name + "%")
                                   select new
                                   {
                                       ob.AssetID,
@@ -533,12 +535,14 @@ namespace SmartSocietyAPI
                 {
                     NoticesData = (from ob in DC.tblNotices
                                    where ob.IsActive == true
+                                   orderby ob.Priority ascending
                                    select ob);
                 }
                 else
                 {
                     NoticesData = (from ob in DC.tblNotices
                                    where ob.IsActive == true && ob.Priority == Priority
+                                   orderby ob.Priority ascending
                                    select ob);
                 }
 
@@ -546,6 +550,8 @@ namespace SmartSocietyAPI
                 {
                     NoticesData = (from ob in NoticesData
                                    where ob.CreatedOn >= Convert.ToDateTime(FromDate) && ob.CreatedOn <= Convert.ToDateTime(ToDate)
+                                   && ob.IsActive == true
+                                   orderby ob.Priority ascending
                                    select ob);
                 }
 
@@ -554,7 +560,8 @@ namespace SmartSocietyAPI
             else
             {
                 NoticeObj = (from ob in DC.tblNotices
-                             where ob.NoticeID == NoticeID
+                             where ob.NoticeID == NoticeID && ob.IsActive == true
+                             orderby ob.Priority ascending
                              select ob).Single();
 
                 return JsonConvert.SerializeObject(NoticeObj);
@@ -633,8 +640,8 @@ namespace SmartSocietyAPI
         public object ViewAllEvents(string FromDate = "0", string ToDate = "0", int Priority = 0, int EventID = 0)
         {
             var DC = new DataClassesDataContext();
-            IQueryable<tblEvent> EventsData;
-            tblEvent EventObj;
+            IQueryable<object> EventsData;
+            object EventObj;
             if (EventID == 0)
             {
                 if (Priority == 0)
@@ -642,22 +649,70 @@ namespace SmartSocietyAPI
                     EventsData = (from ob in DC.tblEvents
                                   join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
                                   join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
-                                  select ob);
+                                  where ob.IsActive == true
+                                  select new
+                                  {
+                                      ob.EventID,
+                                      ob.EventName,
+                                      ob.EventTypeID,
+                                      ob.CreatedBy,
+                                      ob.Description,
+                                      ob.EndTime,
+                                      ob.IsActive,
+                                      ob.Priority,
+                                      ob.StartTime,
+                                      ob.Subject,
+                                      ob.Venue,
+                                      obET.EventTypeName,
+                                      CreatedByName = obR.ResidentName
+                                  });
                 }
                 else
                 {
                     EventsData = (from ob in DC.tblEvents
                                   join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
                                   join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
-                                  where ob.Priority == Priority
-                                  select ob);
+                                  where ob.Priority == Priority && ob.IsActive == true
+                                  select new
+                                  {
+                                      ob.EventID,
+                                      ob.EventName,
+                                      ob.EventTypeID,
+                                      ob.CreatedBy,
+                                      ob.Description,
+                                      ob.EndTime,
+                                      ob.IsActive,
+                                      ob.Priority,
+                                      ob.StartTime,
+                                      ob.Subject,
+                                      ob.Venue,
+                                      obET.EventTypeName,
+                                      CreatedByName = obR.ResidentName
+                                  });
                 }
 
                 if (FromDate != "0" && ToDate != "0")
                 {
-                    EventsData = (from ob in EventsData
-                                  where ob.StartTime >= Convert.ToDateTime(FromDate) && ob.StartTime <= Convert.ToDateTime(ToDate)
-                                  select ob);
+                    EventsData = (from ob in DC.tblEvents
+                                  join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
+                                  join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                                  where ob.IsActive == true && ob.StartTime >= Convert.ToDateTime(FromDate) && ob.StartTime <= Convert.ToDateTime(ToDate)
+                                  select new
+                                  {
+                                      ob.EventID,
+                                      ob.EventName,
+                                      ob.EventTypeID,
+                                      ob.CreatedBy,
+                                      ob.Description,
+                                      ob.EndTime,
+                                      ob.IsActive,
+                                      ob.Priority,
+                                      ob.StartTime,
+                                      ob.Subject,
+                                      ob.Venue,
+                                      obET.EventTypeName,
+                                      CreatedByName = obR.ResidentName
+                                  });
                 }
 
                 return JsonConvert.SerializeObject(EventsData);
@@ -668,7 +723,22 @@ namespace SmartSocietyAPI
                             join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
                             join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
                             where ob.EventID == EventID
-                            select ob).Single();
+                            select new
+                            {
+                                ob.EventID,
+                                ob.EventName,
+                                ob.EventTypeID,
+                                ob.CreatedBy,
+                                ob.Description,
+                                ob.EndTime,
+                                ob.IsActive,
+                                ob.Priority,
+                                ob.StartTime,
+                                ob.Subject,
+                                ob.Venue,
+                                obET.EventTypeName,
+                                CreatedByName = obR.ResidentName
+                            }).Single();
                 return JsonConvert.SerializeObject(EventObj);
             }
         }
@@ -682,7 +752,7 @@ namespace SmartSocietyAPI
                 var EventsData = (from ob in DC.tblEvents
                                   join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
                                   join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
-                                  where SqlMethods.Like(ob.EventName.ToLower(), "%" + Name.ToLower() + "%")
+                                  where ob.IsActive == true && SqlMethods.Like(ob.EventName.ToLower(), "%" + Name.ToLower() + "%")
                                   || obET.EventTypeName.ToLower() == Type.ToLower()
                                   select ob);
 
@@ -693,7 +763,7 @@ namespace SmartSocietyAPI
                 var EventsData = (from ob in DC.tblEvents
                                   join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
                                   join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
-                                  where obET.EventTypeName.ToLower() == Type.ToLower()
+                                  where ob.IsActive == true && obET.EventTypeName.ToLower() == Type.ToLower()
                                   select ob);
 
                 return JsonConvert.SerializeObject(EventsData);
@@ -703,7 +773,7 @@ namespace SmartSocietyAPI
                 var EventsData = (from ob in DC.tblEvents
                                   join obET in DC.tblEventTypes on ob.EventTypeID equals obET.EventTypeID
                                   join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
-                                  where SqlMethods.Like(ob.EventName.ToLower(), "%" + Name.ToLower() + "%")
+                                  where ob.IsActive == true && SqlMethods.Like(ob.EventName.ToLower(), "%" + Name.ToLower() + "%")
                                   select ob);
 
                 return JsonConvert.SerializeObject(EventsData);
@@ -714,8 +784,8 @@ namespace SmartSocietyAPI
         {
             var DC = new DataClassesDataContext();
             var EventObj = (from ob in DC.tblEvents
-                             where ob.EventID == EventID
-                             select ob).Single();
+                            where ob.EventID == EventID
+                            select ob).Single();
             EventObj.IsActive = false;
             DC.SubmitChanges();
             return "True";
@@ -749,30 +819,69 @@ namespace SmartSocietyAPI
             var DC = new DataClassesDataContext();
             if (Facility != "" && Date != "")
             {
-                IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
+                IQueryable<object> ProposalsData = (from ob in DC.tblBookings
                                                         join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
                                                         where ob.IsActive == true
-                                                        && obF.FacilityName.ToLower() == Facility.ToLower()
-                                                        && ob.EndTime.Date == Convert.ToDateTime(Date).Date
-                                                        select ob);
+                                                        && SqlMethods.Like(obF.FacilityName.ToLower(), "%" + Facility.ToLower() + "%")
+                                                        && ob.StartTime.Date == Convert.ToDateTime(Date).Date
+                                                        select new
+                                                        {
+                                                            ob.FacilityID,
+                                                            ob.BookingID,
+                                                            obF.FacilityName,
+                                                            ob.FlatNo,
+                                                            ob.IsApproved,
+                                                            ob.Status,
+                                                            obF.RatePerHour,
+                                                            ob.Description,
+                                                            ob.StartTime,
+                                                            ob.EndTime,
+                                                            ob.Reason
+                                                        });
                 return JsonConvert.SerializeObject(ProposalsData);
             }
             else if (Facility == "")
             {
-                IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
+                IQueryable<object> ProposalsData = (from ob in DC.tblBookings
                                                         join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
                                                         where ob.IsActive == true
-                                                        && ob.EndTime.Date == Convert.ToDateTime(Date).Date
-                                                        select ob);
+                                                        && ob.StartTime.Date == Convert.ToDateTime(Date).Date
+                                                        select new
+                                                        {
+                                                            ob.FacilityID,
+                                                            ob.BookingID,
+                                                            obF.FacilityName,
+                                                            ob.FlatNo,
+                                                            ob.IsApproved,
+                                                            ob.Status,
+                                                            obF.RatePerHour,
+                                                            ob.Description,
+                                                            ob.StartTime,
+                                                            ob.EndTime,
+                                                            ob.Reason
+                                                        });
                 return JsonConvert.SerializeObject(ProposalsData);
             }
             else
             {
-                IQueryable<tblBooking> ProposalsData = (from ob in DC.tblBookings
+                IQueryable<object> ProposalsData = (from ob in DC.tblBookings
                                                         join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
                                                         where ob.IsActive == true &&
-                                                        obF.FacilityName.ToLower() == Facility.ToLower()
-                                                        select ob);
+                                                        SqlMethods.Like(obF.FacilityName.ToLower(), "%"+Facility.ToLower()+ "%")
+                                                        select new
+                                                        {
+                                                            ob.FacilityID,
+                                                            ob.BookingID,
+                                                            obF.FacilityName,
+                                                            ob.FlatNo,
+                                                            ob.IsApproved,
+                                                            ob.Status,
+                                                            obF.RatePerHour,
+                                                            ob.Description,
+                                                            ob.StartTime,
+                                                            ob.EndTime,
+                                                            ob.Reason
+                                                        });
                 return JsonConvert.SerializeObject(ProposalsData);
             }
 
@@ -789,6 +898,7 @@ namespace SmartSocietyAPI
             {
                 IQueryable<object> StaffMembersData = (from ob in DC.tblStaffMembers
                                                        join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                                                       where ob.IsDeleted == false
                                                        select new
                                                        {
                                                            ob.MemberID,
@@ -811,7 +921,7 @@ namespace SmartSocietyAPI
             {
                 object MemberObj = (from ob in DC.tblStaffMembers
                                     join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
-                                    where ob.MemberID == MemberID
+                                    where ob.MemberID == MemberID && ob.IsDeleted == false
                                     select new
                                     {
                                         ob.MemberID,
@@ -839,7 +949,7 @@ namespace SmartSocietyAPI
             {
                 IQueryable<object> StaffMembersData = (from ob in DC.tblStaffMembers
                                                        join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
-                                                       where SqlMethods.Like(ob.MemberName.ToLower(), "%" + Name.ToLower() + "%")
+                                                       where ob.IsDeleted == false && SqlMethods.Like(ob.MemberName.ToLower(), "%" + Name.ToLower() + "%")
                                                        || ob.MemberType.ToLower() == Type.ToLower()
                                                        select new
                                                        {
@@ -862,7 +972,7 @@ namespace SmartSocietyAPI
             {
                 IQueryable<object> StaffMembersData = (from ob in DC.tblStaffMembers
                                                        join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
-                                                       where ob.MemberType.ToLower() == Type.ToLower()
+                                                       where ob.IsDeleted == false && ob.MemberType.ToLower() == Type.ToLower()
                                                        select new
                                                        {
                                                            ob.MemberName,
@@ -884,7 +994,7 @@ namespace SmartSocietyAPI
             {
                 IQueryable<object> StaffMembersData = (from ob in DC.tblStaffMembers
                                                        join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
-                                                       where SqlMethods.Like(ob.MemberName.ToLower(), "%" + Name.ToLower() + "%")
+                                                       where ob.IsDeleted == false && SqlMethods.Like(ob.MemberName.ToLower(), "%" + Name.ToLower() + "%")
                                                        select new
                                                        {
                                                            ob.MemberName,
@@ -910,7 +1020,7 @@ namespace SmartSocietyAPI
             var StaffObj = (from ob in DC.tblStaffMembers
                             where ob.MemberID == StaffID
                             select ob).Single();
-            StaffObj.IsActive = false;
+            StaffObj.IsDeleted = true;
             DC.SubmitChanges();
             return "True";
         }
@@ -928,6 +1038,7 @@ namespace SmartSocietyAPI
                 if (IsActive == false)
                 {
                     PollsData = (from ob in DC.tblPolls
+                                 where ob.IsDeleted == true
                                  select new
                                  {
                                      ob.PollID,
@@ -944,7 +1055,7 @@ namespace SmartSocietyAPI
                 else
                 {
                     PollsData = (from ob in DC.tblPolls
-                                 where ob.IsActive == true
+                                 where ob.IsActive == true && ob.IsDeleted == true
                                  select new
                                  {
                                      ob.PollID,
@@ -987,6 +1098,7 @@ namespace SmartSocietyAPI
             if (PollID == 0)
             {
                 var PollResultsData = (from ob in DC.tblPolls
+                                       where ob.IsDeleted == true
                                        select new
                                        {
                                            ob,
@@ -1003,7 +1115,7 @@ namespace SmartSocietyAPI
             else
             {
                 var PollResultsObj = (from ob in DC.tblPolls
-                                      where ob.PollID == PollID
+                                      where ob.PollID == PollID && ob.IsDeleted == true
                                       select new
                                       {
                                           ob,

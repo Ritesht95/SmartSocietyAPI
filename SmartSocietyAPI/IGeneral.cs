@@ -134,5 +134,9 @@ namespace SmartSocietyAPI
         /* Payments & Transactions */
 
         /* Payments & Transactions */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AutomaticLights/{data}", ResponseFormat = WebMessageFormat.Json)]
+        object AutomaticLights(bool Data);
     }
 }

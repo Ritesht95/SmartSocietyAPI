@@ -362,7 +362,8 @@ namespace SmartSocietyAPI
                                       ob.IsActive,
                                       ob.PurchasedOn,
                                       ob.Status,
-                                      obAT.AssetTypeName
+                                      obAT.AssetTypeName,
+                                      ob.Description
                                   });
                 return JsonConvert.SerializeObject(AssetsData);
             }
@@ -382,8 +383,9 @@ namespace SmartSocietyAPI
                                     ob.IsActive,
                                     ob.PurchasedOn,
                                     ob.Status,
-                                    obAT.AssetTypeName
-                                });
+                                    obAT.AssetTypeName,
+                                    ob.Description
+                                }).Single();
                 return JsonConvert.SerializeObject(AssetObj);
             }
         }
@@ -953,6 +955,7 @@ namespace SmartSocietyAPI
                                                        || ob.MemberType.ToLower() == Type.ToLower()
                                                        select new
                                                        {
+                                                           ob.MemberID,
                                                            ob.MemberName,
                                                            ob.MemberType,
                                                            ob.DOB,
@@ -975,6 +978,7 @@ namespace SmartSocietyAPI
                                                        where ob.IsDeleted == false && ob.MemberType.ToLower() == Type.ToLower()
                                                        select new
                                                        {
+                                                           ob.MemberID,
                                                            ob.MemberName,
                                                            ob.MemberType,
                                                            ob.DOB,
@@ -997,6 +1001,7 @@ namespace SmartSocietyAPI
                                                        where ob.IsDeleted == false && SqlMethods.Like(ob.MemberName.ToLower(), "%" + Name.ToLower() + "%")
                                                        select new
                                                        {
+                                                           ob.MemberID,
                                                            ob.MemberName,
                                                            ob.MemberType,
                                                            ob.DOB,
@@ -1131,6 +1136,8 @@ namespace SmartSocietyAPI
             }
         }
 
+
+
         /* Polls */
 
         /* Complaints */
@@ -1140,6 +1147,44 @@ namespace SmartSocietyAPI
         /* Payments & Transactions */
 
         /* Payments & Transactions */
+
+        /* Light Switching */
+
+        public object AutomaticLights(bool data)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://localhost:52349/AutomationCall.aspx?Data=abc");//
+            request.Method = "Get";
+            request.KeepAlive = true;
+            request.ContentType = "text/HTML";
+            request.Headers.Add("Content-Type", "application/json");
+            //request.ContentType = "application/x-www-form-urlencoded";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            string myResponse = "";
+            using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+            {
+                myResponse = sr.ReadToEnd();
+            }
+            var DC=new DataClassesDataContext();
+            tblAutomation AutoObj = (from ob in DC.tblAutomations
+                                     where ob.ID == 1
+                                     select ob).Single();
+            AutoObj.StreetLight1 = false;
+            AutoObj.StreetLight2 = false;
+            AutoObj.TankLevel = 55;
+            AutoObj.Floor1 = true;
+            if (myResponse == "abc")
+            {
+                AutoObj.temp = myResponse;
+                AutoObj.Floor2 = true;
+                AutoObj.Floor3 = true;
+            }
+            AutoObj.Floor4 = true;
+
+            DC.SubmitChanges();
+
+            return true;
+        }
 
     }
 }

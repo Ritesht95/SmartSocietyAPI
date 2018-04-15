@@ -76,33 +76,33 @@ namespace SmartSocietyAPI
             if (ObjLogin.Count() == 1)
             {
                 var TempObj = ObjLogin.Single();
-                if(TempObj.MemberType=="Security Guard")
+                if (TempObj.MemberType == "Security Guard")
                 {
                     return JsonConvert.SerializeObject(TempObj);
                 }
                 else
                 {
-                    var TempObj1= (from ob in DC.tblLogins
-                                   join obR in DC.tblResidents on ob.MemberID equals obR.ResidentID
-                                   join obFH in DC.tblFlatHolders on obR.ResidentID equals obFH.ResidentID
-                                   where ob.LoginID==TempObj.LoginID && obFH.IsActive==true
-                                   select new
-                                   {
-                                       ob.LoginID,
-                                       ob.LoginName,
-                                       ob.MemberID,
-                                       obR.ResidentName,
-                                       obFH.FlatHolderID,
-                                       ob.PhoneNo,
-                                       ob.Email,
-                                       ob.FlatNo,
-                                       ob.MemberType,
-                                       ob.VerificationCode,
-                                       obR.Gender
-                                   }).Single();
+                    var TempObj1 = (from ob in DC.tblLogins
+                                    join obR in DC.tblResidents on ob.MemberID equals obR.ResidentID
+                                    join obFH in DC.tblFlatHolders on obR.ResidentID equals obFH.ResidentID
+                                    where ob.LoginID == TempObj.LoginID && obFH.IsActive == true
+                                    select new
+                                    {
+                                        ob.LoginID,
+                                        ob.LoginName,
+                                        ob.MemberID,
+                                        obR.ResidentName,
+                                        obFH.FlatHolderID,
+                                        ob.PhoneNo,
+                                        ob.Email,
+                                        ob.FlatNo,
+                                        ob.MemberType,
+                                        ob.VerificationCode,
+                                        obR.Gender
+                                    }).Single();
                     return JsonConvert.SerializeObject(TempObj1);
                 }
-                
+
             }
             else
             {
@@ -219,6 +219,40 @@ namespace SmartSocietyAPI
         }
 
         /* Society Setup */
+
+        /* Notices */
+
+        public object GetNotices(string FlatNo)
+        {
+            var DC = new DataClassesDataContext();
+            bool FlatType = (from ob in DC.tblFlats
+                             where ob.FlatNo == FlatNo
+                             select ob.OnRent).Single();
+            if (FlatType)
+            {
+                var NoticeData = (from ob in DC.tblNotices
+                                  where ob.Recipient == 0
+                                  || ob.Recipient == -2
+                                  || ob.Recipient == Convert.ToInt32(FlatNo)
+                                  orderby ob.CreatedOn descending
+                                  orderby ob.Priority ascending
+                                  select ob);
+                return JsonConvert.SerializeObject(NoticeData);
+            }
+            else
+            {
+                var NoticeData = (from ob in DC.tblNotices
+                                  where ob.Recipient == 0
+                                  || ob.Recipient == -1
+                                  || ob.Recipient == Convert.ToInt32(FlatNo)
+                                  orderby ob.CreatedOn descending
+                                  orderby ob.Priority ascending
+                                  select ob);
+                return JsonConvert.SerializeObject(NoticeData);
+            }
+        }
+
+        /* Notices */
 
         /* Gatekeeping */
 
@@ -399,9 +433,7 @@ namespace SmartSocietyAPI
 
             return "True";
         }
-
         
-
         /* Payments & Transactions */
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Data.Linq.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 namespace SmartSocietyAPI
 {
@@ -139,7 +141,7 @@ namespace SmartSocietyAPI
                                join obP in DC.tblPositions on ob.PositionID equals obP.PositionID
                                join obFH in DC.tblFlatHolders on ob.FlatHolderID equals obFH.FlatHolderID
                                join obR in DC.tblResidents on obFH.ResidentID equals obR.ResidentID
-                               where ob.ResidentID == ResidentID 
+                               where ob.ResidentID == ResidentID
                                select new
                                {
                                    ob.ResidentID,
@@ -529,32 +531,62 @@ namespace SmartSocietyAPI
         public object ViewAllNotices(string FromDate = "0", string ToDate = "0", int Priority = 0, int NoticeID = 0)
         {
             var DC = new DataClassesDataContext();
-            IQueryable<tblNotice> NoticesData;
-            tblNotice NoticeObj;
+            IQueryable<object> NoticesData;
+            object NoticeObj;
             if (NoticeID == 0)
             {
                 if (Priority == 0)
                 {
                     NoticesData = (from ob in DC.tblNotices
+                                   join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
                                    where ob.IsActive == true
                                    orderby ob.Priority ascending
-                                   select ob);
+                                   select new
+                                   {
+                                       ob.NoticeID,
+                                       ob.Title,
+                                       ob.Description,
+                                       ob.Priority,
+                                       ob.CreatedOn,
+                                       CreatedByName = obR.ResidentName,
+                                       ob.IsActive
+                                   });
                 }
                 else
                 {
                     NoticesData = (from ob in DC.tblNotices
+                                   join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
                                    where ob.IsActive == true && ob.Priority == Priority
                                    orderby ob.Priority ascending
-                                   select ob);
+                                   select new
+                                   {
+                                       ob.NoticeID,
+                                       ob.Title,
+                                       ob.Description,
+                                       ob.Priority,
+                                       ob.CreatedOn,
+                                       CreatedByName = obR.ResidentName,
+                                       ob.IsActive
+                                   });
                 }
 
                 if (FromDate != "0" && ToDate != "0")
                 {
-                    NoticesData = (from ob in NoticesData
+                    NoticesData = (from ob in DC.tblNotices
+                                   join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
                                    where ob.CreatedOn >= Convert.ToDateTime(FromDate) && ob.CreatedOn <= Convert.ToDateTime(ToDate)
                                    && ob.IsActive == true
                                    orderby ob.Priority ascending
-                                   select ob);
+                                   select new
+                                   {
+                                       ob.NoticeID,
+                                       ob.Title,
+                                       ob.Description,
+                                       ob.Priority,
+                                       ob.CreatedOn,
+                                       CreatedByName = obR.ResidentName,
+                                       ob.IsActive
+                                   });
                 }
 
                 return JsonConvert.SerializeObject(NoticesData);
@@ -562,12 +594,42 @@ namespace SmartSocietyAPI
             else
             {
                 NoticeObj = (from ob in DC.tblNotices
+                             join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
                              where ob.NoticeID == NoticeID && ob.IsActive == true
                              orderby ob.Priority ascending
-                             select ob).Single();
+                             select new
+                             {
+                                 ob.NoticeID,
+                                 ob.Title,
+                                 ob.Description,
+                                 ob.Priority,
+                                 ob.CreatedOn,
+                                 CreatedByName = obR.ResidentName,
+                                 ob.IsActive
+                             }).Single();
 
                 return JsonConvert.SerializeObject(NoticeObj);
             }
+        }
+
+        public object NoticesSearch(string SearchTerm)
+        {
+            var DC = new DataClassesDataContext();
+            var NoticesData = (from ob in DC.tblNotices
+                               join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
+                               where ob.IsActive == true && SqlMethods.Like(ob.Title, "%" + SearchTerm + "%")
+                               orderby ob.Priority ascending
+                               select new
+                               {
+                                   ob.NoticeID,
+                                   ob.Title,
+                                   ob.Description,
+                                   ob.Priority,
+                                   ob.CreatedOn,
+                                   CreatedByName = obR.ResidentName,
+                                   ob.IsActive
+                               });
+            return JsonConvert.SerializeObject(NoticesData);
         }
 
         /* Notices */
@@ -822,68 +884,68 @@ namespace SmartSocietyAPI
             if (Facility != "" && Date != "")
             {
                 IQueryable<object> ProposalsData = (from ob in DC.tblBookings
-                                                        join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
-                                                        where ob.IsActive == true
-                                                        && SqlMethods.Like(obF.FacilityName.ToLower(), "%" + Facility.ToLower() + "%")
-                                                        && ob.StartTime.Date == Convert.ToDateTime(Date).Date
-                                                        select new
-                                                        {
-                                                            ob.FacilityID,
-                                                            ob.BookingID,
-                                                            obF.FacilityName,
-                                                            ob.FlatNo,
-                                                            ob.IsApproved,
-                                                            ob.Status,
-                                                            obF.RatePerHour,
-                                                            ob.Description,
-                                                            ob.StartTime,
-                                                            ob.EndTime,
-                                                            ob.Reason
-                                                        });
+                                                    join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
+                                                    where ob.IsActive == true
+                                                    && SqlMethods.Like(obF.FacilityName.ToLower(), "%" + Facility.ToLower() + "%")
+                                                    && ob.StartTime.Date == Convert.ToDateTime(Date).Date
+                                                    select new
+                                                    {
+                                                        ob.FacilityID,
+                                                        ob.BookingID,
+                                                        obF.FacilityName,
+                                                        ob.FlatNo,
+                                                        ob.IsApproved,
+                                                        ob.Status,
+                                                        obF.RatePerHour,
+                                                        ob.Description,
+                                                        ob.StartTime,
+                                                        ob.EndTime,
+                                                        ob.Reason
+                                                    });
                 return JsonConvert.SerializeObject(ProposalsData);
             }
             else if (Facility == "")
             {
                 IQueryable<object> ProposalsData = (from ob in DC.tblBookings
-                                                        join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
-                                                        where ob.IsActive == true
-                                                        && ob.StartTime.Date == Convert.ToDateTime(Date).Date
-                                                        select new
-                                                        {
-                                                            ob.FacilityID,
-                                                            ob.BookingID,
-                                                            obF.FacilityName,
-                                                            ob.FlatNo,
-                                                            ob.IsApproved,
-                                                            ob.Status,
-                                                            obF.RatePerHour,
-                                                            ob.Description,
-                                                            ob.StartTime,
-                                                            ob.EndTime,
-                                                            ob.Reason
-                                                        });
+                                                    join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
+                                                    where ob.IsActive == true
+                                                    && ob.StartTime.Date == Convert.ToDateTime(Date).Date
+                                                    select new
+                                                    {
+                                                        ob.FacilityID,
+                                                        ob.BookingID,
+                                                        obF.FacilityName,
+                                                        ob.FlatNo,
+                                                        ob.IsApproved,
+                                                        ob.Status,
+                                                        obF.RatePerHour,
+                                                        ob.Description,
+                                                        ob.StartTime,
+                                                        ob.EndTime,
+                                                        ob.Reason
+                                                    });
                 return JsonConvert.SerializeObject(ProposalsData);
             }
             else
             {
                 IQueryable<object> ProposalsData = (from ob in DC.tblBookings
-                                                        join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
-                                                        where ob.IsActive == true &&
-                                                        SqlMethods.Like(obF.FacilityName.ToLower(), "%"+Facility.ToLower()+ "%")
-                                                        select new
-                                                        {
-                                                            ob.FacilityID,
-                                                            ob.BookingID,
-                                                            obF.FacilityName,
-                                                            ob.FlatNo,
-                                                            ob.IsApproved,
-                                                            ob.Status,
-                                                            obF.RatePerHour,
-                                                            ob.Description,
-                                                            ob.StartTime,
-                                                            ob.EndTime,
-                                                            ob.Reason
-                                                        });
+                                                    join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
+                                                    where ob.IsActive == true &&
+                                                    SqlMethods.Like(obF.FacilityName.ToLower(), "%" + Facility.ToLower() + "%")
+                                                    select new
+                                                    {
+                                                        ob.FacilityID,
+                                                        ob.BookingID,
+                                                        obF.FacilityName,
+                                                        ob.FlatNo,
+                                                        ob.IsApproved,
+                                                        ob.Status,
+                                                        obF.RatePerHour,
+                                                        ob.Description,
+                                                        ob.StartTime,
+                                                        ob.EndTime,
+                                                        ob.Reason
+                                                    });
                 return JsonConvert.SerializeObject(ProposalsData);
             }
 
@@ -1152,11 +1214,11 @@ namespace SmartSocietyAPI
 
         public object AutomaticLights(bool data)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://localhost:52349/AutomationCall.aspx?Data=abc");//
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://localhost:52349/AutomationCall.aspx?Data=*abc*");//
             request.Method = "Get";
             request.KeepAlive = true;
-            request.ContentType = "text/HTML";
-            request.Headers.Add("Content-Type", "application/json");
+            request.ContentType = "application/json";
+            //request.Headers.Add("Content-Type", "application/json");
             //request.ContentType = "application/x-www-form-urlencoded";
 
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -1165,7 +1227,45 @@ namespace SmartSocietyAPI
             {
                 myResponse = sr.ReadToEnd();
             }
-            var DC=new DataClassesDataContext();
+
+            int starIndex = myResponse.IndexOf('*');
+            int len = myResponse.Length;
+            myResponse = myResponse.Substring(starIndex + 1, starIndex + 10);
+            int hashIndex = myResponse.IndexOf('*');
+            myResponse = myResponse.Substring(0, hashIndex);
+
+            //StringBuilder sb = new StringBuilder();
+
+            //byte[] buf = new byte[8192];
+
+            ////do get request
+            //HttpWebRequest request = (HttpWebRequest)
+            //    WebRequest.Create("");
+
+
+            //HttpWebResponse response = (HttpWebResponse)
+            //    request.GetResponse();
+
+
+            //Stream resStream = response.GetResponseStream();
+
+            //string tempString = null;
+            //int count = 0;
+            ////read the data and print it
+            //do
+            //{
+            //    count = resStream.Read(buf, 0, buf.Length);
+            //    if (count != 0)
+            //    {
+            //        tempString = Encoding.ASCII.GetString(buf, 0, count);
+
+            //        sb.Append(tempString);
+            //    }
+            //}
+            //while (count > 0);
+            //Response.Write(sb.ToString());
+
+            var DC = new DataClassesDataContext();
             tblAutomation AutoObj = (from ob in DC.tblAutomations
                                      where ob.ID == 1
                                      select ob).Single();
@@ -1173,9 +1273,10 @@ namespace SmartSocietyAPI
             AutoObj.StreetLight2 = false;
             AutoObj.TankLevel = 55;
             AutoObj.Floor1 = true;
+            AutoObj.temp = myResponse;
             if (myResponse == "abc")
             {
-                AutoObj.temp = myResponse;
+
                 AutoObj.Floor2 = true;
                 AutoObj.Floor3 = true;
             }

@@ -23,6 +23,7 @@ namespace SmartSocietyAPI
         /* Login & Registration */
 
         /* Society Setup */
+
         [OperationContract]
         [WebGet(UriTemplate = "GetPositionData/", ResponseFormat = WebMessageFormat.Json)]
         object GetPositionData();
@@ -36,6 +37,14 @@ namespace SmartSocietyAPI
         object EditResident(int ResidentID, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive, string Gender);
 
         /* Society Setup */
+
+        /* Notices */
+        
+        [OperationContract]
+        [WebGet(UriTemplate = "GetNotices/{FlatNo}", ResponseFormat = WebMessageFormat.Json)]
+        object GetNotices(string FlatNo);
+
+        /* Notices */
 
         /* Gatekeeping */
 
@@ -58,9 +67,7 @@ namespace SmartSocietyAPI
         /* Vendors */
 
         /* Events */
-
-
-
+        
         /* Events */
 
         /* FacilityBookings */

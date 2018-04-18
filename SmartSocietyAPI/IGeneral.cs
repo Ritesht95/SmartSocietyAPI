@@ -9,14 +9,18 @@ namespace SmartSocietyAPI
     {
         /* Society Setup */
 
+        [OperationContract]
+        [WebGet(UriTemplate = "GetSocietyInformation/", ResponseFormat = WebMessageFormat.Json)]
+        object GetSocietyInformation();
+
         // 0 for All, 1 for Current, -1 for Past Members
         [OperationContract]
         [WebGet(UriTemplate = "GetAllResidentsDetails/{FlagMemType,ResidentID}", ResponseFormat = WebMessageFormat.Json)]
         object GetAllResidentsDetails(int FlagMemType = 0, int ResidentID = 0);
 
         [OperationContract]
-        [WebGet(UriTemplate = "GetAllResidentsDetails/{FlatID,Name}", ResponseFormat = WebMessageFormat.Json)]
-        object ResidentSearch(string Name="", string FlatNo="0");
+        [WebGet(UriTemplate = "ResidentSearch/{Name,FlatNo}", ResponseFormat = WebMessageFormat.Json)]
+        object ResidentSearch(string Name = "", string FlatNo = "0");
 
         [OperationContract]
         [WebGet(UriTemplate = "ResidentDelete/{ResidentID}", ResponseFormat = WebMessageFormat.Json)]
@@ -29,11 +33,11 @@ namespace SmartSocietyAPI
 
         [OperationContract]
         [WebGet(UriTemplate = "ViewAllAssets/{AssetID}", ResponseFormat = WebMessageFormat.Json)]
-        object ViewAllAssets(int AssetID=0);
+        object ViewAllAssets(int AssetID = 0);
 
         [OperationContract]
         [WebGet(UriTemplate = "AssetSearch/{Name,Type}", ResponseFormat = WebMessageFormat.Json)]
-        object AssetSearch(string Name="", string Type="");
+        object AssetSearch(string Name = "", string Type = "");
 
         [OperationContract]
         [WebGet(UriTemplate = "AssetDelete/{AssetID}", ResponseFormat = WebMessageFormat.Json)]
@@ -45,7 +49,7 @@ namespace SmartSocietyAPI
 
         [OperationContract]
         [WebGet(UriTemplate = "ViewGateKeeping/{CheckedInOnly,FromDate,ToDate,FlatNo}", ResponseFormat = WebMessageFormat.Json)]
-        object ViewGateKeeping(bool CheckedInOnly = false, string FromDate = "0", string ToDate = "0", string FlatNo="-1");
+        object ViewGateKeeping(bool CheckedInOnly = false, string FromDate = "0", string ToDate = "0", string FlatNo = "-1");
 
         /* Gatekeeping */
 
@@ -65,7 +69,7 @@ namespace SmartSocietyAPI
 
         [OperationContract]
         [WebGet(UriTemplate = "VendorSearch/{Name,Type}", ResponseFormat = WebMessageFormat.Json)]
-        object VendorSearch(string Name="", string Type="");
+        object VendorSearch(string Name = "", string Type = "");
 
         [OperationContract]
         [WebGet(UriTemplate = "VendorDelete/{VendorID}", ResponseFormat = WebMessageFormat.Json)]
@@ -77,7 +81,7 @@ namespace SmartSocietyAPI
 
         [OperationContract]
         [WebGet(UriTemplate = "ViewAllEvents/{FromDate,ToDate,Priority,EventID}", ResponseFormat = WebMessageFormat.Json)]
-        object ViewAllEvents(string FromDate = "0", string ToDate = "0", int Priority = 0, int EventID=0);
+        object ViewAllEvents(string FromDate = "0", string ToDate = "0", int Priority = 0, int EventID = 0);
 
         [OperationContract]
         [WebGet(UriTemplate = "EventSearch/{Name, Type}", ResponseFormat = WebMessageFormat.Json)]
@@ -97,7 +101,7 @@ namespace SmartSocietyAPI
 
         [OperationContract]
         [WebGet(UriTemplate = "FacilitiesBookingSearch/{Facility,Date}", ResponseFormat = WebMessageFormat.Json)]
-        object FacilitiesBookingSearch(string Facility="", string Date="");
+        object FacilitiesBookingSearch(string Facility = "", string Date = "");
 
         /* FacilityBookings */
 
@@ -109,7 +113,7 @@ namespace SmartSocietyAPI
 
         [OperationContract]
         [WebGet(UriTemplate = "StaffSearch/{Name, Type}", ResponseFormat = WebMessageFormat.Json)]
-        object StaffSearch(string Name="", string Type="");
+        object StaffSearch(string Name = "", string Type = "");
 
         [OperationContract]
         [WebGet(UriTemplate = "StaffDelete/{StaffID}", ResponseFormat = WebMessageFormat.Json)]
@@ -136,7 +140,34 @@ namespace SmartSocietyAPI
         /* Payments & Transactions */
 
         [OperationContract]
-        [WebGet(UriTemplate = "AutomaticLights/{data}", ResponseFormat = WebMessageFormat.Json)]
-        object AutomaticLights(bool Data);
+        [WebGet(UriTemplate = "SetIP/{IP}", ResponseFormat = WebMessageFormat.Json)]
+        object SetIP(string IP);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "SetFloorLights/{Floor1,Floor2,Floor3,Floor4}", ResponseFormat = WebMessageFormat.Json)]
+        object SetFloorLights(bool Floor1, bool Floor2, bool Floor3, bool Floor4);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GetSLStatus/", ResponseFormat = WebMessageFormat.Json)]
+        object GetSLStatus();
+
+        [OperationContract]
+        [WebGet(UriTemplate = "SetSensor/{Stat}", ResponseFormat = WebMessageFormat.Json)]
+        object SetSensor(bool Stat);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "SetStreetLight/{Stat}", ResponseFormat = WebMessageFormat.Json)]
+        object SetStreetLight(bool Stat);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GetTankLevel/", ResponseFormat = WebMessageFormat.Json)]
+        object GetTankLevel();
+
+        /* Notifications */
+
+        [OperationContract]
+        [WebGet(UriTemplate = "SetNotification/{Text,Type,FlatNo,PageLink}", ResponseFormat = WebMessageFormat.Json)]
+        object SetNotification(string Text, string Type, string FlatNo, string PageLink);
+        /* Notifications */
     }
 }

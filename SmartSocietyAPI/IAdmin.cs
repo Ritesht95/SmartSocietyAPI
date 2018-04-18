@@ -32,11 +32,7 @@ namespace SmartSocietyAPI
         [OperationContract]
         [WebGet(UriTemplate = "EditSocietyInformation/{Name, Address, PostalCode, LogoImage, ContactNo, PresidentName, Builder, Email, Fax, RegistrationNo, CampusArea, SocietyType, LatLong}", ResponseFormat = WebMessageFormat.Json)]
         object EditSocietyInformation(string Name, string Address, string PostalCode, string LogoImage, string ContactNo, string PresidentName, string Builder, string Email, string Fax, string RegistrationNo, string CampusArea, string SocietyType, string LatLong);
-
-        [OperationContract]
-        [WebGet(UriTemplate = "GetSocietyInformation/", ResponseFormat = WebMessageFormat.Json)]
-        object GetSocietyInformation();
-
+        
         [OperationContract]
         [WebGet(UriTemplate = "SetFlatHolder/{StartDate,Name,DOB,FlatNo,Occupation,Contact1,Contact2,Email,Image,PositionID,FlatHolderID,IsActive}", ResponseFormat = WebMessageFormat.Json)]
         object SetFlatHolder(string StartDate, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive);
@@ -74,12 +70,12 @@ namespace SmartSocietyAPI
         /* Notices */
 
         [OperationContract]
-        [WebGet(UriTemplate = "AddNotice/{Title,Description,Priority,CreatedBy}", ResponseFormat = WebMessageFormat.Json)]
-        object AddNotice(string Title, string Description, int Priority, int CreatedBy);
+        [WebGet(UriTemplate = "AddNotice/{Title,Description,Priority,CreatedBy,Receipient}", ResponseFormat = WebMessageFormat.Json)]
+        object AddNotice(string Title, string Description, int Priority, int CreatedBy, int Receipient);
 
         [OperationContract]
-        [WebGet(UriTemplate = "EditNotice/{NoticeID,Title,Description,Priority,CreatedBy,IsActive}", ResponseFormat = WebMessageFormat.Json)]
-        object EditNotice(int NoticeID, string Title, string Description, int Priority, int CreatedBy, bool IsActive);
+        [WebGet(UriTemplate = "EditNotice/{NoticeID,Title,Description,Priority,CreatedBy,Receipient,IsActive}", ResponseFormat = WebMessageFormat.Json)]
+        object EditNotice(int NoticeID, string Title, string Description, int Priority, int CreatedBy,int Receipient, bool IsActive);
 
         /* Notices */
 

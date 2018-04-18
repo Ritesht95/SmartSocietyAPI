@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Data.Linq.SqlClient;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 
 namespace SmartSocietyAPI
 {
@@ -43,6 +41,14 @@ namespace SmartSocietyAPI
         }
 
         /* Society Setup */
+
+        public object GetSocietyInformation()
+        {
+            var DC = new DataClassesDataContext();
+            var SocietyInfoObj = (from ob in DC.tblSocieties
+                                  select ob).Single();
+            return JsonConvert.SerializeObject(SocietyInfoObj);
+        }
 
         // 0 for All, 1 for Current, -1 for Past Members
         public object GetAllResidentsDetails(int FlagMemType = 0, int ResidentID = 0)
@@ -540,6 +546,7 @@ namespace SmartSocietyAPI
                     NoticesData = (from ob in DC.tblNotices
                                    join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
                                    where ob.IsActive == true
+                                   orderby ob.CreatedOn descending
                                    orderby ob.Priority ascending
                                    select new
                                    {
@@ -557,6 +564,7 @@ namespace SmartSocietyAPI
                     NoticesData = (from ob in DC.tblNotices
                                    join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
                                    where ob.IsActive == true && ob.Priority == Priority
+                                   orderby ob.CreatedOn descending
                                    orderby ob.Priority ascending
                                    select new
                                    {
@@ -576,6 +584,7 @@ namespace SmartSocietyAPI
                                    join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
                                    where ob.CreatedOn >= Convert.ToDateTime(FromDate) && ob.CreatedOn <= Convert.ToDateTime(ToDate)
                                    && ob.IsActive == true
+                                   orderby ob.CreatedOn descending
                                    orderby ob.Priority ascending
                                    select new
                                    {
@@ -596,6 +605,7 @@ namespace SmartSocietyAPI
                 NoticeObj = (from ob in DC.tblNotices
                              join obR in DC.tblResidents on ob.CreatedBy equals obR.ResidentID
                              where ob.NoticeID == NoticeID && ob.IsActive == true
+                             orderby ob.CreatedOn descending
                              orderby ob.Priority ascending
                              select new
                              {
@@ -803,6 +813,7 @@ namespace SmartSocietyAPI
                                 obET.EventTypeName,
                                 CreatedByName = obR.ResidentName
                             }).Single();
+
                 return JsonConvert.SerializeObject(EventObj);
             }
         }
@@ -887,7 +898,7 @@ namespace SmartSocietyAPI
                                                     join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
                                                     where ob.IsActive == true
                                                     && SqlMethods.Like(obF.FacilityName.ToLower(), "%" + Facility.ToLower() + "%")
-                                                    && ob.StartTime.Date == Convert.ToDateTime(Date).Date
+                                                    && ob.StartTime.Date == Convert.ToDateTime(Date).Date && ob.ApprovedBy == null
                                                     select new
                                                     {
                                                         ob.FacilityID,
@@ -909,7 +920,7 @@ namespace SmartSocietyAPI
                 IQueryable<object> ProposalsData = (from ob in DC.tblBookings
                                                     join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
                                                     where ob.IsActive == true
-                                                    && ob.StartTime.Date == Convert.ToDateTime(Date).Date
+                                                    && ob.StartTime.Date == Convert.ToDateTime(Date).Date && ob.ApprovedBy == null
                                                     select new
                                                     {
                                                         ob.FacilityID,
@@ -931,7 +942,7 @@ namespace SmartSocietyAPI
                 IQueryable<object> ProposalsData = (from ob in DC.tblBookings
                                                     join obF in DC.tblFacilities on ob.FacilityID equals obF.FacilityID
                                                     where ob.IsActive == true &&
-                                                    SqlMethods.Like(obF.FacilityName.ToLower(), "%" + Facility.ToLower() + "%")
+                                                    SqlMethods.Like(obF.FacilityName.ToLower(), "%" + Facility.ToLower() + "%") && ob.ApprovedBy == null
                                                     select new
                                                     {
                                                         ob.FacilityID,
@@ -1105,7 +1116,7 @@ namespace SmartSocietyAPI
                 if (IsActive == false)
                 {
                     PollsData = (from ob in DC.tblPolls
-                                 where ob.IsDeleted == true
+                                 where ob.IsDeleted == false
                                  select new
                                  {
                                      ob.PollID,
@@ -1122,7 +1133,7 @@ namespace SmartSocietyAPI
                 else
                 {
                     PollsData = (from ob in DC.tblPolls
-                                 where ob.IsActive == true && ob.IsDeleted == true
+                                 where ob.IsActive == true && ob.IsDeleted == false
                                  select new
                                  {
                                      ob.PollID,
@@ -1165,16 +1176,23 @@ namespace SmartSocietyAPI
             if (PollID == 0)
             {
                 var PollResultsData = (from ob in DC.tblPolls
-                                       where ob.IsDeleted == true
+                                       where ob.IsDeleted == false /*&& ob.EndTime <= DateTime.Now*/
                                        select new
                                        {
                                            ob,
-                                           PollOptions = (from obPO in DC.tblPollOptions
-                                                          where obPO.PollID == ob.PollID
-                                                          select obPO),
                                            PollVoting = (from obPV in DC.tblPollVotings
-                                                         where obPV.PollID == ob.PollID
-                                                         select obPV)
+                                                         join obO in DC.tblPollOptions on obPV.PollOptionID equals obO.PollOptionID
+                                                         where obPV.PollID == ob.PollID && ob.PollID == obO.PollID
+                                                         group obPV by obPV.PollOptionID
+                                                         into grp
+                                                         select new
+                                                         {
+                                                             OptionID = grp.Key,
+                                                             OptionName = (from obO1 in DC.tblPollOptions
+                                                                           where obO1.PollOptionID == grp.Key
+                                                                           select obO1.PollOptionName).Single(),
+                                                             VoteCount = grp.ToList().Count()
+                                                         })
                                        });
 
                 return JsonConvert.SerializeObject(PollResultsData);
@@ -1182,23 +1200,26 @@ namespace SmartSocietyAPI
             else
             {
                 var PollResultsObj = (from ob in DC.tblPolls
-                                      where ob.PollID == PollID && ob.IsDeleted == true
+                                      where ob.PollID == PollID
+                                      && ob.IsDeleted == false/* && ob.EndTime <= DateTime.Now*/
                                       select new
                                       {
                                           ob,
-                                          PollOptions = (from obPO in DC.tblPollOptions
-                                                         where obPO.PollID == ob.PollID
-                                                         select obPO),
                                           PollVoting = (from obPV in DC.tblPollVotings
-                                                        where obPV.PollID == ob.PollID
-                                                        select obPV)
+                                                        join obO in DC.tblPollOptions on obPV.PollOptionID equals obO.PollOptionID
+                                                        where obPV.PollID == ob.PollID && ob.PollID == obO.PollID
+                                                        group obPV by obPV.PollOptionID
+                                                        into grp
+                                                        select new
+                                                        {
+                                                            OptionName = grp.Key,
+                                                            VoteCount = grp.Count()
+                                                        })
                                       });
 
                 return JsonConvert.SerializeObject(PollResultsObj);
             }
         }
-
-
 
         /* Polls */
 
@@ -1212,14 +1233,54 @@ namespace SmartSocietyAPI
 
         /* Light Switching */
 
-        public object AutomaticLights(bool data)
+        private string GetIP()
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://localhost:52349/AutomationCall.aspx?Data=*abc*");//
+            var DC = new DataClassesDataContext();
+            var IP = (from ob in DC.tblAutomations
+                      where ob.ID == 1
+                      select ob.IPAdd).Single();
+            return IP;
+        }
+
+        public object SetIP(string IP)
+        {
+            var DC = new DataClassesDataContext();
+            tblAutomation AutoObj = (from ob in DC.tblAutomations
+                                     where ob.ID == 1
+                                     select ob).Single();
+            AutoObj.IPAdd = IP;
+            DC.SubmitChanges();
+            return true;
+        }
+
+        public object SetFloorLights(bool Floor1, bool Floor2, bool Floor3, bool Floor4)
+        {
+            string IP = GetIP();
+            string requestStr = "http://" + IP + "/toggle?Switches=";
+            string pins = "";
+            if (Floor1)
+                pins += "1";
+            else
+                pins += "0";
+            if (Floor2)
+                pins += "1";
+            else
+                pins += "0";
+            if (Floor3)
+                pins += "1";
+            else
+                pins += "0";
+            if (Floor4)
+                pins += "1";
+            else
+                pins += "0";
+
+            requestStr += pins;
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
             request.Method = "Get";
             request.KeepAlive = true;
             request.ContentType = "application/json";
-            //request.Headers.Add("Content-Type", "application/json");
-            //request.ContentType = "application/x-www-form-urlencoded";
 
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             string myResponse = "";
@@ -1228,64 +1289,251 @@ namespace SmartSocietyAPI
                 myResponse = sr.ReadToEnd();
             }
 
-            int starIndex = myResponse.IndexOf('*');
-            int len = myResponse.Length;
-            myResponse = myResponse.Substring(starIndex + 1, starIndex + 10);
-            int hashIndex = myResponse.IndexOf('*');
-            myResponse = myResponse.Substring(0, hashIndex);
+            var DC = new DataClassesDataContext();
+            tblAutomation AutoObj = (from ob in DC.tblAutomations
+                                     where ob.ID == 1
+                                     select ob).Single();
 
-            //StringBuilder sb = new StringBuilder();
+            if (pins == myResponse)
+            {
 
-            //byte[] buf = new byte[8192];
+                AutoObj.Floor1 = Floor1;
+                AutoObj.Floor2 = Floor2;
+                AutoObj.Floor3 = Floor3;
+                AutoObj.Floor4 = Floor4;
+                AutoObj.temp = myResponse;
 
-            ////do get request
-            //HttpWebRequest request = (HttpWebRequest)
-            //    WebRequest.Create("");
+                DC.SubmitChanges();
+                return "True";
+            }
+            else
+            {
+                return false;
+            }
+        }
 
+        public object GetSLStatus()
+        {
+            string IP = GetIP();
+            string requestStr = "http://" + IP + "/SLStatus?stat=send";
 
-            //HttpWebResponse response = (HttpWebResponse)
-            //    request.GetResponse();
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
+            request.Method = "Get";
+            request.KeepAlive = true;
+            request.ContentType = "application/json";
 
-
-            //Stream resStream = response.GetResponseStream();
-
-            //string tempString = null;
-            //int count = 0;
-            ////read the data and print it
-            //do
-            //{
-            //    count = resStream.Read(buf, 0, buf.Length);
-            //    if (count != 0)
-            //    {
-            //        tempString = Encoding.ASCII.GetString(buf, 0, count);
-
-            //        sb.Append(tempString);
-            //    }
-            //}
-            //while (count > 0);
-            //Response.Write(sb.ToString());
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            string myResponse = "";
+            using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+            {
+                myResponse = sr.ReadToEnd();
+            }
 
             var DC = new DataClassesDataContext();
             tblAutomation AutoObj = (from ob in DC.tblAutomations
                                      where ob.ID == 1
                                      select ob).Single();
-            AutoObj.StreetLight1 = false;
-            AutoObj.StreetLight2 = false;
-            AutoObj.TankLevel = 55;
-            AutoObj.Floor1 = true;
-            AutoObj.temp = myResponse;
-            if (myResponse == "abc")
+
+            if (myResponse == "1")
             {
-
-                AutoObj.Floor2 = true;
-                AutoObj.Floor3 = true;
+                AutoObj.StreetLight1 = true;
+                AutoObj.StreetLight2 = true;
             }
-            AutoObj.Floor4 = true;
+            else
+            {
+                AutoObj.StreetLight1 = true;
+                AutoObj.StreetLight2 = true;
+            }
 
+            return "True";
+        }
+
+        public object SetSensor(bool Stat)
+        {
+            string IP = GetIP();
+            string requestStr = "http://" + IP + "/sensor?s=";
+            string stat = "";
+            if (Stat)
+                stat += "1";
+            else
+                stat += "0";
+
+            requestStr += stat;
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
+            request.Method = "Get";
+            request.KeepAlive = true;
+            request.ContentType = "application/json";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            string myResponse = "";
+            using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+            {
+                myResponse = sr.ReadToEnd();
+            }
+
+            var DC = new DataClassesDataContext();
+            tblAutomation AutoObj = (from ob in DC.tblAutomations
+                                     where ob.ID == 1
+                                     select ob).Single();
+
+            if (myResponse == "0" && stat == "0")
+            {
+                AutoObj.Sensor = false;
+                AutoObj.StreetLight1 = false;
+                AutoObj.StreetLight2 = false;
+                DC.SubmitChanges();
+                return "True";
+            }
+            else if (myResponse == "0" && stat == "1")
+            {
+                AutoObj.Sensor = false;
+                AutoObj.StreetLight1 = false;
+                AutoObj.StreetLight2 = false;
+                DC.SubmitChanges();
+                return false;
+            }
+            else if (myResponse == "1" && stat == "1")
+            {
+                AutoObj.Sensor = true;
+                AutoObj.StreetLight1 = false;
+                AutoObj.StreetLight2 = false;
+                DC.SubmitChanges();
+                return false;
+            }
+            else
+            {
+                AutoObj.Sensor = false;
+                AutoObj.StreetLight1 = false;
+                AutoObj.StreetLight2 = false;
+                DC.SubmitChanges();
+                return false;
+            }
+        }
+
+        public object SetStreetLight(bool Stat)
+        {
+            string IP = GetIP();
+            string requestStr = "http://" + IP + "/STtoggle?StreetLight=";
+            if (Stat)
+                requestStr += "1";
+            else
+                requestStr += "0";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
+            request.Method = "Get";
+            request.KeepAlive = true;
+            request.ContentType = "application/json";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            string myResponse = "";
+            using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+            {
+                myResponse = sr.ReadToEnd();
+            }
+
+            //int startIndex = myResponse.IndexOf('*');
+            //int len = myResponse.Length;
+            //myResponse = myResponse.Substring(startIndex + 1, startIndex + 10);
+            //int endIndex = myResponse.IndexOf('*');
+            //myResponse = myResponse.Substring(0, endIndex);
+
+            if (myResponse == "True")
+            {
+                var DC = new DataClassesDataContext();
+                tblAutomation AutoObj = (from ob in DC.tblAutomations
+                                         where ob.ID == 1
+                                         select ob).Single();
+                AutoObj.StreetLight1 = true;
+                AutoObj.StreetLight2 = true;
+                AutoObj.temp = myResponse;
+
+                DC.SubmitChanges();
+            }
+
+            return "True";
+        }
+
+        public object GetTankLevel()
+        {
+            string IP = GetIP();
+            string requestStr = "http://" + IP + "/AutomationCall.aspx?TankLevel=1";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
+            request.Method = "Get";
+            request.KeepAlive = true;
+            request.ContentType = "application/json";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            string myResponse = "";
+            using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+            {
+                myResponse = sr.ReadToEnd();
+            }
+
+            int startIndex = myResponse.IndexOf('*');
+            int len = myResponse.Length;
+            myResponse = myResponse.Substring(startIndex + 1, startIndex + 10);
+            int endIndex = myResponse.IndexOf('*');
+            myResponse = myResponse.Substring(0, endIndex);
+
+            var DC = new DataClassesDataContext();
+            tblAutomation AutoObj = (from ob in DC.tblAutomations
+                                     where ob.ID == 1
+                                     select ob).Single();
+            AutoObj.TankLevel = Convert.ToInt32(myResponse);
+            AutoObj.temp = myResponse;
+
+            DC.SubmitChanges();
+
+            return myResponse;
+        }
+
+        /* Light Switching */
+
+        /* Notifications */
+
+        public object SetNotification(string Text, string Type, string FlatNo, string PageLink)
+        {
+            var DC = new DataClassesDataContext();
+            tblNotification NotificationObj = new tblNotification();
+            NotificationObj.CreatedOn = DateTime.Now;
+            NotificationObj.Text = Text;
+            NotificationObj.Type = Type;
+            NotificationObj.PageLink = PageLink;
+            NotificationObj.IsActive = true;
+
+            DC.tblNotifications.InsertOnSubmit(NotificationObj);
+
+            int NotiID = (from ob in DC.tblNotifications
+                          orderby ob.NotificationID descending
+                          select ob.NotificationID).First();
+
+
+            if (FlatNo == "0")
+            {
+                for (int i = 1; i <= 16; i++)
+                {
+                    tblNotificationDetail NotiDetailsObj = new tblNotificationDetail();
+                    NotiDetailsObj.NotificationID = NotiID;
+                    NotiDetailsObj.Recipient = i;
+                    NotiDetailsObj.IsRead = false;
+                    DC.tblNotificationDetails.InsertOnSubmit(NotiDetailsObj);
+                }
+            }
+            else
+            {
+                tblNotificationDetail NotiDetailsObj = new tblNotificationDetail();
+                NotiDetailsObj.NotificationID = NotiID;
+                NotiDetailsObj.Recipient = Convert.ToInt32(FlatNo);
+                NotiDetailsObj.IsRead = false;
+                DC.tblNotificationDetails.InsertOnSubmit(NotiDetailsObj);
+            }
             DC.SubmitChanges();
 
             return true;
         }
 
+        /* Notifications */
     }
 }

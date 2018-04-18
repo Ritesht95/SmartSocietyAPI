@@ -9,7 +9,6 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:Label runat="server" ID="lblData" Text="Untitled"></asp:Label>
         </div>
     </form>
 </body>

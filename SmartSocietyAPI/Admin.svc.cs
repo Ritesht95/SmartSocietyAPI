@@ -203,15 +203,7 @@ namespace SmartSocietyAPI
 
             return true;
         }
-
-        public object GetSocietyInformation()
-        {
-            var DC = new DataClassesDataContext();
-            var SocietyInfoObj = (from ob in DC.tblSocieties
-                                  select ob).Single();
-            return JsonConvert.SerializeObject(SocietyInfoObj);
-        }
-
+        
         public object SetFlatHolder(string StartDate, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive)
         {
             var DC = new DataClassesDataContext();
@@ -414,10 +406,11 @@ namespace SmartSocietyAPI
             StaffObj.ContactNo1 = Contact1;
             StaffObj.ContactNo2 = Contact2;
             StaffObj.Image = Image;
-            StaffObj.IDProofDoc=Document;
+            StaffObj.IDProofDoc = Document;
             StaffObj.Address = Address;
             StaffObj.DOJ = Convert.ToDateTime(DOJ);
-            StaffObj.DOL = Convert.ToDateTime(DOL);
+            if (DOL != null)
+                StaffObj.DOL = Convert.ToDateTime(DOL);
             StaffObj.CreatedBy = CreatedBy;
             StaffObj.IsActive = IsActive;
 
@@ -429,7 +422,7 @@ namespace SmartSocietyAPI
                 LoginObj.PhoneNo = Contact1;
                 LoginObj.IsBlocked = !IsActive;
 
-                DC.tblLogins.InsertOnSubmit(LoginObj);
+                //DC.tblLogins.InsertOnSubmit(LoginObj);
             }
 
             DC.SubmitChanges();
@@ -441,13 +434,14 @@ namespace SmartSocietyAPI
 
         /* Notices */
 
-        public object AddNotice(string Title, string Description, int Priority, int CreatedBy)
+        public object AddNotice(string Title, string Description, int Priority, int CreatedBy, int Receipient)
         {
             var DC = new DataClassesDataContext();
             tblNotice NoticeObj = new tblNotice();
             NoticeObj.Title = Title;
             NoticeObj.Description = Description;
             NoticeObj.Priority = Priority;
+            NoticeObj.Recipient = Receipient;
             NoticeObj.CreatedBy = CreatedBy;
             NoticeObj.CreatedOn = DateTime.Now;
             NoticeObj.IsActive = true;
@@ -458,7 +452,7 @@ namespace SmartSocietyAPI
             return true;
         }
 
-        public object EditNotice(int NoticeID, string Title, string Description, int Priority, int CreatedBy, bool IsActive)
+        public object EditNotice(int NoticeID, string Title, string Description, int Priority, int CreatedBy, int Receipient, bool IsActive)
         {
             var DC = new DataClassesDataContext();
             tblNotice NoticeObj = (from ob in DC.tblNotices
@@ -686,7 +680,7 @@ namespace SmartSocietyAPI
             if (Approval)
             {
                 tblPayment PaymentObj = new tblPayment();
-                var Amount = (BookingObj.EndTime.Hour - BookingObj.StartTime.Hour)*RatePerHour;
+                var Amount = (BookingObj.EndTime.Hour - BookingObj.StartTime.Hour) * RatePerHour;
                 PaymentObj.Amount = Amount;
                 PaymentObj.DueDate = BookingObj.StartTime.Date.AddDays(-1);
                 PaymentObj.InitiateDate = DateTime.Now;
@@ -785,7 +779,7 @@ namespace SmartSocietyAPI
                 if (!NotHandled)
                 {
                     var ComplaintsData = (from ob in DC.tblComplaints
-                                          //join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
+                                              //join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
                                           join obFH in DC.tblFlatHolders on ob.FlatNo equals obFH.FlatNo
                                           join obR1 in DC.tblResidents on obFH.ResidentID equals obR1.ResidentID
                                           select new
@@ -833,7 +827,7 @@ namespace SmartSocietyAPI
             else
             {
                 var ComplaintObj = (from ob in DC.tblComplaints
-                                    //join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
+                                        //join obR in DC.tblResidents on ob.HandledBy equals obR.ResidentID
                                     join obFH in DC.tblFlatHolders on ob.FlatNo equals obFH.FlatNo
                                     join obR1 in DC.tblResidents on obFH.ResidentID equals obR1.ResidentID
                                     where ob.ComplaintID == ComplaintID
@@ -859,14 +853,14 @@ namespace SmartSocietyAPI
         public object SendComplaintResponse(int ComplaintID, string Response, int HandledBy)
         {
             var DC = new DataClassesDataContext();
-            var ComplaintObj = (from ob in DC.tblComplaints       
-                                where ob.ComplaintID==ComplaintID
+            var ComplaintObj = (from ob in DC.tblComplaints
+                                where ob.ComplaintID == ComplaintID
                                 select ob).Single();
             var ResidentObj = (from ob in DC.tblFlatHolders
                                join obR in DC.tblResidents on ob.ResidentID equals obR.ResidentID
-                               where obR.FlatNo==ComplaintObj.FlatNo
+                               where obR.FlatNo == ComplaintObj.FlatNo
                                select obR).Single();
-            var b=Mail(ResidentObj.Email, "Reply: " + ComplaintObj.Subject, Response);
+            var b = Mail(ResidentObj.Email, "Reply: " + ComplaintObj.Subject, Response);
             ComplaintObj.Response = Response;
             ComplaintObj.RespondedOn = DateTime.Now;
             ComplaintObj.HandledBy = HandledBy;

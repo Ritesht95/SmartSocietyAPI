@@ -135,12 +135,15 @@ namespace SmartSocietyAPI
     partial void InserttblVisitor(tblVisitor instance);
     partial void UpdatetblVisitor(tblVisitor instance);
     partial void DeletetblVisitor(tblVisitor instance);
-    partial void InserttblAutomation(tblAutomation instance);
-    partial void UpdatetblAutomation(tblAutomation instance);
-    partial void DeletetblAutomation(tblAutomation instance);
+    partial void InserttblNotificationDetail(tblNotificationDetail instance);
+    partial void UpdatetblNotificationDetail(tblNotificationDetail instance);
+    partial void DeletetblNotificationDetail(tblNotificationDetail instance);
     partial void InserttblNotification(tblNotification instance);
     partial void UpdatetblNotification(tblNotification instance);
     partial void DeletetblNotification(tblNotification instance);
+    partial void InserttblAutomation(tblAutomation instance);
+    partial void UpdatetblAutomation(tblAutomation instance);
+    partial void DeletetblAutomation(tblAutomation instance);
     #endregion
 		
 		public DataClassesDataContext() : 
@@ -453,11 +456,11 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		public System.Data.Linq.Table<tblAutomation> tblAutomations
+		public System.Data.Linq.Table<tblNotificationDetail> tblNotificationDetails
 		{
 			get
 			{
-				return this.GetTable<tblAutomation>();
+				return this.GetTable<tblNotificationDetail>();
 			}
 		}
 		
@@ -466,6 +469,14 @@ namespace SmartSocietyAPI
 			get
 			{
 				return this.GetTable<tblNotification>();
+			}
+		}
+		
+		public System.Data.Linq.Table<tblAutomation> tblAutomations
+		{
+			get
+			{
+				return this.GetTable<tblAutomation>();
 			}
 		}
 	}
@@ -7752,6 +7763,322 @@ namespace SmartSocietyAPI
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="ritesroq.tblNotificationDetails")]
+	public partial class tblNotificationDetail : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _NotificationDetailsID;
+		
+		private int _NotificationID;
+		
+		private int _Recipient;
+		
+		private bool _IsRead;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNotificationDetailsIDChanging(int value);
+    partial void OnNotificationDetailsIDChanged();
+    partial void OnNotificationIDChanging(int value);
+    partial void OnNotificationIDChanged();
+    partial void OnRecipientChanging(int value);
+    partial void OnRecipientChanged();
+    partial void OnIsReadChanging(bool value);
+    partial void OnIsReadChanged();
+    #endregion
+		
+		public tblNotificationDetail()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotificationDetailsID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int NotificationDetailsID
+		{
+			get
+			{
+				return this._NotificationDetailsID;
+			}
+			set
+			{
+				if ((this._NotificationDetailsID != value))
+				{
+					this.OnNotificationDetailsIDChanging(value);
+					this.SendPropertyChanging();
+					this._NotificationDetailsID = value;
+					this.SendPropertyChanged("NotificationDetailsID");
+					this.OnNotificationDetailsIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotificationID", DbType="Int NOT NULL")]
+		public int NotificationID
+		{
+			get
+			{
+				return this._NotificationID;
+			}
+			set
+			{
+				if ((this._NotificationID != value))
+				{
+					this.OnNotificationIDChanging(value);
+					this.SendPropertyChanging();
+					this._NotificationID = value;
+					this.SendPropertyChanged("NotificationID");
+					this.OnNotificationIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Recipient", DbType="Int NOT NULL")]
+		public int Recipient
+		{
+			get
+			{
+				return this._Recipient;
+			}
+			set
+			{
+				if ((this._Recipient != value))
+				{
+					this.OnRecipientChanging(value);
+					this.SendPropertyChanging();
+					this._Recipient = value;
+					this.SendPropertyChanged("Recipient");
+					this.OnRecipientChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsRead", DbType="Bit NOT NULL")]
+		public bool IsRead
+		{
+			get
+			{
+				return this._IsRead;
+			}
+			set
+			{
+				if ((this._IsRead != value))
+				{
+					this.OnIsReadChanging(value);
+					this.SendPropertyChanging();
+					this._IsRead = value;
+					this.SendPropertyChanged("IsRead");
+					this.OnIsReadChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="ritesroq.tblNotifications")]
+	public partial class tblNotification : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _NotificationID;
+		
+		private string _Text;
+		
+		private string _Type;
+		
+		private string _PageLink;
+		
+		private System.DateTime _CreatedOn;
+		
+		private bool _IsActive;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNotificationIDChanging(int value);
+    partial void OnNotificationIDChanged();
+    partial void OnTextChanging(string value);
+    partial void OnTextChanged();
+    partial void OnTypeChanging(string value);
+    partial void OnTypeChanged();
+    partial void OnPageLinkChanging(string value);
+    partial void OnPageLinkChanged();
+    partial void OnCreatedOnChanging(System.DateTime value);
+    partial void OnCreatedOnChanged();
+    partial void OnIsActiveChanging(bool value);
+    partial void OnIsActiveChanged();
+    #endregion
+		
+		public tblNotification()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotificationID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int NotificationID
+		{
+			get
+			{
+				return this._NotificationID;
+			}
+			set
+			{
+				if ((this._NotificationID != value))
+				{
+					this.OnNotificationIDChanging(value);
+					this.SendPropertyChanging();
+					this._NotificationID = value;
+					this.SendPropertyChanged("NotificationID");
+					this.OnNotificationIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Text", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string Text
+		{
+			get
+			{
+				return this._Text;
+			}
+			set
+			{
+				if ((this._Text != value))
+				{
+					this.OnTextChanging(value);
+					this.SendPropertyChanging();
+					this._Text = value;
+					this.SendPropertyChanged("Text");
+					this.OnTextChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Type
+		{
+			get
+			{
+				return this._Type;
+			}
+			set
+			{
+				if ((this._Type != value))
+				{
+					this.OnTypeChanging(value);
+					this.SendPropertyChanging();
+					this._Type = value;
+					this.SendPropertyChanged("Type");
+					this.OnTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PageLink", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string PageLink
+		{
+			get
+			{
+				return this._PageLink;
+			}
+			set
+			{
+				if ((this._PageLink != value))
+				{
+					this.OnPageLinkChanging(value);
+					this.SendPropertyChanging();
+					this._PageLink = value;
+					this.SendPropertyChanged("PageLink");
+					this.OnPageLinkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this.OnCreatedOnChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedOn = value;
+					this.SendPropertyChanged("CreatedOn");
+					this.OnCreatedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
+		public bool IsActive
+		{
+			get
+			{
+				return this._IsActive;
+			}
+			set
+			{
+				if ((this._IsActive != value))
+				{
+					this.OnIsActiveChanging(value);
+					this.SendPropertyChanging();
+					this._IsActive = value;
+					this.SendPropertyChanged("IsActive");
+					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="ritesroq.tblAutomation")]
 	public partial class tblAutomation : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -7776,6 +8103,10 @@ namespace SmartSocietyAPI
 		
 		private string _temp;
 		
+		private string _IPAdd;
+		
+		private System.Nullable<bool> _Sensor;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -7798,6 +8129,10 @@ namespace SmartSocietyAPI
     partial void OnIDChanged();
     partial void OntempChanging(string value);
     partial void OntempChanged();
+    partial void OnIPAddChanging(string value);
+    partial void OnIPAddChanged();
+    partial void OnSensorChanging(System.Nullable<bool> value);
+    partial void OnSensorChanged();
     #endregion
 		
 		public tblAutomation()
@@ -7985,232 +8320,42 @@ namespace SmartSocietyAPI
 			}
 		}
 		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="ritesroq.tblNotifications")]
-	public partial class tblNotification : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _NotificationID;
-		
-		private string _Text;
-		
-		private string _Type;
-		
-		private string _FlatNo;
-		
-		private string _PageLink;
-		
-		private bool _IsSeen;
-		
-		private System.DateTime _CreatedOn;
-		
-		private bool _IsActive;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnNotificationIDChanging(int value);
-    partial void OnNotificationIDChanged();
-    partial void OnTextChanging(string value);
-    partial void OnTextChanged();
-    partial void OnTypeChanging(string value);
-    partial void OnTypeChanged();
-    partial void OnFlatNoChanging(string value);
-    partial void OnFlatNoChanged();
-    partial void OnPageLinkChanging(string value);
-    partial void OnPageLinkChanged();
-    partial void OnIsSeenChanging(bool value);
-    partial void OnIsSeenChanged();
-    partial void OnCreatedOnChanging(System.DateTime value);
-    partial void OnCreatedOnChanged();
-    partial void OnIsActiveChanging(bool value);
-    partial void OnIsActiveChanged();
-    #endregion
-		
-		public tblNotification()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotificationID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int NotificationID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IPAdd", DbType="VarChar(20)")]
+		public string IPAdd
 		{
 			get
 			{
-				return this._NotificationID;
+				return this._IPAdd;
 			}
 			set
 			{
-				if ((this._NotificationID != value))
+				if ((this._IPAdd != value))
 				{
-					this.OnNotificationIDChanging(value);
+					this.OnIPAddChanging(value);
 					this.SendPropertyChanging();
-					this._NotificationID = value;
-					this.SendPropertyChanged("NotificationID");
-					this.OnNotificationIDChanged();
+					this._IPAdd = value;
+					this.SendPropertyChanged("IPAdd");
+					this.OnIPAddChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Text", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
-		public string Text
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sensor", DbType="Bit")]
+		public System.Nullable<bool> Sensor
 		{
 			get
 			{
-				return this._Text;
+				return this._Sensor;
 			}
 			set
 			{
-				if ((this._Text != value))
+				if ((this._Sensor != value))
 				{
-					this.OnTextChanging(value);
+					this.OnSensorChanging(value);
 					this.SendPropertyChanging();
-					this._Text = value;
-					this.SendPropertyChanged("Text");
-					this.OnTextChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Type
-		{
-			get
-			{
-				return this._Type;
-			}
-			set
-			{
-				if ((this._Type != value))
-				{
-					this.OnTypeChanging(value);
-					this.SendPropertyChanging();
-					this._Type = value;
-					this.SendPropertyChanged("Type");
-					this.OnTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FlatNo", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string FlatNo
-		{
-			get
-			{
-				return this._FlatNo;
-			}
-			set
-			{
-				if ((this._FlatNo != value))
-				{
-					this.OnFlatNoChanging(value);
-					this.SendPropertyChanging();
-					this._FlatNo = value;
-					this.SendPropertyChanged("FlatNo");
-					this.OnFlatNoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PageLink", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string PageLink
-		{
-			get
-			{
-				return this._PageLink;
-			}
-			set
-			{
-				if ((this._PageLink != value))
-				{
-					this.OnPageLinkChanging(value);
-					this.SendPropertyChanging();
-					this._PageLink = value;
-					this.SendPropertyChanged("PageLink");
-					this.OnPageLinkChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSeen", DbType="Bit NOT NULL")]
-		public bool IsSeen
-		{
-			get
-			{
-				return this._IsSeen;
-			}
-			set
-			{
-				if ((this._IsSeen != value))
-				{
-					this.OnIsSeenChanging(value);
-					this.SendPropertyChanging();
-					this._IsSeen = value;
-					this.SendPropertyChanged("IsSeen");
-					this.OnIsSeenChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedOn
-		{
-			get
-			{
-				return this._CreatedOn;
-			}
-			set
-			{
-				if ((this._CreatedOn != value))
-				{
-					this.OnCreatedOnChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedOn = value;
-					this.SendPropertyChanged("CreatedOn");
-					this.OnCreatedOnChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
-		public bool IsActive
-		{
-			get
-			{
-				return this._IsActive;
-			}
-			set
-			{
-				if ((this._IsActive != value))
-				{
-					this.OnIsActiveChanging(value);
-					this.SendPropertyChanging();
-					this._IsActive = value;
-					this.SendPropertyChanged("IsActive");
-					this.OnIsActiveChanged();
+					this._Sensor = value;
+					this.SendPropertyChanged("Sensor");
+					this.OnSensorChanged();
 				}
 			}
 		}

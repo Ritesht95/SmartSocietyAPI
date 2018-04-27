@@ -23,7 +23,9 @@ namespace SmartSocietyAPI
             //Response.Write(ServiceObject1.FacilitiesBookingSearch("", Convert.ToDateTime("2018-04-18").ToLongDateString()));
             //Response.Write(ServiceObject1.AutomaticLights(true));
             //Response.Write(ServiceObject1.SetFloorLights(false, false, false, false));
-            Response.Write(ServiceObject1.GetPollResults());
+            Response.Write(ServiceObject1.GetPollResults(2));
+            //Response.Write(ServiceObject.AddPoll("Test Poll", 0, 1, "04/20/2018 10:00:00"));
+            //Response.Write(ServiceObject1.GetAllPolls(0, false));
         }
     }
 }

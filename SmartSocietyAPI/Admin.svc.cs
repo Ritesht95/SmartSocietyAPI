@@ -203,7 +203,7 @@ namespace SmartSocietyAPI
 
             return true;
         }
-        
+
         public object SetFlatHolder(string StartDate, string Name, string DOB, string FlatNo, string Occupation, string Contact1, string Contact2, string Email, string Image, int PositionID, int FlatHolderID, bool IsActive)
         {
             var DC = new DataClassesDataContext();
@@ -708,13 +708,19 @@ namespace SmartSocietyAPI
             PollObj.PollTitle = PollTitle;
             PollObj.PollType = PollType;
             PollObj.CreatedBy = CreatedBy;
-            PollObj.EndTime = Convert.ToDateTime(EndTime);
+            PollObj.CreatedOn = DateTime.Now;
+            PollObj.EndTime = DateTime.Now.AddDays(1).Date;
             PollObj.IsActive = true;
 
             DC.tblPolls.InsertOnSubmit(PollObj);
+
+            int PollID = (from ob in DC.tblPolls
+                          orderby ob.PollID descending
+                          select ob.PollID).FirstOrDefault();
+
             DC.SubmitChanges();
 
-            return true;
+            return PollID;
         }
 
         public object EditPoll(int PollID, string PollTitle, int PollType, int CreatedBy, string EndTime, bool IsActive)
@@ -733,16 +739,14 @@ namespace SmartSocietyAPI
             return true;
         }
 
-        public object AddPollOptions(object PollOptionNames, int PollID)
+        public object AddPollOptions(string[] Options, int PollID)
         {
             var DC = new DataClassesDataContext();
-            JArray JPollOptionNames = JArray.Parse(PollOptionNames.ToString());
-            foreach (JObject PollOption in JPollOptionNames)
+            for (int i = 0; i < 4; i++)
             {
                 tblPollOption OptionObj = new tblPollOption();
-                OptionObj.PollOptionName = PollOption.ToString();
+                OptionObj.PollOptionName = Options[i];
                 OptionObj.PollID = PollID;
-
                 DC.tblPollOptions.InsertOnSubmit(OptionObj);
             }
             DC.SubmitChanges();
@@ -750,16 +754,13 @@ namespace SmartSocietyAPI
             return true;
         }
 
-        public object EditPollOptions(object PollOptions, int PollID)
+        public object EditPollOptions(string[] Options, int PollID)
         {
             var DC = new DataClassesDataContext();
-            JArray JPollOptions = JArray.Parse(PollOptions.ToString());
-            foreach (JObject PollOption in JPollOptions)
+            for (int i = 0; i < 4; i++)
             {
-                tblPollOption OptionObj = (from ob in DC.tblPollOptions
-                                           where ob.PollOptionID == Convert.ToInt32(PollOption["PollOptionID"])
-                                           select ob).Single();
-                OptionObj.PollOptionName = PollOption["PollOptionName"].ToString();
+                tblPollOption OptionObj = new tblPollOption();
+                OptionObj.PollOptionName = Options[i];
                 OptionObj.PollID = PollID;
             }
             DC.SubmitChanges();

@@ -138,12 +138,12 @@ namespace SmartSocietyAPI
         object EditPoll(int PollID, string PollTitle, int PollType, int CreatedBy, string EndTime, bool IsActive);
 
         [OperationContract]
-        [WebGet(UriTemplate = "AddPollOptions/{PollOptionNames}", ResponseFormat = WebMessageFormat.Json)]
-        object AddPollOptions(object PollOptionNames, int PollID);
+        [WebGet(UriTemplate = "AddPollOptions/{Options,PollID}", ResponseFormat = WebMessageFormat.Json)]
+        object AddPollOptions(string[] Options, int PollID);
 
         [OperationContract]
-        [WebGet(UriTemplate = "EditPollOptions/{PollOption,PollID}", ResponseFormat = WebMessageFormat.Json)]
-        object EditPollOptions(object PollOptions, int PollID);
+        [WebGet(UriTemplate = "EditPollOptions/{Options,PollID}", ResponseFormat = WebMessageFormat.Json)]
+        object EditPollOptions(string[] Options, int PollID);
         /* Polls */
 
         /* Complaints */

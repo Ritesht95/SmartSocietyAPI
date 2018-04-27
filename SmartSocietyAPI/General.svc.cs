@@ -1116,7 +1116,7 @@ namespace SmartSocietyAPI
                 if (IsActive == false)
                 {
                     PollsData = (from ob in DC.tblPolls
-                                 where ob.IsDeleted == false
+                                 where ob.IsDeleted == false && ob.EndTime < DateTime.Now
                                  select new
                                  {
                                      ob.PollID,
@@ -1199,23 +1199,17 @@ namespace SmartSocietyAPI
             }
             else
             {
-                var PollResultsObj = (from ob in DC.tblPolls
-                                      where ob.PollID == PollID
-                                      && ob.IsDeleted == false/* && ob.EndTime <= DateTime.Now*/
+                var PollResultsObj = (from obPV in DC.tblPollVotings
+                                      join ob in DC.tblPolls on obPV.PollID equals ob.PollID
+                                      join obO in DC.tblPollOptions on obPV.PollOptionID equals obO.PollOptionID
+                                      where ob.PollID == PollID && ob.IsDeleted == false && obPV.PollID == ob.PollID && ob.PollID == obO.PollID
                                       select new
                                       {
-                                          ob,
-                                          PollVoting = (from obPV in DC.tblPollVotings
-                                                        join obO in DC.tblPollOptions on obPV.PollOptionID equals obO.PollOptionID
-                                                        where obPV.PollID == ob.PollID && ob.PollID == obO.PollID
-                                                        group obPV by obPV.PollOptionID
-                                                        into grp
-                                                        select new
-                                                        {
-                                                            OptionName = grp.Key,
-                                                            VoteCount = grp.Count()
-                                                        })
-                                      });
+                                          OptionName = obO.PollOptionName,
+                                          VoteCount = (from obPV1 in DC.tblPollVotings
+                                                       where obPV1.PollOptionID == obO.PollOptionID
+                                                       select obPV1).Count()
+                                      }).Distinct();
 
                 return JsonConvert.SerializeObject(PollResultsObj);
             }
@@ -1227,9 +1221,34 @@ namespace SmartSocietyAPI
 
         /* Complaints */
 
-        /* Payments & Transactions */
+        /* Documents */
 
-        /* Payments & Transactions */
+        public object GetAllDocuments()
+        {
+            var DC = new DataClassesDataContext();
+            var DocumentsData = (from ob in DC.tblOwnerDocuments
+                                 select ob);
+
+            return JsonConvert.SerializeObject(DocumentsData);
+        }
+
+        public object AddDocument(string FileType, string FilePath, string DocumentType)
+        {
+            var DC = new DataClassesDataContext();
+            tblOwnerDocument DocObj = new tblOwnerDocument();
+            DocObj.ApprovedBy = 1;
+            DocObj.DocumentType = DocumentType;
+            DocObj.Filepath = FilePath;
+            DocObj.FileType = FileType;
+            DocObj.FlatNo = "0";
+
+            DC.tblOwnerDocuments.InsertOnSubmit(DocObj);
+            DC.SubmitChanges();
+
+            return "True";
+        }
+
+        /* Documents */
 
         /* Light Switching */
 
@@ -1255,238 +1274,276 @@ namespace SmartSocietyAPI
 
         public object SetFloorLights(bool Floor1, bool Floor2, bool Floor3, bool Floor4)
         {
-            string IP = GetIP();
-            string requestStr = "http://" + IP + "/toggle?Switches=";
-            string pins = "";
-            if (Floor1)
-                pins += "1";
-            else
-                pins += "0";
-            if (Floor2)
-                pins += "1";
-            else
-                pins += "0";
-            if (Floor3)
-                pins += "1";
-            else
-                pins += "0";
-            if (Floor4)
-                pins += "1";
-            else
-                pins += "0";
-
-            requestStr += pins;
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
-            request.Method = "Get";
-            request.KeepAlive = true;
-            request.ContentType = "application/json";
-
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string myResponse = "";
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+            try
             {
-                myResponse = sr.ReadToEnd();
+                string IP = GetIP();
+                string requestStr = "http://" + IP + "/toggle?Switches=";
+                string pins = "";
+                if (Floor1)
+                    pins += "1";
+                else
+                    pins += "0";
+                if (Floor2)
+                    pins += "1";
+                else
+                    pins += "0";
+                if (Floor3)
+                    pins += "1";
+                else
+                    pins += "0";
+                if (Floor4)
+                    pins += "1";
+                else
+                    pins += "0";
+
+                requestStr += pins;
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
+                request.Method = "Get";
+                request.KeepAlive = true;
+                request.ContentType = "application/json";
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                string myResponse = "";
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+                {
+                    myResponse = sr.ReadToEnd();
+                }
+
+                var DC = new DataClassesDataContext();
+                tblAutomation AutoObj = (from ob in DC.tblAutomations
+                                         where ob.ID == 1
+                                         select ob).Single();
+
+                if (pins == myResponse)
+                {
+
+                    AutoObj.Floor1 = Floor1;
+                    AutoObj.Floor2 = Floor2;
+                    AutoObj.Floor3 = Floor3;
+                    AutoObj.Floor4 = Floor4;
+                    AutoObj.temp = myResponse;
+
+                    DC.SubmitChanges();
+                    return "True";
+                }
+                else
+                {
+                    return "False";
+                }
             }
-
-            var DC = new DataClassesDataContext();
-            tblAutomation AutoObj = (from ob in DC.tblAutomations
-                                     where ob.ID == 1
-                                     select ob).Single();
-
-            if (pins == myResponse)
+            catch(Exception e)
             {
-
-                AutoObj.Floor1 = Floor1;
-                AutoObj.Floor2 = Floor2;
-                AutoObj.Floor3 = Floor3;
-                AutoObj.Floor4 = Floor4;
-                AutoObj.temp = myResponse;
-
-                DC.SubmitChanges();
-                return "True";
-            }
-            else
-            {
-                return false;
+                return "False";
             }
         }
 
         public object GetSLStatus()
         {
-            string IP = GetIP();
-            string requestStr = "http://" + IP + "/SLStatus?stat=send";
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
-            request.Method = "Get";
-            request.KeepAlive = true;
-            request.ContentType = "application/json";
-
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string myResponse = "";
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+            try
             {
-                myResponse = sr.ReadToEnd();
+                string IP = GetIP();
+                string requestStr = "http://" + IP + "/SLStatus?stat=send";
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
+                request.Method = "Get";
+                request.KeepAlive = true;
+                request.ContentType = "application/json";
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                string myResponse = "";
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+                {
+                    myResponse = sr.ReadToEnd();
+                }
+
+                var DC = new DataClassesDataContext();
+                tblAutomation AutoObj = (from ob in DC.tblAutomations
+                                         where ob.ID == 1
+                                         select ob).Single();
+
+                if (myResponse == "1")
+                {
+                    AutoObj.StreetLight1 = true;
+                    AutoObj.StreetLight2 = true;
+                }
+                else
+                {
+                    AutoObj.StreetLight1 = true;
+                    AutoObj.StreetLight2 = true;
+                }
+
+                return "True";
             }
-
-            var DC = new DataClassesDataContext();
-            tblAutomation AutoObj = (from ob in DC.tblAutomations
-                                     where ob.ID == 1
-                                     select ob).Single();
-
-            if (myResponse == "1")
+            catch(Exception e)
             {
-                AutoObj.StreetLight1 = true;
-                AutoObj.StreetLight2 = true;
+                return "False";
             }
-            else
-            {
-                AutoObj.StreetLight1 = true;
-                AutoObj.StreetLight2 = true;
-            }
-
-            return "True";
         }
 
         public object SetSensor(bool Stat)
         {
-            string IP = GetIP();
-            string requestStr = "http://" + IP + "/sensor?s=";
-            string stat = "";
-            if (Stat)
-                stat += "1";
-            else
-                stat += "0";
-
-            requestStr += stat;
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
-            request.Method = "Get";
-            request.KeepAlive = true;
-            request.ContentType = "application/json";
-
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string myResponse = "";
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+            try
             {
-                myResponse = sr.ReadToEnd();
+                string IP = GetIP();
+                string requestStr = "http://" + IP + "/sensor?s=";
+                string stat = "";
+                if (Stat)
+                    stat += "1";
+                else
+                    stat += "0";
+
+                requestStr += stat;
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
+                request.Method = "Get";
+                request.KeepAlive = true;
+                request.ContentType = "application/json";
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                string myResponse = "";
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+                {
+                    myResponse = sr.ReadToEnd();
+                }
+
+                var DC = new DataClassesDataContext();
+                tblAutomation AutoObj = (from ob in DC.tblAutomations
+                                         where ob.ID == 1
+                                         select ob).Single();
+
+                if (myResponse == "0" && stat == "0")
+                {
+                    AutoObj.Sensor = false;
+                    AutoObj.StreetLight1 = false;
+                    AutoObj.StreetLight2 = false;
+                    DC.SubmitChanges();
+                    return "True";
+                }
+                else if (myResponse == "0" && stat == "1")
+                {
+                    AutoObj.Sensor = false;
+                    AutoObj.StreetLight1 = false;
+                    AutoObj.StreetLight2 = false;
+                    DC.SubmitChanges();
+                    return "False";
+                }
+                else if (myResponse == "1" && stat == "1")
+                {
+                    AutoObj.Sensor = true;
+                    AutoObj.StreetLight1 = false;
+                    AutoObj.StreetLight2 = false;
+                    DC.SubmitChanges();
+                    return "False";
+                }
+                else
+                {
+                    AutoObj.Sensor = false;
+                    AutoObj.StreetLight1 = false;
+                    AutoObj.StreetLight2 = false;
+                    DC.SubmitChanges();
+                    return "False";
+                }
             }
-
-            var DC = new DataClassesDataContext();
-            tblAutomation AutoObj = (from ob in DC.tblAutomations
-                                     where ob.ID == 1
-                                     select ob).Single();
-
-            if (myResponse == "0" && stat == "0")
+            catch(Exception e)
             {
-                AutoObj.Sensor = false;
-                AutoObj.StreetLight1 = false;
-                AutoObj.StreetLight2 = false;
-                DC.SubmitChanges();
-                return "True";
-            }
-            else if (myResponse == "0" && stat == "1")
-            {
-                AutoObj.Sensor = false;
-                AutoObj.StreetLight1 = false;
-                AutoObj.StreetLight2 = false;
-                DC.SubmitChanges();
-                return false;
-            }
-            else if (myResponse == "1" && stat == "1")
-            {
-                AutoObj.Sensor = true;
-                AutoObj.StreetLight1 = false;
-                AutoObj.StreetLight2 = false;
-                DC.SubmitChanges();
-                return false;
-            }
-            else
-            {
-                AutoObj.Sensor = false;
-                AutoObj.StreetLight1 = false;
-                AutoObj.StreetLight2 = false;
-                DC.SubmitChanges();
-                return false;
+                return "False";
             }
         }
 
         public object SetStreetLight(bool Stat)
         {
-            string IP = GetIP();
-            string requestStr = "http://" + IP + "/STtoggle?StreetLight=";
-            if (Stat)
-                requestStr += "1";
-            else
-                requestStr += "0";
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
-            request.Method = "Get";
-            request.KeepAlive = true;
-            request.ContentType = "application/json";
-
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string myResponse = "";
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+            try
             {
-                myResponse = sr.ReadToEnd();
+                string IP = GetIP();
+                string requestStr = "http://" + IP + "/STtoggle?StreetLight=";
+                if (Stat)
+                    requestStr += "1";
+                else
+                    requestStr += "0";
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
+                request.Method = "Get";
+                request.KeepAlive = true;
+                request.ContentType = "application/json";
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                string myResponse = "";
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+                {
+                    myResponse = sr.ReadToEnd();
+                }
+
+                if (myResponse == "True")
+                {
+                    var DC = new DataClassesDataContext();
+                    tblAutomation AutoObj = (from ob in DC.tblAutomations
+                                             where ob.ID == 1
+                                             select ob).Single();
+                    AutoObj.StreetLight1 = true;
+                    AutoObj.StreetLight2 = true;
+                    AutoObj.temp = myResponse;
+
+                    DC.SubmitChanges();
+                }
+
+                return "True";
             }
-
-            //int startIndex = myResponse.IndexOf('*');
-            //int len = myResponse.Length;
-            //myResponse = myResponse.Substring(startIndex + 1, startIndex + 10);
-            //int endIndex = myResponse.IndexOf('*');
-            //myResponse = myResponse.Substring(0, endIndex);
-
-            if (myResponse == "True")
+            catch(Exception e)
             {
-                var DC = new DataClassesDataContext();
-                tblAutomation AutoObj = (from ob in DC.tblAutomations
-                                         where ob.ID == 1
-                                         select ob).Single();
-                AutoObj.StreetLight1 = true;
-                AutoObj.StreetLight2 = true;
-                AutoObj.temp = myResponse;
-
-                DC.SubmitChanges();
+                return "False";
             }
-
-            return "True";
         }
 
         public object GetTankLevel()
         {
-            string IP = GetIP();
-            string requestStr = "http://" + IP + "/AutomationCall.aspx?TankLevel=1";
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
-            request.Method = "Get";
-            request.KeepAlive = true;
-            request.ContentType = "application/json";
-
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string myResponse = "";
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+            try
             {
-                myResponse = sr.ReadToEnd();
+                string IP = GetIP();
+                string requestStr = "http://" + IP + "/AutomationCall.aspx?TankLevel=1";
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestStr);
+                request.Method = "Get";
+                request.KeepAlive = true;
+                request.ContentType = "application/json";
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                string myResponse = "";
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+                {
+                    myResponse = sr.ReadToEnd();
+                }
+
+                int startIndex = myResponse.IndexOf('*');
+                int len = myResponse.Length;
+                myResponse = myResponse.Substring(startIndex + 1, startIndex + 10);
+                int endIndex = myResponse.IndexOf('*');
+                myResponse = myResponse.Substring(0, endIndex);
+
+                var DC = new DataClassesDataContext();
+                tblAutomation AutoObj = (from ob in DC.tblAutomations
+                                         where ob.ID == 1
+                                         select ob).Single();
+                AutoObj.TankLevel = Convert.ToInt32(myResponse);
+                AutoObj.temp = myResponse;
+
+                DC.SubmitChanges();
+
+                return myResponse;
             }
+            catch(Exception e)
+            {
+                return "False";
+            }
+        }
 
-            int startIndex = myResponse.IndexOf('*');
-            int len = myResponse.Length;
-            myResponse = myResponse.Substring(startIndex + 1, startIndex + 10);
-            int endIndex = myResponse.IndexOf('*');
-            myResponse = myResponse.Substring(0, endIndex);
-
+        public object GetAllAutoStates()
+        {
             var DC = new DataClassesDataContext();
-            tblAutomation AutoObj = (from ob in DC.tblAutomations
-                                     where ob.ID == 1
-                                     select ob).Single();
-            AutoObj.TankLevel = Convert.ToInt32(myResponse);
-            AutoObj.temp = myResponse;
+            var AutomationState = (from ob in DC.tblAutomations
+                                   select ob).Single();
 
-            DC.SubmitChanges();
-
-            return myResponse;
+            return JsonConvert.SerializeObject(AutomationState);
         }
 
         /* Light Switching */

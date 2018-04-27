@@ -127,6 +127,10 @@ namespace SmartSocietyAPI
         [WebGet(UriTemplate = "GetAllPolls/{PollID,IsActive}", ResponseFormat = WebMessageFormat.Json)]
         object GetAllPolls(int PollID = 0, bool IsActive = false);
 
+        [OperationContract]
+        [WebGet(UriTemplate = "GetPollResults/{PollID}", ResponseFormat = WebMessageFormat.Json)]
+        object GetPollResults(int PollID = 0);
+
         /* Polls */
 
         /* Complaints */
@@ -135,9 +139,23 @@ namespace SmartSocietyAPI
 
         /* Complaints */
 
-        /* Payments & Transactions */
+        /* Documents */
 
-        /* Payments & Transactions */
+        [OperationContract]
+        [WebGet(UriTemplate = "GetAllDocuments/", ResponseFormat = WebMessageFormat.Json)]
+        object GetAllDocuments();
+
+        [OperationContract]
+        [WebGet(UriTemplate = "AddDocument/", ResponseFormat = WebMessageFormat.Json)]
+        object AddDocument(string FileType, string FilePath, string DocumentType);
+
+        /* Documents */
+
+
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GetAllAutoStates/", ResponseFormat = WebMessageFormat.Json)]
+        object GetAllAutoStates();
 
         [OperationContract]
         [WebGet(UriTemplate = "SetIP/{IP}", ResponseFormat = WebMessageFormat.Json)]
@@ -168,6 +186,7 @@ namespace SmartSocietyAPI
         [OperationContract]
         [WebGet(UriTemplate = "SetNotification/{Text,Type,FlatNo,PageLink}", ResponseFormat = WebMessageFormat.Json)]
         object SetNotification(string Text, string Type, string FlatNo, string PageLink);
+
         /* Notifications */
     }
 }
